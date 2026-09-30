@@ -2,13 +2,13 @@
    CialloSpeed 设计令牌
    ============================================ */
 :root {
-  /* 品牌色：青 → 紫 渐变 */
-  --brand-1: #06b6d4;
-  --brand-2: #7c3aed;
-  --brand-3: #22d3ee;
+  /* 品牌色：霓虹蓝 → 电紫 渐变（对齐 LibreTV 赛博配色气质） */
+  --brand-1: #00b8e6;
+  --brand-2: #7c5cff;
+  --brand-3: #33d6ff;
   --grad-brand: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
-  --grad-brand-text: linear-gradient(120deg, #22d3ee 0%, #818cf8 55%, #c084fc 100%);
-  --grad-brand-soft: linear-gradient(135deg, rgba(6, 182, 212, 0.16), rgba(124, 58, 237, 0.16));
+  --grad-brand-text: linear-gradient(120deg, #33d6ff 0%, #818cf8 55%, #c084fc 100%);
+  --grad-brand-soft: linear-gradient(135deg, rgba(0, 184, 230, 0.16), rgba(124, 92, 255, 0.16));
 
   /* 功能色 */
   --ok: #10b981;
@@ -54,28 +54,29 @@
 /* ---------- 深色主题（默认） ---------- */
 [data-theme='dark'] {
   color-scheme: dark;
-  --bg: #0b0f1a;
-  --bg-soft: #111827;
-  --surface: rgba(17, 24, 39, 0.66);
-  --surface-solid: #131a2a;
-  --border: rgba(148, 163, 184, 0.16);
-  --border-strong: rgba(148, 163, 184, 0.32);
-  --text: #f1f5f9;
-  --text-muted: #94a3b8;
-  --text-faint: #64748b;
-  --shadow-card: 0 18px 48px rgba(2, 6, 23, 0.5);
-  --shadow-pop: 0 24px 64px rgba(2, 6, 23, 0.65);
-  --grid-line: rgba(148, 163, 184, 0.055);
-  --glow-1: rgba(6, 182, 212, 0.16);
-  --glow-2: rgba(124, 58, 237, 0.17);
-  --skeleton: rgba(148, 163, 184, 0.09);
-  --skeleton-shine: rgba(148, 163, 184, 0.16);
+  /* 深蓝黑赛博配色（对齐 LibreTV）：page #0b101a / surface #141c29 / card #0d141f / line #223045 */
+  --bg: #0b101a;
+  --bg-soft: #0d141f;
+  --surface: rgba(20, 28, 41, 0.72);
+  --surface-solid: #141c29;
+  --border: rgba(34, 48, 69, 0.9);
+  --border-strong: rgba(62, 88, 122, 0.95);
+  --text: #e6f2ff;
+  --text-muted: #8599b2;
+  --text-faint: #6b7f99;
+  --shadow-card: 0 18px 48px rgba(0, 0, 0, 0.45);
+  --shadow-pop: 0 24px 64px rgba(0, 0, 0, 0.55);
+  --grid-line: rgba(133, 153, 178, 0.06);
+  --glow-1: rgba(0, 184, 230, 0.16);
+  --glow-2: rgba(124, 92, 255, 0.17);
+  --skeleton: rgba(133, 153, 178, 0.09);
+  --skeleton-shine: rgba(133, 153, 178, 0.16);
 }
 
 /* ---------- 浅色主题 ---------- */
 [data-theme='light'] {
   color-scheme: light;
-  --bg: #f8fafc;
+  --bg: #f6f7f9;
   --bg-soft: #eef2f7;
   --surface: rgba(255, 255, 255, 0.8);
   --surface-solid: #ffffff;
@@ -87,8 +88,8 @@
   --shadow-card: 0 16px 40px rgba(15, 23, 42, 0.1);
   --shadow-pop: 0 24px 56px rgba(15, 23, 42, 0.14);
   --grid-line: rgba(30, 41, 59, 0.045);
-  --glow-1: rgba(6, 182, 212, 0.14);
-  --glow-2: rgba(124, 58, 237, 0.13);
+  --glow-1: rgba(0, 184, 230, 0.14);
+  --glow-2: rgba(124, 92, 255, 0.13);
   --skeleton: rgba(30, 41, 59, 0.07);
   --skeleton-shine: rgba(30, 41, 59, 0.13);
 }

@@ -1,5 +1,5 @@
 /**
- * 主题切换：localStorage 持久化 + 系统偏好跟随
+ * 主题切换：localStorage 持久化；默认暗色（对齐 LibreTV 风格）。
  * 首屏主题由各 HTML <head> 中的内联脚本提前设置，避免闪烁（FOUC）。
  */
 
@@ -34,19 +34,5 @@ export function initThemeToggle(btn: HTMLButtonElement | null): void {
       /* 隐私模式下忽略 */
     }
     applyTheme(next, btn)
-  })
-
-  // 未手动选择过主题时，跟随系统偏好变化
-  const media = matchMedia('(prefers-color-scheme: light)')
-  media.addEventListener('change', (e) => {
-    let stored: string | null = null
-    try {
-      stored = localStorage.getItem(THEME_KEY)
-    } catch {
-      /* ignore */
-    }
-    if (!stored) {
-      applyTheme(e.matches ? 'light' : 'dark', btn)
-    }
   })
 }

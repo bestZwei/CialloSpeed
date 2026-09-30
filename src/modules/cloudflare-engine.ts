@@ -114,8 +114,8 @@ export function initCloudflareEngine(
 
   /** 青色 → 紫色插值 */
   const lerpColor = (t: number): string => {
-    const c1 = [6, 182, 212]
-    const c2 = [124, 58, 237]
+    const c1 = [0, 184, 230]
+    const c2 = [124, 92, 255]
     const c = c1.map((v, i) => Math.round(v + (c2[i] - v) * t))
     return `rgb(${c[0]}, ${c[1]}, ${c[2]})`
   }

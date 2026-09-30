@@ -102,7 +102,7 @@ h2 { font-size: var(--fs-h2); }
 h3 { font-size: var(--fs-h3); }
 
 ::selection {
-  background: rgba(124, 58, 237, 0.35);
+  background: rgba(124, 92, 255, 0.35);
   color: #fff;
 }
 

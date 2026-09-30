@@ -9,7 +9,7 @@
       content="用两个测速工具测同一宽带，结果能差一倍？一文讲清测速节点位置、测试方法、统计口径的差异，以及如何用双引擎交叉验证得到可信的网速结果。"
     />
     <link rel="canonical" href="https://speed.ciallo.de/why-different.html" />
-    <meta name="theme-color" content="#0b0f1a" />
+    <meta name="theme-color" content="#0b101a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="CialloSpeed" />
@@ -34,7 +34,7 @@
           t = localStorage.getItem('ciallospeed-theme')
         } catch (e) {}
         if (t !== 'light' && t !== 'dark') {
-          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+          t = 'dark'
         }
         document.documentElement.dataset.theme = t
       })()
@@ -48,8 +48,8 @@
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#06B6D4" />
-                <stop offset="1" stop-color="#7C3AED" />
+                <stop offset="0" stop-color="#00B8E6" />
+                <stop offset="1" stop-color="#7C5CFF" />
               </linearGradient>
             </defs>
             <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-g)" />
@@ -233,8 +233,8 @@
             <svg viewBox="0 0 64 64" aria-hidden="true">
               <defs>
                 <linearGradient id="logo-f" x1="0" y1="0" x2="1" y2="1">
-                  <stop offset="0" stop-color="#06B6D4" />
-                  <stop offset="1" stop-color="#7C3AED" />
+                  <stop offset="0" stop-color="#00B8E6" />
+                  <stop offset="1" stop-color="#7C5CFF" />
                 </linearGradient>
               </defs>
               <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-f)" />

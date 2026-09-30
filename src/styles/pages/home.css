@@ -95,10 +95,10 @@
   border-radius: calc(var(--radius-lg) + 2px);
   background: conic-gradient(
     from var(--angle, 0deg),
-    rgba(6, 182, 212, 0.65),
-    rgba(124, 58, 237, 0.65),
+    rgba(0, 184, 230, 0.65),
+    rgba(124, 92, 255, 0.65),
     rgba(34, 211, 238, 0.25),
-    rgba(6, 182, 212, 0.65)
+    rgba(0, 184, 230, 0.65)
   );
   animation: border-spin 7s linear infinite, breathe 3.6s ease-in-out infinite;
   opacity: 0.75;
@@ -111,10 +111,20 @@
   inherits: false;
 }
 
-/* 浅色主题下光效收敛，避免整卡发花 */
+/* 浅色主题下隐藏呼吸光效层（::before 会绘制在卡片背景之上），改用霓虹描边 */
+[data-theme='light'] .speedtest-card {
+  background: var(--surface-solid);
+}
+
 [data-theme='light'] .speedtest-card::before {
-  opacity: 0.3;
-  filter: blur(2px);
+  display: none;
+}
+
+[data-theme='light'] .speedtest-card {
+  border-color: rgba(0, 184, 230, 0.35);
+  box-shadow:
+    0 16px 40px rgba(15, 23, 42, 0.1),
+    0 0 24px rgba(0, 184, 230, 0.12);
 }
 
 @keyframes border-spin {
@@ -396,8 +406,8 @@
   vector-effect: non-scaling-stroke;
 }
 
-.cf-spark-down { stroke: var(--brand-1); filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.6)); }
-.cf-spark-up { stroke: var(--brand-2); filter: drop-shadow(0 0 4px rgba(124, 58, 237, 0.6)); }
+.cf-spark-down { stroke: var(--brand-1); filter: drop-shadow(0 0 4px rgba(0, 184, 230, 0.6)); }
+.cf-spark-up { stroke: var(--brand-2); filter: drop-shadow(0 0 4px rgba(124, 92, 255, 0.6)); }
 
 /* 完成态：大数字渐变高亮 */
 .cf-stage.is-done .cf-value {
@@ -408,16 +418,16 @@
 }
 
 /* 相位强调：下载偏青、上传偏紫、完成态呼吸光 */
-.cf-stage.is-down .cf-ring-fill { filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.55)); }
-.cf-stage.is-up .cf-ring-fill { filter: drop-shadow(0 0 14px rgba(124, 58, 237, 0.55)); }
+.cf-stage.is-down .cf-ring-fill { filter: drop-shadow(0 0 14px rgba(0, 184, 230, 0.55)); }
+.cf-stage.is-up .cf-ring-fill { filter: drop-shadow(0 0 14px rgba(124, 92, 255, 0.55)); }
 
 .cf-stage.is-done .cf-ring-fill {
   animation: ring-glow 2.2s ease-in-out infinite;
 }
 
 @keyframes ring-glow {
-  0%, 100% { filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.4)); }
-  50% { filter: drop-shadow(0 0 18px rgba(124, 58, 237, 0.6)); }
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(0, 184, 230, 0.4)); }
+  50% { filter: drop-shadow(0 0 18px rgba(124, 92, 255, 0.6)); }
 }
 
 .cf-stage-center {
@@ -743,7 +753,7 @@
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(60% 120% at 50% 120%, rgba(124, 58, 237, 0.22), transparent 70%);
+  background: radial-gradient(60% 120% at 50% 120%, rgba(124, 92, 255, 0.22), transparent 70%);
   pointer-events: none;
 }
 

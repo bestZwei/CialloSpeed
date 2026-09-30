@@ -42,7 +42,7 @@
 .brand svg {
   width: 30px;
   height: 30px;
-  filter: drop-shadow(0 2px 10px rgba(124, 58, 237, 0.45));
+  filter: drop-shadow(0 2px 10px rgba(124, 92, 255, 0.45));
 }
 
 .nav-links {
@@ -152,12 +152,12 @@
 .btn-primary {
   background: var(--grad-brand);
   color: #fff;
-  box-shadow: 0 8px 26px rgba(124, 58, 237, 0.4);
+  box-shadow: 0 8px 26px rgba(124, 92, 255, 0.4);
 }
 
 .btn-primary:hover {
   transform: translateY(-2px);
-  box-shadow: 0 14px 34px rgba(124, 58, 237, 0.5);
+  box-shadow: 0 14px 34px rgba(124, 92, 255, 0.5);
   color: #fff;
 }
 

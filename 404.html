@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>页面不存在（404） | CialloSpeed</title>
     <meta name="robots" content="noindex" />
-    <meta name="theme-color" content="#0b0f1a" />
+    <meta name="theme-color" content="#0b101a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <script>
       ;(function () {
@@ -14,7 +14,7 @@
           t = localStorage.getItem('ciallospeed-theme')
         } catch (e) {}
         if (t !== 'light' && t !== 'dark') {
-          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+          t = 'dark'
         }
         document.documentElement.dataset.theme = t
       })()
@@ -28,8 +28,8 @@
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
-                <stop offset="0" stop-color="#06B6D4" />
-                <stop offset="1" stop-color="#7C3AED" />
+                <stop offset="0" stop-color="#00B8E6" />
+                <stop offset="1" stop-color="#7C5CFF" />
               </linearGradient>
             </defs>
             <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-g)" />
