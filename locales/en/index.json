@@ -18,7 +18,7 @@
   "st.tabsAria": "Choose a speed test engine",
   "st.cfTab": "Cloudflare Engine <small>Global edge nodes</small>",
   "st.ostTab": "OpenSpeedTest <small>Classic engine</small>",
-  "st.ready": "Ready when you are",
+  "st.ready": "Ready?",
   "st.down": "Download",
   "st.up": "Upload",
   "st.ping": "Ping",
