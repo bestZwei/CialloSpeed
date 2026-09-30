@@ -72,6 +72,8 @@
 /* ---------- 测速卡片 ---------- */
 .speedtest-section {
   scroll-margin-top: calc(var(--nav-h) + 16px);
+  /* 首屏即用：收紧顶部留白，让仪表盘直接可见 */
+  padding-top: var(--sp-5);
 }
 
 .speedtest-card {
