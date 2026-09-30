@@ -213,6 +213,7 @@
 }
 
 .speedtest-note {
+  margin-inline: auto;
   text-align: center;
   font-size: var(--fs-sm);
   color: var(--text-faint);
