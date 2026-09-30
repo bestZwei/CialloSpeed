@@ -16,6 +16,7 @@
 
   "st.sectionAria": "Online speed test",
   "st.tabsAria": "Choose a speed test engine",
+  "st.recommended": "Recommended",
   "st.cfTab": "Cloudflare",
   "st.ostTab": "OpenSpeedTest",
   "st.ndtTab": "M-Lab NDT7",
