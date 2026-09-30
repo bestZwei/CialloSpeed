@@ -30,6 +30,6 @@
   "footer.cfEngine": "Cloudflare Speedtest Engine",
   "footer.github": "GitHub Repository",
   "footer.copyright": "© 2026 CialloSpeed · Results vary with network conditions and are for reference only",
-  "footer.powered": "Dual speed test engines powered by <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://openspeedtest.com\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™</a> (both MIT open source)",
+  "footer.powered": "Dual speed test engines powered by <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://openspeedtest.com\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™</a>",
   "footer.poweredShort": "Dual engines powered by <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://openspeedtest.com\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™</a>"
 }

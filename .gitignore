@@ -6,6 +6,10 @@ dist/
 .shots/
 .playwright-cli/
 
+# 临时的设计/资源预览图（非源码）
+.logo-preview.png
+*.preview.png
+
 # 编辑器 / 系统
 .vscode/
 .idea/
