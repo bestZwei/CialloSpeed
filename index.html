@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CialloSpeed — 免费在线网速测试 | 宽带测速中文站</title>
+    <meta
+      name="description"
+      content="CialloSpeed 提供专业级中文在线网速测试：一键测量宽带下载、上传速度与网络延迟，支持 10Gbps+ 光纤，无需安装插件，手机电脑全设备可用。附网速知识、Wi-Fi 优化教程与常见问题解答。"
+    />
+    <meta name="keywords" content="网速测试,测速,宽带测速,Wi-Fi测速,在线测速,网络延迟,网速检测" />
+    <link rel="canonical" href="https://speed.ciallo.de/" />
+    <meta name="theme-color" content="#0b0f1a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CialloSpeed" />
+    <meta property="og:title" content="CialloSpeed — 免费在线网速测试" />
+    <meta
+      property="og:description"
+      content="一键测量你的宽带下载、上传速度与延迟。免费、无插件、全设备支持的中文网速测试。"
+    />
+    <meta property="og:url" content="https://speed.ciallo.de/" />
+    <meta property="og:locale" content="zh_CN" />
+    <meta name="twitter:card" content="summary" />
+
+    <!-- 结构化数据 -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "CialloSpeed",
+        "alternateName": "CialloSpeed 网速测试",
+        "url": "https://speed.ciallo.de/",
+        "description": "免费、专业的中文在线网速测试工具",
+        "inLanguage": "zh-CN"
+      }
+    </script>
+
+    <!-- 首屏主题预置（防闪烁） -->
+    <script>
+      ;(function () {
+        var t
+        try {
+          t = localStorage.getItem('ciallospeed-theme')
+        } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.theme = t
+      })()
+    </script>
+  </head>
+
+  <body data-page="home">
+    <a class="skip-link" href="#speedtest">跳到测速</a>
+
+    <!-- ===== 顶部导航 ===== -->
+    <header class="navbar">
+      <div class="container navbar-inner">
+        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#06B6D4" />
+                <stop offset="1" stop-color="#7C3AED" />
+              </linearGradient>
+            </defs>
+            <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-g)" />
+            <path d="M35.5 12 20 36h9.5L28 52l16-24h-9.5l1-16z" fill="#fff" />
+          </svg>
+          Ciallo<span class="grad-text">Speed</span>
+        </a>
+        <nav class="nav-links" id="nav-links" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
+          <a href="/faq.html" data-nav="faq">常见问题</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" type="button">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+            </svg>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <!-- ===== Hero ===== -->
+      <section class="hero">
+        <div class="container">
+          <span class="badge">免费 · 无需插件 · 支持 10Gbps+ 光纤</span>
+          <h1>你的网速，<span class="grad-text">一测便知</span></h1>
+          <p class="hero-sub">
+            专业级在线网速测试：下载、上传、延迟一键测量。测速引擎在浏览器本地运行，由
+            OpenSpeedTest™ 全球节点提供支持，手机、电脑、电视全设备可用。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#speedtest">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+              </svg>
+              开始测速
+            </a>
+            <a class="btn btn-ghost" href="/how-it-works.html">了解测速原理</a>
+          </div>
+          <div class="hero-chips">
+            <span class="chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" /></svg>
+              纯浏览器测速
+            </span>
+            <span class="chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4Z" /></svg>
+              记录仅存本地
+            </span>
+            <span class="chip">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M8 20h8M12 16v4" /></svg>
+              全设备支持
+            </span>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 测速区 ===== -->
+      <section class="section speedtest-section" id="speedtest" aria-label="在线网速测试">
+        <div class="container">
+          <div id="speedtest-app">
+            <div class="speedtest-card">
+              <div class="speedtest-frame-wrap">
+                <iframe
+                  id="speedtest-frame"
+                  title="CialloSpeed 在线网速测试组件"
+                  src="https://openspeedtest.com/speedtest"
+                  loading="lazy"
+                  allow="fullscreen"
+                  referrerpolicy="no-referrer-when-downgrade"
+                ></iframe>
+                <div class="speedtest-skeleton" aria-hidden="true">
+                  <div class="skeleton bar"></div>
+                  <div class="skeleton bar"></div>
+                  <p>正在连接测速节点…</p>
+                </div>
+                <div class="speedtest-fallback">
+                  <h3>测速组件加载较慢</h3>
+                  <p>
+                    可能是当前网络到测速节点的连接不稳定。请刷新页面重试，或
+                    <a href="https://openspeedtest.com/speedtest" target="_blank" rel="noopener">点此直接打开测速引擎</a>。
+                  </p>
+                  <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()">刷新页面</button>
+                </div>
+              </div>
+            </div>
+            <div class="speedtest-toolbar">
+              <button class="btn btn-ghost btn-sm speedtest-retest" type="button">
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
+                </svg>
+                重新测速
+              </button>
+              <p class="speedtest-note">
+                测速引擎由 OpenSpeedTest™（MIT 开源）提供 · 测试过程会真实传输数据，移动流量用户请注意套餐余量
+              </p>
+            </div>
+            <noscript>
+              <p class="speedtest-note">JavaScript 未启用时测速组件仍可运行，但主题切换与历史记录功能不可用。</p>
+            </noscript>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 结果解读 ===== -->
+      <section class="section" aria-label="测速结果解读">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">结果解读</span>
+            <h2>测出来的数字，到底是什么水平？</h2>
+            <p>不同场景对网速的要求差异很大，对照下面的区间表，快速判断你的网络处于什么段位。</p>
+          </div>
+          <div class="interpret-grid">
+            <article class="card card-hover metric-card reveal">
+              <div class="metric-head">
+                <span class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16" /></svg>
+                </span>
+                <h3>下载速度 · Mbps</h3>
+              </div>
+              <p>看视频、下载文件、刷网页主要靠它，是大多数人最关心的指标。</p>
+              <table class="metric-table">
+                <tbody>
+                  <tr><th><span class="dot dot-bad"></span>&lt; 25</th><td>基础可用，1080p 视频可能卡顿</td></tr>
+                  <tr><th><span class="dot dot-info"></span>25 – 100</th><td>日常够用，4K 流媒体无压力</td></tr>
+                  <tr><th><span class="dot dot-warn"></span>100 – 500</th><td>体验出色，多设备同时 4K</td></tr>
+                  <tr><th><span class="dot dot-ok"></span>≥ 500</th><td>发烧级，大文件秒下</td></tr>
+                </tbody>
+              </table>
+            </article>
+            <article class="card card-hover metric-card reveal reveal-delay-1">
+              <div class="metric-head">
+                <span class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V7m0 0-5 5m5-5 5 5M4 3h16" /></svg>
+                </span>
+                <h3>上传速度 · Mbps</h3>
+              </div>
+              <p>视频会议、直播推流、网盘备份的质量上限，家庭宽带通常低于下载。</p>
+              <table class="metric-table">
+                <tbody>
+                  <tr><th><span class="dot dot-bad"></span>&lt; 10</th><td>仅轻量上传，会议画质受限</td></tr>
+                  <tr><th><span class="dot dot-warn"></span>10 – 50</th><td>日常足够，高清直播流畅</td></tr>
+                  <tr><th><span class="dot dot-ok"></span>≥ 50</th><td>创作者级，4K 推流秒传</td></tr>
+                </tbody>
+              </table>
+            </article>
+            <article class="card card-hover metric-card reveal reveal-delay-2">
+              <div class="metric-head">
+                <span class="metric-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 6 16 3-8h4" /></svg>
+                </span>
+                <h3>延迟 · ms</h3>
+              </div>
+              <p>数据往返一次的时间，决定游戏、语音通话的「跟手感」。</p>
+              <table class="metric-table">
+                <tbody>
+                  <tr><th><span class="dot dot-ok"></span>&lt; 20</th><td>电竞级，FPS 无感延迟</td></tr>
+                  <tr><th><span class="dot dot-info"></span>20 – 50</th><td>优秀，主流网游流畅</td></tr>
+                  <tr><th><span class="dot dot-warn"></span>50 – 100</th><td>良好，日常使用无感</td></tr>
+                  <tr><th><span class="dot dot-bad"></span>&gt; 100</th><td>偏高，实时应用受影响</td></tr>
+                </tbody>
+              </table>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 历史记录 ===== -->
+      <section class="section" aria-label="测速历史记录">
+        <div class="container">
+          <div class="section-head reveal">
+            <span class="eyebrow">本地记录</span>
+            <h2>测速历史</h2>
+            <p>记录只保存在你的浏览器本地（localStorage），不会上传到任何服务器。</p>
+          </div>
+          <div id="history-app" class="card history-panel reveal">
+            <form class="history-form" aria-label="手动记录测速结果">
+              <div class="field">
+                <label for="h-down">下载（Mbps）</label>
+                <input id="h-down" type="number" min="0" step="0.01" inputmode="decimal" placeholder="如 325.4" required />
+              </div>
+              <div class="field">
+                <label for="h-up">上传（Mbps）</label>
+                <input id="h-up" type="number" min="0" step="0.01" inputmode="decimal" placeholder="如 48.2" required />
+              </div>
+              <div class="field">
+                <label for="h-ping">延迟（ms）</label>
+                <input id="h-ping" type="number" min="0" step="1" inputmode="numeric" placeholder="如 12" required />
+              </div>
+              <button class="btn btn-primary btn-sm" type="submit">保存本次结果</button>
+            </form>
+            <div class="history-head-row">
+              <p>提示：测速完成后，也可将结果手动录入，方便多次测试对比。</p>
+              <button class="btn btn-ghost btn-sm history-clear" type="button" hidden>清空记录</button>
+            </div>
+            <ul class="history-list" aria-live="polite"></ul>
+            <p class="history-empty">还没有记录，先去<a href="#speedtest">测个速</a>吧。</p>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 内容导流 ===== -->
+      <section class="section" aria-label="了解更多">
+        <div class="container">
+          <div class="cta-band reveal">
+            <h2>想更懂你的网络？</h2>
+            <p>从看懂测速数字，到把 Wi-Fi 调到最佳状态，我们准备了一系列简明实用的中文指南。</p>
+            <div class="hero-actions" style="margin-top: 0">
+              <a class="btn btn-primary" href="/guide.html">网速知识</a>
+              <a class="btn btn-ghost" href="/wifi-tips.html">Wi-Fi 优化教程</a>
+              <a class="btn btn-ghost" href="/faq.html">常见问题</a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- ===== 页脚 ===== -->
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <linearGradient id="logo-f" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#06B6D4" />
+                  <stop offset="1" stop-color="#7C3AED" />
+                </linearGradient>
+              </defs>
+              <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-f)" />
+              <path d="M35.5 12 20 36h9.5L28 52l16-24h-9.5l1-16z" fill="#fff" />
+            </svg>
+            Ciallo<span class="grad-text">Speed</span>
+          </a>
+          <p>
+            免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
+            你的测速记录仅保存在浏览器本地。
+          </p>
+        </div>
+        <nav aria-label="站内导航">
+          <h4>探索</h4>
+          <ul class="footer-links">
+            <li><a href="/">在线测速</a></li>
+            <li><a href="/guide.html">网速知识</a></li>
+            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html">测速原理</a></li>
+            <li><a href="/faq.html">常见问题</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="相关链接">
+          <h4>相关项目</h4>
+          <ul class="footer-links">
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p>测速引擎由 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（MIT 开源）</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/pages/home.ts"></script>
+  </body>
+</html>

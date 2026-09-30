@@ -1,0 +1,333 @@
+<!doctype html>
+<html lang="zh-CN" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>常见问题 FAQ — 网速测试疑问全解答 | CialloSpeed</title>
+    <meta
+      name="description"
+      content="网速测试准不准？为什么结果比宽带套餐低？测速消耗流量吗？CialloSpeed 常见问题解答，帮你正确使用在线测速并获得准确结果。"
+    />
+    <link rel="canonical" href="https://speed.ciallo.de/faq.html" />
+    <meta name="theme-color" content="#0b0f1a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="CialloSpeed" />
+    <meta property="og:title" content="常见问题 FAQ — 网速测试疑问全解答" />
+    <meta property="og:description" content="测速准不准？为什么比套餐低？这里都有答案。" />
+    <meta property="og:url" content="https://speed.ciallo.de/faq.html" />
+    <meta property="og:locale" content="zh_CN" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "测速结果准确吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "CialloSpeed 使用 OpenSpeedTest™ 专业测速引擎（MIT 开源），采用多线程并发与稳定突发均值算法，结果专业可信。但任何测速都受时段、Wi-Fi 状况、节点位置影响，建议多次测试取平均。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "为什么测出来的速度比宽带套餐低？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "常见原因：Wi-Fi 信号衰减或干扰、路由器性能不足、网线规格过低、测速节点跨运营商、晚高峰共享链路拥堵、协议开销（约 4%-10%）。建议用网线直连光猫再测一次作为基准。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Wi-Fi 测速和有线测速差异很大，正常吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "正常。Wi-Fi 受距离、穿墙、信道拥堵和终端网卡性能限制，实测通常只有有线速度的一部分。千兆宽带想跑满，建议重要设备走有线。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "测速会消耗我的流量吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "会。测速需要真实传输数据（通常一次几十 MB 到数百 MB），使用手机移动数据测速时请注意套餐余量。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "需要安装插件或 App 吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "不需要。CialloSpeed 基于 HTML5，测速引擎完全在浏览器中运行，手机、平板、电脑、智能电视的浏览器打开即用。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "我的测速记录会被上传吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "不会。测速历史只保存在你浏览器本地的 localStorage 中，不上传任何服务器，清空浏览器数据即被删除。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "如何获得更准确的结果？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "1. 优先使用有线连接；2. 关闭正在下载、备份、直播的设备与应用；3. 避开晚高峰时段；4. 多次测试取平均；5. 靠近路由器或使用 5GHz 频段。"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "这个网站免费吗？",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "完全免费，无广告、无需注册。测速引擎由开源项目 OpenSpeedTest™（MIT 协议）提供支持。"
+            }
+          }
+        ]
+      }
+    </script>
+    <script>
+      ;(function () {
+        var t
+        try {
+          t = localStorage.getItem('ciallospeed-theme')
+        } catch (e) {}
+        if (t !== 'light' && t !== 'dark') {
+          t = matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark'
+        }
+        document.documentElement.dataset.theme = t
+      })()
+    </script>
+  </head>
+
+  <body data-page="faq">
+    <header class="navbar">
+      <div class="container navbar-inner">
+        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+          <svg viewBox="0 0 64 64" aria-hidden="true">
+            <defs>
+              <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
+                <stop offset="0" stop-color="#06B6D4" />
+                <stop offset="1" stop-color="#7C3AED" />
+              </linearGradient>
+            </defs>
+            <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-g)" />
+            <path d="M35.5 12 20 36h9.5L28 52l16-24h-9.5l1-16z" fill="#fff" />
+          </svg>
+          Ciallo<span class="grad-text">Speed</span>
+        </a>
+        <nav class="nav-links" id="nav-links" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
+          <a href="/faq.html" data-nav="faq">常见问题</a>
+        </nav>
+        <div class="nav-actions">
+          <button class="icon-btn" id="theme-toggle" type="button">
+            <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="4" />
+              <path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4" />
+            </svg>
+            <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
+            </svg>
+          </button>
+          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+            <span></span><span></span><span></span>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div class="container">
+        <div class="faq-hero">
+          <nav class="breadcrumb" aria-label="面包薪" style="justify-content: center">
+            <a href="/">首页</a><span class="sep">/</span><span>常见问题</span>
+          </nav>
+          <h1>常见问题<span class="grad-text"> FAQ</span></h1>
+          <p class="lead">关于网速测试最常被问到的 8 个问题，点击展开查看答案。</p>
+        </div>
+
+        <div class="faq-wrap accordion" id="faq-accordion">
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              测速结果准确吗？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  CialloSpeed 使用 OpenSpeedTest™ 专业测速引擎（MIT 开源），采用多线程并发与稳定突发均值算法，结果专业可信。
+                  但任何测速都受时段、Wi-Fi 状况、节点位置影响，建议多次测试取平均。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              为什么测出来的速度比宽带套餐低？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <ul>
+                  <li>Wi-Fi 信号衰减或信道干扰</li>
+                  <li>路由器性能不足或网线规格过低</li>
+                  <li>测速节点跨运营商，互联互通受限</li>
+                  <li>晚高峰共享链路拥堵</li>
+                  <li>TCP/IP 协议开销（约 4%–10%）</li>
+                </ul>
+                <p style="margin-top: 8px">建议用网线直连光猫再测一次作为基准，详见<a href="/guide.html">网速知识</a>。</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              Wi-Fi 测速和有线测速差异很大，正常吗？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  正常。Wi-Fi 受距离、穿墙、信道拥堵和终端网卡性能限制，实测通常只有有线速度的一部分。
+                  千兆宽带想跑满，建议重要设备走有线，优化方法见 <a href="/wifi-tips.html">Wi-Fi 优化指南</a>。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              测速会消耗我的流量吗？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  会。测速需要真实传输数据（通常一次几十 MB 到数百 MB），
+                  使用手机移动数据测速时请注意套餐余量。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              需要安装插件或 App 吗？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  不需要。CialloSpeed 基于 HTML5，测速引擎完全在浏览器中运行，
+                  手机、平板、电脑、智能电视的浏览器打开即用。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              我的测速记录会被上传吗？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  不会。测速历史只保存在你浏览器本地的 localStorage 中，不上传任何服务器，
+                  清空浏览器数据即被删除。
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              如何获得更准确的结果？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <ol>
+                  <li>优先使用有线连接</li>
+                  <li>关闭正在下载、备份、直播的设备与应用</li>
+                  <li>避开晚高峰时段</li>
+                  <li>多次测试取平均</li>
+                  <li>靠近路由器或使用 5GHz 频段</li>
+                </ol>
+              </div>
+            </div>
+          </div>
+
+          <div class="accordion-item reveal">
+            <button class="accordion-trigger" type="button">
+              这个网站免费吗？
+              <svg class="accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6" /></svg>
+            </button>
+            <div class="accordion-panel">
+              <div class="accordion-panel-inner">
+                <p>
+                  完全免费，无广告、无需注册。测速引擎由开源项目
+                  <a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">OpenSpeedTest™（MIT 协议）</a>提供支持。
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a class="brand" href="/">
+            <svg viewBox="0 0 64 64" aria-hidden="true">
+              <defs>
+                <linearGradient id="logo-f" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0" stop-color="#06B6D4" />
+                  <stop offset="1" stop-color="#7C3AED" />
+                </linearGradient>
+              </defs>
+              <rect x="4" y="4" width="56" height="56" rx="16" fill="url(#logo-f)" />
+              <path d="M35.5 12 20 36h9.5L28 52l16-24h-9.5l1-16z" fill="#fff" />
+            </svg>
+            Ciallo<span class="grad-text">Speed</span>
+          </a>
+          <p>
+            免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
+            你的测速记录仅保存在浏览器本地。
+          </p>
+        </div>
+        <nav aria-label="站内导航">
+          <h4>探索</h4>
+          <ul class="footer-links">
+            <li><a href="/">在线测速</a></li>
+            <li><a href="/guide.html">网速知识</a></li>
+            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html">测速原理</a></li>
+            <li><a href="/faq.html">常见问题</a></li>
+          </ul>
+        </nav>
+        <nav aria-label="相关链接">
+          <h4>相关项目</h4>
+          <ul class="footer-links">
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+          </ul>
+        </nav>
+      </div>
+      <div class="container footer-bottom">
+        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p>测速引擎由 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（MIT 开源）</p>
+      </div>
+    </footer>
+
+    <script type="module" src="/src/pages/faq.ts"></script>
+  </body>
+</html>

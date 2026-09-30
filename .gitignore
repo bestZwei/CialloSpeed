@@ -1,0 +1,16 @@
+# 依赖与构建产物
+node_modules/
+dist/
+
+# 本地的验证截图（非源码）
+.shots/
+
+# 编辑器 / 系统
+.vscode/
+.idea/
+.DS_Store
+*.log
+npm-debug.log*
+
+# CodeBuddy 内部数据（非项目源码）
+.codebuddy/

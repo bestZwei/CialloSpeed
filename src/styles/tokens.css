@@ -1,0 +1,94 @@
+/* ============================================
+   CialloSpeed 设计令牌
+   ============================================ */
+:root {
+  /* 品牌色：青 → 紫 渐变 */
+  --brand-1: #06b6d4;
+  --brand-2: #7c3aed;
+  --brand-3: #22d3ee;
+  --grad-brand: linear-gradient(135deg, var(--brand-1) 0%, var(--brand-2) 100%);
+  --grad-brand-text: linear-gradient(120deg, #22d3ee 0%, #818cf8 55%, #c084fc 100%);
+  --grad-brand-soft: linear-gradient(135deg, rgba(6, 182, 212, 0.16), rgba(124, 58, 237, 0.16));
+
+  /* 功能色 */
+  --ok: #10b981;
+  --warn: #f59e0b;
+  --bad: #ef4444;
+  --info: #3b82f6;
+
+  /* 字体 */
+  --font-sans: 'PingFang SC', 'HarmonyOS Sans SC', 'MiSans', 'Microsoft YaHei',
+    'Segoe UI', system-ui, -apple-system, sans-serif;
+
+  /* 字号 */
+  --fs-h1: clamp(30px, 5vw, 40px);
+  --fs-h2: clamp(23px, 3.4vw, 30px);
+  --fs-h3: 22px;
+  --fs-body: 16px;
+  --fs-sm: 14px;
+  --fs-xs: 12.5px;
+
+  /* 间距 */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+  --sp-8: 64px;
+  --sp-9: 96px;
+
+  /* 圆角 */
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 22px;
+  --radius-pill: 999px;
+
+  /* 布局 */
+  --container: 1120px;
+  --nav-h: 64px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+/* ---------- 深色主题（默认） ---------- */
+[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #0b0f1a;
+  --bg-soft: #111827;
+  --surface: rgba(17, 24, 39, 0.66);
+  --surface-solid: #131a2a;
+  --border: rgba(148, 163, 184, 0.16);
+  --border-strong: rgba(148, 163, 184, 0.32);
+  --text: #f1f5f9;
+  --text-muted: #94a3b8;
+  --text-faint: #64748b;
+  --shadow-card: 0 18px 48px rgba(2, 6, 23, 0.5);
+  --shadow-pop: 0 24px 64px rgba(2, 6, 23, 0.65);
+  --grid-line: rgba(148, 163, 184, 0.055);
+  --glow-1: rgba(6, 182, 212, 0.16);
+  --glow-2: rgba(124, 58, 237, 0.17);
+  --skeleton: rgba(148, 163, 184, 0.09);
+  --skeleton-shine: rgba(148, 163, 184, 0.16);
+}
+
+/* ---------- 浅色主题 ---------- */
+[data-theme='light'] {
+  color-scheme: light;
+  --bg: #f8fafc;
+  --bg-soft: #eef2f7;
+  --surface: rgba(255, 255, 255, 0.8);
+  --surface-solid: #ffffff;
+  --border: rgba(30, 41, 59, 0.1);
+  --border-strong: rgba(30, 41, 59, 0.22);
+  --text: #1e293b;
+  --text-muted: #475569;
+  --text-faint: #94a3b8;
+  --shadow-card: 0 16px 40px rgba(15, 23, 42, 0.1);
+  --shadow-pop: 0 24px 56px rgba(15, 23, 42, 0.14);
+  --grid-line: rgba(30, 41, 59, 0.045);
+  --glow-1: rgba(6, 182, 212, 0.14);
+  --glow-2: rgba(124, 58, 237, 0.13);
+  --skeleton: rgba(30, 41, 59, 0.07);
+  --skeleton-shine: rgba(30, 41, 59, 0.13);
+}
