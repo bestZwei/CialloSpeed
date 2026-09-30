@@ -205,12 +205,44 @@
   max-width: 28em;
 }
 
+.speedtest-setup {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: grid;
+  place-content: center;
+  gap: var(--sp-3);
+  justify-items: center;
+  text-align: center;
+  padding: var(--sp-5);
+  background: var(--surface-solid);
+  color: var(--text-muted);
+}
+
+.speedtest-setup svg {
+  color: var(--brand-1);
+}
+
+.speedtest-setup h3 {
+  color: var(--text);
+  font-size: var(--fs-lg);
+}
+
+.speedtest-setup p {
+  max-width: 30em;
+  font-size: var(--fs-sm);
+}
+
 .speedtest-toolbar {
   margin-top: var(--sp-5);
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: var(--sp-3);
+}
+
+.speedtest-toolbar[hidden] {
+  display: none;
 }
 
 .speedtest-note {

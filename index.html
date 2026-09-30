@@ -292,8 +292,16 @@
                     loading="lazy"
                     allow="fullscreen"
                     referrerpolicy="origin-when-cross-origin"
+                    hidden
                   ></iframe>
-                  <div class="speedtest-skeleton" aria-hidden="true">
+                  <div class="speedtest-setup" hidden>
+                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />
+                    </svg>
+                    <h3 data-i18n="st.ooklaSetupTitle">Ookla 引擎配置中</h3>
+                    <p data-i18n="st.ooklaSetupBody">该引擎的托管组件正在接入 Ookla Speedtest Custom，开放后即可在此测速。在此期间可使用其他引擎。</p>
+                  </div>
+                  <div class="speedtest-skeleton" aria-hidden="true" hidden>
                     <div class="skeleton bar"></div>
                     <div class="skeleton bar"></div>
                     <p data-i18n="st.connecting">正在连接测速节点…</p>

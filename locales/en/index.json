@@ -24,6 +24,8 @@
   "st.ndtBloat": "Loaded latency",
   "st.ndtNote": "Engine provided by M-Lab NDT7, the open measurement platform backed by Google · Single-connection academic measurement; loaded latency is the latency increase under load · Anonymous results feed M-Lab's public research dataset",
   "st.ooklaIframeTitle": "Ookla Speedtest widget",
+  "st.ooklaSetupTitle": "Ookla engine coming soon",
+  "st.ooklaSetupBody": "This engine's hosted widget is being connected to Ookla Speedtest Custom and will be available here soon. Meanwhile, feel free to use the other engines.",
   "st.ooklaNote": "Test widget hosted by Ookla® Speedtest · Results can't be sent back automatically — enter them manually under “Test History” below to compare",
   "st.ooklaSlowBody": "The connection from your network may be unstable. Refresh the page and try again, or <a href=\"https://www.speedtest.net/\" target=\"_blank\" rel=\"noopener\">open Speedtest directly</a>.",
   "st.ready": "Ready?",
