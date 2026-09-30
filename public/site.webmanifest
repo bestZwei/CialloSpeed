@@ -1,0 +1,27 @@
+{
+  "name": "CialloSpeed 中文网速测试",
+  "short_name": "CialloSpeed",
+  "description": "免费、纯净的中文在线网速测试，双测速引擎交叉验证。",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0b101a",
+  "theme_color": "#0b101a",
+  "icons": [
+    {
+      "src": "/android-chrome-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/android-chrome-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    },
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}
