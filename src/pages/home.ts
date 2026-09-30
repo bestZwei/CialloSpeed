@@ -35,6 +35,13 @@ if (speedtestSection) {
   const selectedOption = () =>
     options.find((o) => o.getAttribute('aria-selected') === 'true') ?? options[0]
 
+  /** 初始同步：触发器显示当前选中引擎（与菜单文案保持一致，含运行时语言切换后的状态） */
+  const syncTriggerFrom = (opt: HTMLElement) => {
+    const label = opt.querySelector<HTMLElement>('.engine-option-label')
+    if (triggerLabel && label) triggerLabel.innerHTML = label.innerHTML
+  }
+  syncTriggerFrom(selectedOption())
+
   const isOpen = () => menu !== null && !menu.hidden
 
   const openMenu = () => {
@@ -58,9 +65,8 @@ if (speedtestSection) {
       o.setAttribute('aria-selected', String(active))
     }
     for (const p of panels) p.toggleAttribute('hidden', p.id !== opt.dataset.panel)
-    // 触发器同步显示当前引擎（图标 + 名称 + 副标题）
-    const label = opt.querySelector<HTMLElement>('.engine-option-label')
-    if (triggerLabel && label) triggerLabel.innerHTML = label.innerHTML
+    // 触发器同步显示当前引擎（名称 + 副标题）
+    syncTriggerFrom(opt)
     closeMenu()
     // iframe 类引擎首次切换才加载，避免多引擎同时抢带宽
     if (opt.id === 'tab-ost') ostHandle?.ensureLoaded()

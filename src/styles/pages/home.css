@@ -889,6 +889,11 @@
   margin-bottom: var(--sp-4);
 }
 
+.history-head-row .btn {
+  flex: none;
+  white-space: nowrap;
+}
+
 .history-head-row p {
   font-size: var(--fs-xs);
   color: var(--text-faint);
