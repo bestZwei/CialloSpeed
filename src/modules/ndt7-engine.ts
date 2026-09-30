@@ -96,10 +96,13 @@ export function initNdt7Engine(
     const handleMeasurement = (m: Ndt7Measurement, isUpload: boolean) => {
       if (m.Source === 'client' && typeof m.Data.MeanClientMbps === 'number') {
         currentMean = m.Data.MeanClientMbps
+        // 主数字始终跟随当前阶段的实时速度（上传阶段不能停留在下载末值）
+        setValue(currentMean)
+        const fmt = currentMean >= 100 ? Math.round(currentMean).toString() : currentMean.toFixed(1)
         if (isUpload && upEl) {
-          upEl.textContent = currentMean >= 100 ? Math.round(currentMean).toString() : currentMean.toFixed(1)
-        } else if (!isUpload) {
-          setValue(currentMean)
+          upEl.textContent = fmt
+        } else if (!isUpload && downEl) {
+          downEl.textContent = fmt
         }
         progressTick()
       } else if (m.Source === 'server') {
