@@ -330,7 +330,7 @@ export function initCloudflareEngine(
     stageEl?.classList.add('is-done')
     valueEl.textContent = fmtMbps(down)
     unitEl.textContent = 'Mbps'
-    if (phaseEl) phaseEl.textContent = '测速完成 · 结果已存入本地历史'
+    if (phaseEl) phaseEl.textContent = '测速完成'
 
     renderMetrics(r)
     renderAim(r)
