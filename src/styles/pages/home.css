@@ -409,6 +409,11 @@
   color: var(--text-muted);
 }
 
+/* NDT 面板无 cf-aim 占位，说明文字需自行与内容拉开距离 */
+#panel-ndt .speedtest-note {
+  margin-top: var(--sp-6);
+}
+
 /* ---------- Cloudflare 引擎（原生面板） ---------- */
 .cf-engine {
   padding: var(--sp-6);
