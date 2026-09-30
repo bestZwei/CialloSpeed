@@ -613,6 +613,14 @@
   filter: none;
 }
 
+/* 浅色主题禁用测试中的强光晕：SVG 子元素的 drop-shadow 滤镜区域为 bbox±10%（方形），
+   14 单位模糊的光晕会被区域边界硬裁出方形边缘，白底下尤为明显。
+   需覆盖 .cf-stage.is-down/.is-up 的 (0,3,0) 优先级，故用四段选择器。 */
+[data-theme='light'] .cf-stage.is-down .cf-ring-fill,
+[data-theme='light'] .cf-stage.is-up .cf-ring-fill {
+  filter: none;
+}
+
 [data-theme='light'] .cf-stage.is-done .cf-ring-fill {
   animation: none;
   filter: drop-shadow(0 0 6px rgba(0, 184, 230, 0.22));
