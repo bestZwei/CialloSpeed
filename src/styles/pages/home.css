@@ -229,6 +229,7 @@
   display: inline-flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap;
   padding: 10px 22px;
   border: 1px solid transparent;
   border-radius: var(--radius-pill);
@@ -272,7 +273,7 @@
   outline-offset: 2px;
 }
 
-/* ---------- Ciallo 引擎（Cloudflare 原生面板） ---------- */
+/* ---------- Cloudflare 引擎（原生面板） ---------- */
 .cf-engine {
   padding: var(--sp-6);
 }
@@ -326,6 +327,84 @@
 
 .cf-ring-fill.is-on {
   opacity: 1;
+}
+
+/* 仪表背景光晕 */
+.cf-stage-bg {
+  fill: url(#cf-stage-glow);
+}
+
+/* 仪表刻度环（由 JS 生成 60 根刻度，随速度量级点亮） */
+.cf-ticks line {
+  stroke: var(--border);
+  stroke-width: 2;
+  stroke-linecap: round;
+  transition: stroke 0.25s var(--ease), opacity 0.25s var(--ease);
+}
+
+.cf-ticks line.lit {
+  opacity: 1;
+}
+
+/* 量级弧：对数刻度显示当前速度量级（1M → 10Gbps） */
+.cf-mag-track,
+.cf-mag-fill {
+  fill: none;
+  stroke-width: 2.5;
+  cx: 100px;
+  cy: 100px;
+  r: 72px;
+}
+
+.cf-mag-track {
+  stroke: var(--border);
+  opacity: 0.6;
+}
+
+.cf-mag-fill {
+  stroke: url(#cf-ring-g);
+  stroke-linecap: round;
+  opacity: 0;
+  transform: rotate(-90deg);
+  transform-origin: 100px 100px;
+  stroke-dasharray: 0 452;
+  transition: stroke-dasharray 0.4s var(--ease), opacity 0.3s var(--ease);
+}
+
+.cf-mag-fill.is-on {
+  opacity: 0.9;
+}
+
+/* 实时速度轨迹线 */
+.cf-spark {
+  width: 130px;
+  height: 30px;
+  margin-top: 8px;
+  opacity: 0;
+  transition: opacity 0.4s var(--ease);
+}
+
+.cf-spark.is-on {
+  opacity: 1;
+}
+
+.cf-spark-line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+.cf-spark-down { stroke: var(--brand-1); filter: drop-shadow(0 0 4px rgba(6, 182, 212, 0.6)); }
+.cf-spark-up { stroke: var(--brand-2); filter: drop-shadow(0 0 4px rgba(124, 58, 237, 0.6)); }
+
+/* 完成态：大数字渐变高亮 */
+.cf-stage.is-done .cf-value {
+  background: var(--grad-brand-text);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
 }
 
 /* 相位强调：下载偏青、上传偏紫、完成态呼吸光 */

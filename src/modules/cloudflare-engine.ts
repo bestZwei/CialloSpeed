@@ -2,7 +2,7 @@
  * Cloudflare 官方测速引擎（@cloudflare/speedtest，MIT）封装：
  * - 测速流量走 Cloudflare 全球边缘节点，本站零带宽成本
  * - 禁用 packetLoss（需自备 TURN 服务器）与结果上报（logAimApiUrl: null）
- * - 原生 UI：进度环 + 实时相位 + 四宫格结果卡 + AIM 场景评分
+ * - 原生 UI：仪表刻度环 + 量级弧 + 实时轨迹线 + 四宫格结果卡 + 场景评分
  * - 完成后回调 addRecord（engine: 'cf'）写入本地历史
  */
 
@@ -80,9 +80,98 @@ export function initCloudflareEngine(
   const jitterEl = section.querySelector<HTMLElement>('.cf-metric-jitter strong')
   const aimEl = section.querySelector<HTMLElement>('.cf-aim')
   const errEl = section.querySelector<HTMLElement>('.cf-error')
+  const ticksG = section.querySelector<SVGGElement>('.cf-ticks')
+  const magFill = section.querySelector<SVGCircleElement>('.cf-mag-fill')
+  const sparkEl = section.querySelector<SVGSVGElement>('.cf-spark')
+  const sparkDown = section.querySelector<SVGPolylineElement>('.cf-spark-down')
+  const sparkUp = section.querySelector<SVGPolylineElement>('.cf-spark-up')
   if (!valueEl || !unitEl || !phaseEl || !mainBtn) return
 
   const RING_LEN = 2 * Math.PI * 88
+  const MAG_LEN = 2 * Math.PI * 72
+  const SPARK_W = 140
+  const SPARK_H = 34
+  const SPARK_N = 40
+  const TICK_COUNT = 60
+  const TICK_R1 = 95
+  const TICK_R2 = 99.5
+
+  /* ---------- 仪表：刻度环 / 量级弧 / 轨迹线 ---------- */
+
+  // 生成 60 根仪表刻度
+  if (ticksG) {
+    const NS = 'http://www.w3.org/2000/svg'
+    for (let i = 0; i < TICK_COUNT; i++) {
+      const a = (i / TICK_COUNT) * Math.PI * 2 - Math.PI / 2
+      const line = document.createElementNS(NS, 'line')
+      line.setAttribute('x1', (100 + TICK_R1 * Math.cos(a)).toFixed(2))
+      line.setAttribute('y1', (100 + TICK_R1 * Math.sin(a)).toFixed(2))
+      line.setAttribute('x2', (100 + TICK_R2 * Math.cos(a)).toFixed(2))
+      line.setAttribute('y2', (100 + TICK_R2 * Math.sin(a)).toFixed(2))
+      ticksG.appendChild(line)
+    }
+  }
+
+  /** 青色 → 紫色插值 */
+  const lerpColor = (t: number): string => {
+    const c1 = [6, 182, 212]
+    const c2 = [124, 58, 237]
+    const c = c1.map((v, i) => Math.round(v + (c2[i] - v) * t))
+    return `rgb(${c[0]}, ${c[1]}, ${c[2]})`
+  }
+
+  const clamp01 = (v: number) => Math.max(0, Math.min(1, v))
+
+  /** 对数量级：1 Mbps → 0，10 Mbps → 0.25，100 Mbps → 0.5，1 Gbps → 0.75，10 Gbps → 1 */
+  const magnitudeOf = (mbps: number) => clamp01(Math.log10(Math.max(mbps, 1)) / 4)
+
+  const setMagnitude = (mbps: number) => {
+    const frac = magnitudeOf(mbps)
+    if (magFill) {
+      const len = frac * MAG_LEN
+      magFill.style.strokeDasharray = `${len} ${MAG_LEN - len}`
+      magFill.classList.toggle('is-on', frac > 0)
+    }
+    if (ticksG) {
+      const lit = Math.round(frac * TICK_COUNT)
+      const lines = ticksG.children
+      for (let i = 0; i < lines.length; i++) {
+        const el = lines[i] as SVGLineElement
+        if (i < lit) {
+          el.classList.add('lit')
+          el.style.stroke = lerpColor(i / TICK_COUNT)
+        } else {
+          el.classList.remove('lit')
+          el.style.stroke = ''
+        }
+      }
+    }
+  }
+
+  /** 实时速度轨迹（最近 N 个带宽采样点，青=下载 紫=上传） */
+  const updateSpark = () => {
+    if (!sparkDown || !sparkUp) return
+    const r = engine.results
+    const down = r.getDownloadBandwidthPoints().slice(-SPARK_N).map((p) => p.bps / BPS_TO_MBPS)
+    const up = r.getUploadBandwidthPoints().slice(-SPARK_N).map((p) => p.bps / BPS_TO_MBPS)
+    const max = Math.max(1, ...down, ...up)
+    const toPoints = (arr: number[]) =>
+      arr.length < 2
+        ? ''
+        : arr
+            .map((v, i) => `${((i / (arr.length - 1)) * SPARK_W).toFixed(1)},${(SPARK_H - 2 - (v / max) * (SPARK_H - 6)).toFixed(1)}`)
+            .join(' ')
+    sparkDown.setAttribute('points', toPoints(down))
+    sparkUp.setAttribute('points', toPoints(up))
+    sparkEl?.classList.toggle('is-on', down.length > 1 || up.length > 1)
+  }
+
+  const resetGauge = () => {
+    setMagnitude(0)
+    sparkDown?.setAttribute('points', '')
+    sparkUp?.setAttribute('points', '')
+    sparkEl?.classList.remove('is-on')
+  }
 
   const engine = new SpeedTest({
     autoStart: false,
@@ -201,6 +290,11 @@ export function initCloudflareEngine(
     if (phase === 'running') {
       updateLiveValue(type)
       renderMetrics(engine.results)
+      // 仪表联动：量级刻度 + 轨迹线
+      const r = engine.results
+      if (type.startsWith('download')) setMagnitude((r.getDownloadBandwidth() ?? 0) / BPS_TO_MBPS)
+      else if (type.startsWith('upload')) setMagnitude((r.getUploadBandwidth() ?? 0) / BPS_TO_MBPS)
+      updateSpark()
     }
   }
 
@@ -230,6 +324,8 @@ export function initCloudflareEngine(
 
     // 结束态：进度环满格 + 渐变色 + 大号展示下载速度
     setRing(1)
+    setMagnitude(down)
+    updateSpark()
     stageEl?.classList.remove('is-down', 'is-up')
     stageEl?.classList.add('is-done')
     valueEl.textContent = fmtMbps(down)
@@ -272,6 +368,7 @@ export function initCloudflareEngine(
       phase = 'running'
       stageEl?.classList.remove('is-done')
       setRing(0)
+      resetGauge()
       aimEl && (aimEl.hidden = true)
       if (downEl) downEl.textContent = '--'
       if (upEl) upEl.textContent = '--'

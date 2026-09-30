@@ -7,7 +7,7 @@
 export type EngineId = 'cf' | 'ost' | 'manual'
 
 export const ENGINE_LABEL: Record<EngineId, string> = {
-  cf: 'Ciallo 引擎',
+  cf: 'Cloudflare 引擎',
   ost: 'OpenSpeedTest',
   manual: '手动录入',
 }

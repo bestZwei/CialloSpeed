@@ -140,7 +140,7 @@
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
                 </svg>
-                Ciallo 引擎<small>Cloudflare 全球节点</small>
+                Cloudflare 引擎<small>全球边缘节点</small>
               </button>
               <button class="engine-tab" id="tab-ost" role="tab" aria-selected="false" aria-controls="panel-ost" type="button" tabindex="-1">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -161,13 +161,26 @@
                           <stop offset="0" stop-color="#06B6D4" />
                           <stop offset="1" stop-color="#7C3AED" />
                         </linearGradient>
+                        <radialGradient id="cf-stage-glow" cx="0.5" cy="0.5" r="0.5">
+                          <stop offset="0" stop-color="#06B6D4" stop-opacity="0.14" />
+                          <stop offset="0.7" stop-color="#7C3AED" stop-opacity="0.07" />
+                          <stop offset="1" stop-color="#7C3AED" stop-opacity="0" />
+                        </radialGradient>
                       </defs>
+                      <circle class="cf-stage-bg" cx="100" cy="100" r="99" />
+                      <g class="cf-ticks"></g>
                       <circle class="cf-ring-track" cx="100" cy="100" r="88" />
                       <circle class="cf-ring-fill" cx="100" cy="100" r="88" />
+                      <circle class="cf-mag-track" cx="100" cy="100" r="72" />
+                      <circle class="cf-mag-fill" cx="100" cy="100" r="72" />
                     </svg>
                     <div class="cf-stage-center">
                       <div class="cf-value">--</div>
                       <div class="cf-unit">Mbps</div>
+                      <svg class="cf-spark" viewBox="0 0 140 34" preserveAspectRatio="none" aria-hidden="true">
+                        <polyline class="cf-spark-line cf-spark-down" points="" />
+                        <polyline class="cf-spark-line cf-spark-up" points="" />
+                      </svg>
                       <div class="cf-phase">准备好就开始吧</div>
                     </div>
                   </div>
