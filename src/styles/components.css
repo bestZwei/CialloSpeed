@@ -41,11 +41,13 @@
 
 .brand-logo {
   display: inline-block;
-  /* 底部贴住文字基线（字标无下伸部），高度随 .brand 的 19px 字号缩放 */
-  height: 1.05em;
+  /* 排版对齐：图片底边即字标基线，vertical-align: baseline 与文字共基线；
+     图内小写 x-height 占画布 69.4%，取高 0.75em 使 x-height ≈ 文字 x-height(≈0.52em)，
+     此时升部高度也与文字一致，"Ciallo" 与 "Speed" 字号视觉相同 */
+  height: 0.75em;
   width: auto;
   vertical-align: baseline;
-  margin-right: 0.04em;
+  margin-right: 0.05em;
 }
 
 /* 字标为黑色：暗色主题反相为白色 */

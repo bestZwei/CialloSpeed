@@ -47,7 +47,7 @@
 
   /* 布局 */
   --container: 1120px;
-  --nav-h: 64px;
+  --nav-h: 56px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
 }
 
