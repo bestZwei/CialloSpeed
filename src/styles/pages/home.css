@@ -86,32 +86,38 @@
   backdrop-filter: blur(14px);
 }
 
-/* 呼吸光效边框 */
+/* 极光弥散边框：双径向色斑缓慢漂移，无中心汇聚点 */
 .speedtest-card::before {
   content: '';
   position: absolute;
   inset: -2px;
   z-index: -1;
   border-radius: calc(var(--radius-lg) + 2px);
-  background: conic-gradient(
-    from var(--angle, 0deg),
-    rgba(0, 184, 230, 0.65),
-    rgba(124, 92, 255, 0.65),
-    rgba(34, 211, 238, 0.25),
-    rgba(0, 184, 230, 0.65)
-  );
-  animation: border-spin 7s linear infinite, breathe 3.6s ease-in-out infinite;
+  background:
+    radial-gradient(42% 58% at 18% 24%, rgba(0, 184, 230, 0.55), transparent 70%),
+    radial-gradient(44% 60% at 82% 76%, rgba(124, 92, 255, 0.5), transparent 70%);
+  background-size: 170% 170%;
+  background-position: 0% 0%, 100% 100%;
+  animation: aurora-drift 9s ease-in-out infinite alternate;
   opacity: 0.75;
   filter: blur(1.5px);
 }
 
-@property --angle {
-  syntax: '<angle>';
-  initial-value: 0deg;
-  inherits: false;
+@keyframes aurora-drift {
+  0% {
+    background-position: 0% 0%, 100% 100%;
+    opacity: 0.55;
+  }
+  50% {
+    opacity: 0.85;
+  }
+  100% {
+    background-position: 55% 40%, 40% 65%;
+    opacity: 0.7;
+  }
 }
 
-/* 浅色主题下隐藏呼吸光效层（::before 会绘制在卡片背景之上），改用霓虹描边 */
+/* 浅色主题下隐藏光效层（::before 会绘制在卡片背景之上），改用霓虹描边 */
 [data-theme='light'] .speedtest-card {
   background: var(--surface-solid);
 }
@@ -125,15 +131,6 @@
   box-shadow:
     0 16px 40px rgba(15, 23, 42, 0.1),
     0 0 24px rgba(0, 184, 230, 0.12);
-}
-
-@keyframes border-spin {
-  to { --angle: 360deg; }
-}
-
-@keyframes breathe {
-  0%, 100% { opacity: 0.55; }
-  50% { opacity: 0.9; }
 }
 
 .speedtest-frame-wrap {
