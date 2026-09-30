@@ -387,10 +387,11 @@
 }
 
 /* ---------- 访客网络信息条（IP / 归属地 / 运营商） ---------- */
+/* 纵向布局：按钮独占一行始终居中，chips 展开在按钮下方，点击时按钮位置不跳变 */
 .ip-bar {
   margin-top: var(--sp-4);
   display: flex;
-  flex-wrap: wrap;
+  flex-direction: column;
   align-items: center;
   gap: var(--sp-3);
 }
@@ -398,6 +399,7 @@
 .ip-result {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   align-items: center;
   gap: 8px;
 }
@@ -431,10 +433,10 @@
 }
 
 .ip-note {
-  flex-basis: 100%;
   margin: 0;
   font-size: var(--fs-xs);
   color: var(--text-faint);
+  text-align: center;
 }
 
 /* ---------- M-Lab NDT7 引擎（原生面板；LibreSpeed 面板复用同一套布局） ---------- */
