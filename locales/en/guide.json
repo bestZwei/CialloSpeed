@@ -1,0 +1,57 @@
+{
+  "title": "Internet Speed Basics: Bandwidth, Upload/Download and Real-World Speed | CialloSpeed",
+  "metaDesc": "Why does a 300M connection only download at 37MB/s? Why is upload slower than download? Understand bandwidth, rate units, asymmetric links and peak-hour congestion, and read every speed test result correctly.",
+  "ogTitle": "Internet Speed Basics: Bandwidth, Upload/Download and Real-World Speed",
+  "ogDesc": "Understand the relationship between bandwidth and real speed, and read your speed test results correctly.",
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://speed.ciallo.de/en/" },
+      { "@type": "ListItem", "position": 2, "name": "Speed Basics", "item": "https://speed.ciallo.de/en/guide.html" }
+    ]
+  },
+
+  "g.h1": "Speed Basics: <span class=\"grad-text\">understand every megabit you pay for</span>",
+  "g.lead": "What's the relationship between your ISP's “300M” and the “37MB/s” in your download manager? Why is upload always slower? This article explains it all in plain words.",
+
+  "g.s1h": "<span class=\"sec-index\">01</span>Bandwidth ≠ real download speed",
+  "g.s1p1": "The “100M broadband” your ISP advertises is measured in <strong>Mbps (megabits per second)</strong>, while download software usually shows <strong>MB/s (megabytes per second)</strong>. Since <strong>1 byte = 8 bits</strong>, the theoretical conversion divides by 8:",
+  "g.s1cardH": "Quick conversion",
+  "g.s1li1": "100 Mbps line → theoretical peak of about <strong>12.5 MB/s</strong>",
+  "g.s1li2": "300 Mbps line → theoretical peak of about <strong>37.5 MB/s</strong>",
+  "g.s1li3": "1000 Mbps (gigabit) → theoretical peak of about <strong>125 MB/s</strong>",
+  "g.s1p2": "Real-world speed also subtracts protocol overhead (TCP/IP headers, the test engine's ~4% compensation factor, etc.), so reaching about 90% of the theoretical value is normal.",
+
+  "g.s2h": "<span class=\"sec-index\">02</span>Why is upload always slower than download?",
+  "g.s2p1": "Most home broadband uses an <strong>asymmetric</strong> design: the download channel is far wider than the upload channel. That matches how households actually use the internet — downloading much more than they upload. Typical ratios:",
+  "g.s2li1": "Ordinary fiber: 300 Mbps down, upload often just 30 Mbps",
+  "g.s2li2": "Business lines or premium plans: symmetric up/down, at a noticeably higher price",
+  "g.s2p2": "If you regularly <strong>stream live, join video calls or back up to cloud drives</strong>, your upload speed deserves a <a href=\"/\">test</a> even more than your download.",
+
+  "g.s3h": "<span class=\"sec-index\">03</span>Slower at peak hours — whose fault is it?",
+  "g.s3p1": "Slower speeds in the evening peak (20:00–23:00) usually mean <strong>shared-bandwidth congestion</strong>: everyone in the neighborhood or on the same ISP gateway is online at once, thinning out per-user bandwidth. Other factors can also be at play:",
+  "g.s3li1": "<strong>Aging router</strong>: a Wi-Fi 4 router can't saturate a 100M+ connection",
+  "g.s3li2": "<strong>Wi-Fi interference</strong>: your neighbor's Wi-Fi channel overlaps with yours",
+  "g.s3li3": "<strong>Cable grade</strong>: Cat5 cables top out at 100 Mbps",
+  "g.s3li4": "<strong>Cross-network routing</strong>: reaching a server on another carrier's network hits interconnection bottlenecks",
+  "g.s3p2": "Run a few <a href=\"/\">tests</a> at different times of day and compare. If only the evening peak is slow, it's most likely carrier-side congestion — worth reporting to your ISP.",
+
+  "g.s4h": "<span class=\"sec-index\">04</span>How much speed is enough?",
+  "g.s4p1": "Pick a plan based on your household's most demanding activity — no need to overbuy:",
+  "g.th1": "Use case",
+  "g.th2": "Recommended download",
+  "g.th3": "Recommended upload",
+  "g.r1c1": "Light single user (web / social / 1080p)",
+  "g.r2c1": "Household 4K streaming + video calls",
+  "g.r3c1": "Heavy multi-device home (with NAS / cloud backup)",
+  "g.r4c1": "Live streaming / content creators",
+  "g.r5c1": "Esports players (latency first)",
+  "g.s4p2": "For competitive gaming, <a href=\"/how-it-works.html#sec-5\">latency and jitter</a> matter far more than bandwidth.",
+
+  "g.ctaP": "Now that you know the basics, run a test <span>and use the table above to see where your connection stands</span>",
+  "g.toc1": "Bandwidth ≠ real speed",
+  "g.toc2": "Why up/down are asymmetric",
+  "g.toc3": "Why peak hours slow down",
+  "g.toc4": "How much speed is enough"
+}

@@ -8,6 +8,7 @@
 
 import SpeedTest from '@cloudflare/speedtest'
 import type { Results } from '@cloudflare/speedtest'
+import { t, type StringKey } from '../i18n'
 import type { TestRecord } from './history'
 
 /** 测量阶段：不包含 packetLoss（需要 TURN 服务器），带宽档位沿用官方由小到大的策略 */
@@ -23,42 +24,42 @@ const MEASUREMENTS = [
 
 type Phase = 'idle' | 'running' | 'paused' | 'done' | 'error'
 
-const PHASE_TEXT: Record<string, string> = {
-  latency: '正在测量延迟…',
-  latencyUnderLoad: '正在测量负载延迟…',
-  download: '正在测下载速度',
-  upload: '正在测上传速度',
+const PHASE_KEY: Record<string, StringKey> = {
+  latency: 'phase.latency',
+  latencyUnderLoad: 'phase.latencyUnderLoad',
+  download: 'phase.download',
+  upload: 'phase.upload',
 }
 
 /** 场景评分：基于实测指标本地计算（引擎 AIM 评分依赖 packetLoss，需要 TURN 服务器，故不使用） */
 interface SceneVerdict {
   tone: 'ok' | 'warn' | 'bad'
-  label: string
+  label: StringKey
 }
 
-function sceneVerdicts(m: { down: number; up: number; ping: number; jitter: number }): Array<{ label: string; v: SceneVerdict }> {
+function sceneVerdicts(m: { down: number; up: number; ping: number; jitter: number }): Array<{ label: StringKey; v: SceneVerdict }> {
   const streaming: SceneVerdict =
-    m.down >= 50 ? { tone: 'ok', label: '极佳' } :
-    m.down >= 25 ? { tone: 'ok', label: '良好' } :
-    m.down >= 10 ? { tone: 'warn', label: '一般' } :
-    { tone: 'bad', label: '吃力' }
+    m.down >= 50 ? { tone: 'ok', label: 'q.excellent' } :
+    m.down >= 25 ? { tone: 'ok', label: 'q.good' } :
+    m.down >= 10 ? { tone: 'warn', label: 'q.fair' } :
+    { tone: 'bad', label: 'q.weak' }
 
   const gaming: SceneVerdict =
-    m.ping <= 20 && m.jitter <= 3 ? { tone: 'ok', label: '电竞级' } :
-    m.ping <= 50 && m.jitter <= 8 ? { tone: 'ok', label: '良好' } :
-    m.ping <= 100 ? { tone: 'warn', label: '一般' } :
-    { tone: 'bad', label: '偏高' }
+    m.ping <= 20 && m.jitter <= 3 ? { tone: 'ok', label: 'q.esports' } :
+    m.ping <= 50 && m.jitter <= 8 ? { tone: 'ok', label: 'q.good' } :
+    m.ping <= 100 ? { tone: 'warn', label: 'q.fair' } :
+    { tone: 'bad', label: 'q.high' }
 
   const rtc: SceneVerdict =
-    m.up >= 20 && m.ping <= 50 ? { tone: 'ok', label: '极佳' } :
-    m.up >= 8 && m.ping <= 80 ? { tone: 'ok', label: '良好' } :
-    m.up >= 3 ? { tone: 'warn', label: '一般' } :
-    { tone: 'bad', label: '吃力' }
+    m.up >= 20 && m.ping <= 50 ? { tone: 'ok', label: 'q.excellent' } :
+    m.up >= 8 && m.ping <= 80 ? { tone: 'ok', label: 'q.good' } :
+    m.up >= 3 ? { tone: 'warn', label: 'q.fair' } :
+    { tone: 'bad', label: 'q.weak' }
 
   return [
-    { label: '视频流媒体', v: streaming },
-    { label: '游戏', v: gaming },
-    { label: '视频通话', v: rtc },
+    { label: 'scene.streaming', v: streaming },
+    { label: 'scene.gaming', v: gaming },
+    { label: 'scene.rtc', v: rtc },
   ]
 }
 
@@ -221,7 +222,7 @@ export function initCloudflareEngine(
     for (const { label, v } of sceneVerdicts({ down, up, ping, jitter })) {
       const chip = document.createElement('span')
       chip.className = 'metric-chip'
-      chip.innerHTML = `<span class="dot dot-${v.tone}"></span>${label} <small>${v.label}</small>`
+      chip.innerHTML = `<span class="dot dot-${v.tone}"></span>${t(label)} <small>${t(v.label)}</small>`
       aimEl.appendChild(chip)
     }
     aimEl.hidden = aimEl.childElementCount === 0
@@ -236,13 +237,13 @@ export function initCloudflareEngine(
       errEl.textContent = msg
       errEl.classList.add('show')
     }
-    mainBtn.textContent = '重 试'
+    mainBtn.textContent = t('btn.retry')
   }
 
   /* ---------- 相位 / 实时数值 ---------- */
 
   const setPhase = (key: string) => {
-    if (phaseEl) phaseEl.textContent = PHASE_TEXT[key] ?? '准备中…'
+    if (phaseEl) phaseEl.textContent = PHASE_KEY[key] ? t(PHASE_KEY[key]) : t('phase.preparing')
     stageEl?.classList.toggle('is-down', key.startsWith('download'))
     stageEl?.classList.toggle('is-up', key.startsWith('upload'))
   }
@@ -303,11 +304,11 @@ export function initCloudflareEngine(
     // 完成瞬间 running 会先变为 false，须避免误判为“已暂停”
     if (finished || engine.isFinished) return
     phase = running ? 'running' : 'paused'
-    mainBtn.textContent = running ? '暂 停' : '继续测速'
+    mainBtn.textContent = running ? t('btn.pause') : t('btn.resume')
     if (running) {
       spinRing()
     } else {
-      if (phaseEl) phaseEl.textContent = '已暂停，点击继续'
+      if (phaseEl) phaseEl.textContent = t('phase.paused')
     }
   }
 
@@ -330,11 +331,11 @@ export function initCloudflareEngine(
     stageEl?.classList.add('is-done')
     valueEl.textContent = fmtMbps(down)
     unitEl.textContent = 'Mbps'
-    if (phaseEl) phaseEl.textContent = '测速完成'
+    if (phaseEl) phaseEl.textContent = t('phase.done')
 
     renderMetrics(r)
     renderAim(r)
-    mainBtn.textContent = '再测一次'
+    mainBtn.textContent = t('btn.again')
 
     if (onResult && downBps !== undefined && upBps !== undefined) {
       onResult({ down, up, ping, ts: Date.now(), engine: 'cf' })
@@ -343,7 +344,7 @@ export function initCloudflareEngine(
 
   engine.onError = (message) => {
     window.cancelAnimationFrame(rafId)
-    showError(`测速出错：${message}。请检查网络后重试。`)
+    showError(t('engine.error', { message }))
   }
 
   /* ---------- 交互 ---------- */
@@ -354,8 +355,8 @@ export function initCloudflareEngine(
     if (phase === 'idle' || phase === 'error') {
       finished = false
       phase = 'running'
-      if (phaseEl) phaseEl.textContent = '正在连接 Cloudflare 节点…'
-      mainBtn.textContent = '暂 停'
+      if (phaseEl) phaseEl.textContent = t('phase.connecting')
+      mainBtn.textContent = t('btn.pause')
       engine.play()
       spinRing()
     } else if (phase === 'running') {
@@ -376,8 +377,8 @@ export function initCloudflareEngine(
       if (jitterEl) jitterEl.textContent = '--'
       valueEl.textContent = '--'
       unitEl.textContent = 'Mbps'
-      if (phaseEl) phaseEl.textContent = '正在连接 Cloudflare 节点…'
-      mainBtn.textContent = '暂 停'
+      if (phaseEl) phaseEl.textContent = t('phase.connecting')
+      mainBtn.textContent = t('btn.pause')
       engine.restart()
       spinRing()
     }

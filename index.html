@@ -3,12 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CialloSpeed — 免费在线网速测试 | 宽带测速中文站</title>
+    <title data-i18n="title">CialloSpeed — 免费在线网速测试 | 宽带测速中文站</title>
     <meta
       name="description"
+      data-i18n-attrs="content:metaDesc"
       content="CialloSpeed 提供专业级中文在线网速测试：一键测量宽带下载、上传速度与网络延迟，支持 10Gbps+ 光纤，无需安装插件，手机电脑全设备可用。附网速知识、Wi-Fi 优化教程与常见问题解答。"
     />
-    <meta name="keywords" content="网速测试,测速,宽带测速,Wi-Fi测速,在线测速,网络延迟,网速检测" />
+    <meta name="keywords" data-i18n-attrs="content:metaKeywords" content="网速测试,测速,宽带测速,Wi-Fi测速,在线测速,网络延迟,网速检测" />
     <link rel="canonical" href="https://speed.ciallo.de/" />
     <meta name="theme-color" content="#0b101a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -16,9 +17,10 @@
     <!-- Open Graph -->
     <meta property="og:type" content="website" />
     <meta property="og:site_name" content="CialloSpeed" />
-    <meta property="og:title" content="CialloSpeed — 免费在线网速测试" />
+    <meta property="og:title" data-i18n-attrs="content:ogTitle" content="CialloSpeed — 免费在线网速测试" />
     <meta
       property="og:description"
+      data-i18n-attrs="content:ogDesc"
       content="一键测量你的宽带下载、上传速度与延迟。免费、无插件、全设备支持的中文网速测试。"
     />
     <meta property="og:url" content="https://speed.ciallo.de/" />
@@ -26,7 +28,7 @@
     <meta name="twitter:card" content="summary" />
 
     <!-- 结构化数据 -->
-    <script type="application/ld+json">
+    <script type="application/ld+json" data-i18n-jsonld="jsonld">
       {
         "@context": "https://schema.org",
         "@type": "WebSite",
@@ -51,15 +53,29 @@
         document.documentElement.dataset.theme = t
       })()
     </script>
+
+    <!-- 语言协商：仅根路径生效；有手动偏好或浏览器为中文时不跳转 -->
+    <script>
+      ;(function () {
+        var saved
+        try {
+          saved = localStorage.getItem('ciallospeed-locale')
+        } catch (e) {}
+        if (saved || location.pathname.indexOf('/en') === 0) return
+        var lang = (navigator.language || '').toLowerCase()
+        if (lang.indexOf('zh') === 0) return
+        location.replace('/en/')
+      })()
+    </script>
   </head>
 
   <body data-page="home">
-    <a class="skip-link" href="#speedtest">跳到测速</a>
+    <a class="skip-link" href="#speedtest" data-i18n="skip">跳到测速</a>
 
     <!-- ===== 顶部导航 ===== -->
     <header class="navbar">
       <div class="container navbar-inner">
-        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+        <a class="brand" href="/" data-i18n-attrs="aria-label:brand.home" aria-label="CialloSpeed 首页">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
@@ -72,13 +88,14 @@
           </svg>
           <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
         </a>
-        <nav class="nav-links" id="nav-links" aria-label="主导航">
-          <a href="/guide.html" data-nav="guide">网速知识</a>
-          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
-          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
-          <a href="/faq.html" data-nav="faq">常见问题</a>
+        <nav class="nav-links" id="nav-links" data-i18n-attrs="aria-label:nav.aria" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide" data-i18n="nav.guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips" data-i18n="nav.wifiTips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works" data-i18n="nav.howItWorks">测速原理</a>
+          <a href="/faq.html" data-nav="faq" data-i18n="nav.faq">常见问题</a>
         </nav>
         <div class="nav-actions">
+          <a class="lang-switch" data-lang-switch href="#" data-i18n="langSwitch">EN</a>
           <button class="icon-btn" id="theme-toggle" type="button">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
@@ -88,7 +105,7 @@
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           </button>
-          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+          <button class="hamburger" id="hamburger" data-i18n-attrs="aria-label:menu.open" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -97,21 +114,21 @@
 
     <main>
       <!-- ===== 测速区（首屏即用） ===== -->
-      <section class="section speedtest-section" id="speedtest" aria-label="在线网速测试">
+      <section class="section speedtest-section" id="speedtest" data-i18n-attrs="aria-label:st.sectionAria" aria-label="在线网速测试">
         <div class="container">
           <div id="speedtest-app">
-            <div class="engine-tabs" role="tablist" aria-label="选择测速引擎">
+            <div class="engine-tabs" role="tablist" data-i18n-attrs="aria-label:st.tabsAria" aria-label="选择测速引擎">
               <button class="engine-tab is-active" id="tab-cf" role="tab" aria-selected="true" aria-controls="panel-cf" type="button">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
                 </svg>
-                Cloudflare 引擎<small>全球边缘节点</small>
+                <span data-i18n-html="st.cfTab">Cloudflare 引擎<small>全球边缘节点</small></span>
               </button>
               <button class="engine-tab" id="tab-ost" role="tab" aria-selected="false" aria-controls="panel-ost" type="button" tabindex="-1">
                 <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
                 </svg>
-                OpenSpeedTest<small>经典引擎</small>
+                <span data-i18n-html="st.ostTab">OpenSpeedTest<small>经典引擎</small></span>
               </button>
             </div>
 
@@ -146,24 +163,24 @@
                         <polyline class="cf-spark-line cf-spark-down" points="" />
                         <polyline class="cf-spark-line cf-spark-up" points="" />
                       </svg>
-                      <div class="cf-phase">准备好就开始吧</div>
+                      <div class="cf-phase" data-i18n="st.ready">准备好就开始吧</div>
                     </div>
                   </div>
                   <div class="cf-side">
                     <div class="cf-grid">
-                      <div class="cf-metric cf-metric-down"><span>下载</span><strong>--</strong><small>Mbps</small></div>
-                      <div class="cf-metric cf-metric-up"><span>上传</span><strong>--</strong><small>Mbps</small></div>
-                      <div class="cf-metric cf-metric-ping"><span>延迟</span><strong>--</strong><small>ms</small></div>
-                      <div class="cf-metric cf-metric-jitter"><span>抖动</span><strong>--</strong><small>ms</small></div>
+                      <div class="cf-metric cf-metric-down"><span data-i18n="st.down">下载</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric cf-metric-up"><span data-i18n="st.up">上传</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric cf-metric-ping"><span data-i18n="st.ping">延迟</span><strong>--</strong><small>ms</small></div>
+                      <div class="cf-metric cf-metric-jitter"><span data-i18n="st.jitter">抖动</span><strong>--</strong><small>ms</small></div>
                     </div>
                     <div class="cf-actions">
-                      <button class="btn btn-primary cf-main-btn" type="button">开始测速</button>
+                      <button class="btn btn-primary cf-main-btn" type="button" data-i18n="btn.startTest">开始测速</button>
                     </div>
                     <p class="cf-error" role="alert"></p>
                   </div>
                 </div>
-                <div class="cf-aim" hidden aria-label="场景体验评分"></div>
-                <p class="speedtest-note">测速流量经由 Cloudflare 全球边缘节点 · 测试过程会真实传输数据，移动流量用户请注意套餐余量 · 结果仅保存在你的浏览器本地</p>
+                <div class="cf-aim" hidden data-i18n-attrs="aria-label:st.aimAria" aria-label="场景体验评分"></div>
+                <p class="speedtest-note" data-i18n="st.cfNote">测速流量经由 Cloudflare 全球边缘节点 · 测试过程会真实传输数据，移动流量用户请注意套餐余量 · 结果仅保存在你的浏览器本地</p>
               </div>
             </div>
 
@@ -174,6 +191,7 @@
                   <iframe
                     id="speedtest-frame"
                     title="CialloSpeed 在线网速测试组件"
+                    data-i18n-attrs="title:st.iframeTitle"
                     loading="lazy"
                     allow="fullscreen"
                     referrerpolicy="no-referrer-when-downgrade"
@@ -181,15 +199,15 @@
                   <div class="speedtest-skeleton" aria-hidden="true">
                     <div class="skeleton bar"></div>
                     <div class="skeleton bar"></div>
-                    <p>正在连接测速节点…</p>
+                    <p data-i18n="st.connecting">正在连接测速节点…</p>
                   </div>
                   <div class="speedtest-fallback">
-                    <h3>测速组件加载较慢</h3>
-                    <p>
+                    <h3 data-i18n="st.slowTitle">测速组件加载较慢</h3>
+                    <p data-i18n-html="st.slowBody">
                       可能是当前网络到测速节点的连接不稳定。请刷新页面重试，或
                       <a href="https://openspeedtest.com/speedtest" target="_blank" rel="noopener">点此直接打开测速引擎</a>。
                     </p>
-                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()">刷新页面</button>
+                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()" data-i18n="st.reload">刷新页面</button>
                   </div>
                 </div>
                 <div class="speedtest-toolbar">
@@ -197,16 +215,16 @@
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                       <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
                     </svg>
-                    重新测速
+                    <span data-i18n="st.retest">重新测速</span>
                   </button>
-                  <p class="speedtest-note">
+                  <p class="speedtest-note" data-i18n="st.ostNote">
                     测速引擎由 OpenSpeedTest™（MIT 开源）提供 · 该引擎无法自动回传结果，测完可在下方「测速历史」手动录入对比
                   </p>
                 </div>
               </div>
             </div>
             <noscript>
-              <p class="speedtest-note">JavaScript 未启用时可切换到 OpenSpeedTest 引擎测速，但主题切换与历史记录功能不可用。</p>
+              <p class="speedtest-note" data-i18n="st.noscript">JavaScript 未启用时可切换到 OpenSpeedTest 引擎测速，但主题切换与历史记录功能不可用。</p>
             </noscript>
           </div>
         </div>
@@ -215,9 +233,9 @@
       <!-- ===== Hero（测速区下方的介绍封面） ===== -->
       <section class="hero">
         <div class="container">
-          <span class="badge">免费 · 无需插件 · 支持 10Gbps+ 光纤</span>
-          <h1>你的网速，<span class="grad-text">一测便知</span></h1>
-          <p class="hero-sub">
+          <span class="badge" data-i18n="hero.badge">免费 · 无需插件 · 支持 10Gbps+ 光纤</span>
+          <h1 data-i18n-html="hero.h1">你的网速，<span class="grad-text">一测便知</span></h1>
+          <p class="hero-sub" data-i18n="hero.sub">
             专业级在线网速测试：下载、上传、延迟一键测量。双测速引擎（Cloudflare 全球边缘节点 ×
             OpenSpeedTest™）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
           </p>
@@ -226,34 +244,34 @@
               <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
               </svg>
-              开始测速
+              <span data-i18n="btn.startTest">开始测速</span>
             </a>
-            <a class="btn btn-ghost" href="/how-it-works.html">了解测速原理</a>
+            <a class="btn btn-ghost" href="/how-it-works.html" data-i18n="hero.howBtn">了解测速原理</a>
           </div>
           <div class="hero-chips">
             <span class="chip">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" /></svg>
-              纯浏览器测速
+              <span data-i18n="hero.chip1">纯浏览器测速</span>
             </span>
             <span class="chip">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 2l8 4v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V6l8-4Z" /></svg>
-              记录仅存本地
+              <span data-i18n="hero.chip2">记录仅存本地</span>
             </span>
             <span class="chip">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="12" rx="2" /><path d="M8 20h8M12 16v4" /></svg>
-              全设备支持
+              <span data-i18n="hero.chip3">全设备支持</span>
             </span>
           </div>
         </div>
       </section>
 
       <!-- ===== 结果解读 ===== -->
-      <section class="section" aria-label="测速结果解读">
+      <section class="section" data-i18n-attrs="aria-label:interp.sectionAria" aria-label="测速结果解读">
         <div class="container">
           <div class="section-head reveal">
-            <span class="eyebrow">结果解读</span>
-            <h2>测出来的数字，到底是什么水平？</h2>
-            <p>不同场景对网速的要求差异很大，对照下面的区间表，快速判断你的网络处于什么段位。</p>
+            <span class="eyebrow" data-i18n="interp.eyebrow">结果解读</span>
+            <h2 data-i18n="interp.title">测出来的数字，到底是什么水平？</h2>
+            <p data-i18n="interp.sub">不同场景对网速的要求差异很大，对照下面的区间表，快速判断你的网络处于什么段位。</p>
           </div>
           <div class="interpret-grid">
             <article class="card card-hover metric-card reveal">
@@ -261,15 +279,15 @@
                 <span class="metric-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3v12m0 0 5-5m-5 5-5-5M4 21h16" /></svg>
                 </span>
-                <h3>下载速度 · Mbps</h3>
+                <h3 data-i18n="interp.downH">下载速度 · Mbps</h3>
               </div>
-              <p>看视频、下载文件、刷网页主要靠它，是大多数人最关心的指标。</p>
+              <p data-i18n="interp.downP">看视频、下载文件、刷网页主要靠它，是大多数人最关心的指标。</p>
               <table class="metric-table">
                 <tbody>
-                  <tr><th><span class="dot dot-bad"></span>&lt; 25</th><td>基础可用，1080p 视频可能卡顿</td></tr>
-                  <tr><th><span class="dot dot-info"></span>25 – 100</th><td>日常够用，4K 流媒体无压力</td></tr>
-                  <tr><th><span class="dot dot-warn"></span>100 – 500</th><td>体验出色，多设备同时 4K</td></tr>
-                  <tr><th><span class="dot dot-ok"></span>≥ 500</th><td>发烧级，大文件秒下</td></tr>
+                  <tr><th><span class="dot dot-bad"></span>&lt; 25</th><td data-i18n="interp.downR1">基础可用，1080p 视频可能卡顿</td></tr>
+                  <tr><th><span class="dot dot-info"></span>25 – 100</th><td data-i18n="interp.downR2">日常够用，4K 流媒体无压力</td></tr>
+                  <tr><th><span class="dot dot-warn"></span>100 – 500</th><td data-i18n="interp.downR3">体验出色，多设备同时 4K</td></tr>
+                  <tr><th><span class="dot dot-ok"></span>≥ 500</th><td data-i18n="interp.downR4">发烧级，大文件秒下</td></tr>
                 </tbody>
               </table>
             </article>
@@ -278,14 +296,14 @@
                 <span class="metric-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21V7m0 0-5 5m5-5 5 5M4 3h16" /></svg>
                 </span>
-                <h3>上传速度 · Mbps</h3>
+                <h3 data-i18n="interp.upH">上传速度 · Mbps</h3>
               </div>
-              <p>视频会议、直播推流、网盘备份的质量上限，家庭宽带通常低于下载。</p>
+              <p data-i18n="interp.upP">视频会议、直播推流、网盘备份的质量上限，家庭宽带通常低于下载。</p>
               <table class="metric-table">
                 <tbody>
-                  <tr><th><span class="dot dot-bad"></span>&lt; 10</th><td>仅轻量上传，会议画质受限</td></tr>
-                  <tr><th><span class="dot dot-warn"></span>10 – 50</th><td>日常足够，高清直播流畅</td></tr>
-                  <tr><th><span class="dot dot-ok"></span>≥ 50</th><td>创作者级，4K 推流秒传</td></tr>
+                  <tr><th><span class="dot dot-bad"></span>&lt; 10</th><td data-i18n="interp.upR1">仅轻量上传，会议画质受限</td></tr>
+                  <tr><th><span class="dot dot-warn"></span>10 – 50</th><td data-i18n="interp.upR2">日常足够，高清直播流畅</td></tr>
+                  <tr><th><span class="dot dot-ok"></span>≥ 50</th><td data-i18n="interp.upR3">创作者级，4K 推流秒传</td></tr>
                 </tbody>
               </table>
             </article>
@@ -294,15 +312,15 @@
                 <span class="metric-icon" aria-hidden="true">
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 6 16 3-8h4" /></svg>
                 </span>
-                <h3>延迟 · ms</h3>
+                <h3 data-i18n="interp.pingH">延迟 · ms</h3>
               </div>
-              <p>数据往返一次的时间，决定游戏、语音通话的「跟手感」。</p>
+              <p data-i18n="interp.pingP">数据往返一次的时间，决定游戏、语音通话的「跟手感」。</p>
               <table class="metric-table">
                 <tbody>
-                  <tr><th><span class="dot dot-ok"></span>&lt; 20</th><td>电竞级，FPS 无感延迟</td></tr>
-                  <tr><th><span class="dot dot-info"></span>20 – 50</th><td>优秀，主流网游流畅</td></tr>
-                  <tr><th><span class="dot dot-warn"></span>50 – 100</th><td>良好，日常使用无感</td></tr>
-                  <tr><th><span class="dot dot-bad"></span>&gt; 100</th><td>偏高，实时应用受影响</td></tr>
+                  <tr><th><span class="dot dot-ok"></span>&lt; 20</th><td data-i18n="interp.pingR1">电竞级，FPS 无感延迟</td></tr>
+                  <tr><th><span class="dot dot-info"></span>20 – 50</th><td data-i18n="interp.pingR2">优秀，主流网游流畅</td></tr>
+                  <tr><th><span class="dot dot-warn"></span>50 – 100</th><td data-i18n="interp.pingR3">良好，日常使用无感</td></tr>
+                  <tr><th><span class="dot dot-bad"></span>&gt; 100</th><td data-i18n="interp.pingR4">偏高，实时应用受影响</td></tr>
                 </tbody>
               </table>
             </article>
@@ -311,49 +329,49 @@
       </section>
 
       <!-- ===== 历史记录 ===== -->
-      <section class="section" aria-label="测速历史记录">
+      <section class="section" data-i18n-attrs="aria-label:hist.sectionAria" aria-label="测速历史记录">
         <div class="container">
           <div class="section-head reveal">
-            <span class="eyebrow">本地记录</span>
-            <h2>测速历史</h2>
-            <p>记录只保存在你的浏览器本地（localStorage），不会上传到任何服务器。</p>
+            <span class="eyebrow" data-i18n="hist.eyebrow">本地记录</span>
+            <h2 data-i18n="hist.title">测速历史</h2>
+            <p data-i18n="hist.sub">记录只保存在你的浏览器本地（localStorage），不会上传到任何服务器。</p>
           </div>
           <div id="history-app" class="card history-panel reveal">
-            <form class="history-form" aria-label="手动记录测速结果">
+            <form class="history-form" data-i18n-attrs="aria-label:hist.formAria" aria-label="手动记录测速结果">
               <div class="field">
-                <label for="h-down">下载（Mbps）</label>
-                <input id="h-down" type="number" min="0" step="0.01" inputmode="decimal" placeholder="如 325.4" required />
+                <label for="h-down" data-i18n="hist.downLabel">下载（Mbps）</label>
+                <input id="h-down" type="number" min="0" step="0.01" inputmode="decimal" data-i18n-attrs="placeholder:hist.downPh" placeholder="如 325.4" required />
               </div>
               <div class="field">
-                <label for="h-up">上传（Mbps）</label>
-                <input id="h-up" type="number" min="0" step="0.01" inputmode="decimal" placeholder="如 48.2" required />
+                <label for="h-up" data-i18n="hist.upLabel">上传（Mbps）</label>
+                <input id="h-up" type="number" min="0" step="0.01" inputmode="decimal" data-i18n-attrs="placeholder:hist.upPh" placeholder="如 48.2" required />
               </div>
               <div class="field">
-                <label for="h-ping">延迟（ms）</label>
-                <input id="h-ping" type="number" min="0" step="1" inputmode="numeric" placeholder="如 12" required />
+                <label for="h-ping" data-i18n="hist.pingLabel">延迟（ms）</label>
+                <input id="h-ping" type="number" min="0" step="1" inputmode="numeric" data-i18n-attrs="placeholder:hist.pingPh" placeholder="如 12" required />
               </div>
-              <button class="btn btn-primary btn-sm" type="submit">保存本次结果</button>
+              <button class="btn btn-primary btn-sm" type="submit" data-i18n="hist.save">保存本次结果</button>
             </form>
             <div class="history-head-row">
-              <p>提示：测速完成后，也可将结果手动录入，方便多次测试对比。</p>
-              <button class="btn btn-ghost btn-sm history-clear" type="button" hidden>清空记录</button>
+              <p data-i18n="hist.tip">提示：测速完成后，也可将结果手动录入，方便多次测试对比。</p>
+              <button class="btn btn-ghost btn-sm history-clear" type="button" hidden data-i18n="hist.clear">清空记录</button>
             </div>
             <ul class="history-list" aria-live="polite"></ul>
-            <p class="history-empty">还没有记录，先去<a href="#speedtest">测个速</a>吧。</p>
+            <p class="history-empty" data-i18n-html="hist.empty">还没有记录，先去<a href="#speedtest">测个速</a>吧。</p>
           </div>
         </div>
       </section>
 
       <!-- ===== 内容导流 ===== -->
-      <section class="section" aria-label="了解更多">
+      <section class="section" data-i18n-attrs="aria-label:cta.sectionAria" aria-label="了解更多">
         <div class="container">
           <div class="cta-band reveal">
-            <h2>想更懂你的网络？</h2>
-            <p>从看懂测速数字，到把 Wi-Fi 调到最佳状态，我们准备了一系列简明实用的中文指南。</p>
+            <h2 data-i18n="cta.title">想更懂你的网络？</h2>
+            <p data-i18n="cta.sub">从看懂测速数字，到把 Wi-Fi 调到最佳状态，我们准备了一系列简明实用的中文指南。</p>
             <div class="hero-actions" style="margin-top: 0">
-              <a class="btn btn-primary" href="/guide.html">网速知识</a>
-              <a class="btn btn-ghost" href="/wifi-tips.html">Wi-Fi 优化教程</a>
-              <a class="btn btn-ghost" href="/faq.html">常见问题</a>
+              <a class="btn btn-primary" href="/guide.html" data-i18n="nav.guide">网速知识</a>
+              <a class="btn btn-ghost" href="/wifi-tips.html" data-i18n="cta.wifi">Wi-Fi 优化教程</a>
+              <a class="btn btn-ghost" href="/faq.html" data-i18n="nav.faq">常见问题</a>
             </div>
           </div>
         </div>
@@ -377,34 +395,34 @@
             </svg>
             <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
           </a>
-          <p>
+          <p data-i18n="footer.brandDesc">
             免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
-        <nav aria-label="站内导航">
-          <h4>探索</h4>
+        <nav data-i18n-attrs="aria-label:footer.exploreAria" aria-label="站内导航">
+          <h4 data-i18n="footer.explore">探索</h4>
           <ul class="footer-links">
-            <li><a href="/">在线测速</a></li>
-            <li><a href="/guide.html">网速知识</a></li>
-            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
-            <li><a href="/how-it-works.html">测速原理</a></li>
-            <li><a href="/why-different.html">结果差异解读</a></li>
-            <li><a href="/faq.html">常见问题</a></li>
+            <li><a href="/" data-i18n="footer.test">在线测速</a></li>
+            <li><a href="/guide.html" data-i18n="nav.guide">网速知识</a></li>
+            <li><a href="/wifi-tips.html" data-i18n="nav.wifiTips">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html" data-i18n="nav.howItWorks">测速原理</a></li>
+            <li><a href="/why-different.html" data-i18n="footer.whyDifferent">结果差异解读</a></li>
+            <li><a href="/faq.html" data-i18n="nav.faq">常见问题</a></li>
           </ul>
         </nav>
-        <nav aria-label="相关链接">
-          <h4>相关项目</h4>
+        <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
+          <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare 测速引擎</a></li>
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.github">GitHub 开源仓库</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
-        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p>双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
+        <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p data-i18n-html="footer.powered">双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
       </div>
     </footer>
 

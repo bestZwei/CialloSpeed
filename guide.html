@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>网速知识入门：带宽、上下行与实际速度 | CialloSpeed</title>
+    <title data-i18n="title">网速知识入门：带宽、上下行与实际速度 | CialloSpeed</title>
     <meta
       name="description"
+      data-i18n-attrs="content:metaDesc"
       content="为什么 300M 宽带下载只有 37MB/s？上传下载为什么不对称？一文看懂带宽、速率单位、上下行与高峰拥堵，帮你正确理解每一次网速测试的结果。"
     />
     <link rel="canonical" href="https://speed.ciallo.de/guide.html" />
@@ -13,11 +14,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="CialloSpeed" />
-    <meta property="og:title" content="网速知识入门：带宽、上下行与实际速度" />
-    <meta property="og:description" content="看懂带宽与实际速度的关系，正确理解测速结果。" />
+    <meta property="og:title" data-i18n-attrs="content:ogTitle" content="网速知识入门：带宽、上下行与实际速度" />
+    <meta property="og:description" data-i18n-attrs="content:ogDesc" content="看懂带宽与实际速度的关系，正确理解测速结果。" />
     <meta property="og:url" content="https://speed.ciallo.de/guide.html" />
     <meta property="og:locale" content="zh_CN" />
-    <script type="application/ld+json">
+    <script type="application/ld+json" data-i18n-jsonld="jsonld">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -44,7 +45,7 @@
   <body data-page="guide">
     <header class="navbar">
       <div class="container navbar-inner">
-        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+        <a class="brand" href="/" data-i18n-attrs="aria-label:brand.home" aria-label="CialloSpeed 首页">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
@@ -57,13 +58,14 @@
           </svg>
           <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
         </a>
-        <nav class="nav-links" id="nav-links" aria-label="主导航">
-          <a href="/guide.html" data-nav="guide">网速知识</a>
-          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
-          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
-          <a href="/faq.html" data-nav="faq">常见问题</a>
+        <nav class="nav-links" id="nav-links" data-i18n-attrs="aria-label:nav.aria" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide" data-i18n="nav.guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips" data-i18n="nav.wifiTips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works" data-i18n="nav.howItWorks">测速原理</a>
+          <a href="/faq.html" data-nav="faq" data-i18n="nav.faq">常见问题</a>
         </nav>
         <div class="nav-actions">
+          <a class="lang-switch" data-lang-switch href="#" data-i18n="langSwitch">EN</a>
           <button class="icon-btn" id="theme-toggle" type="button">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
@@ -73,7 +75,7 @@
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           </button>
-          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+          <button class="hamburger" id="hamburger" data-i18n-attrs="aria-label:menu.open" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -83,11 +85,11 @@
     <main>
       <div class="container">
         <div class="page-hero">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <a href="/">首页</a><span class="sep">/</span><span>网速知识</span>
+          <nav class="breadcrumb" data-i18n-attrs="aria-label:toc.crumbAria" aria-label="面包屑">
+            <a href="/" data-i18n="crumb.home">首页</a><span class="sep">/</span><span data-i18n="nav.guide">网速知识</span>
           </nav>
-          <h1>网速知识：<span class="grad-text">看懂你的每一兆带宽</span></h1>
-          <p class="lead">
+          <h1 data-i18n-html="g.h1">网速知识：<span class="grad-text">看懂你的每一兆带宽</span></h1>
+          <p class="lead" data-i18n="g.lead">
             运营商说的「300M」和下载软件里的「37MB/s」是什么关系？为什么上传总比下载慢？
             这篇文章用最直白的方式讲清楚。
           </p>
@@ -96,98 +98,98 @@
         <div class="article-layout">
           <article class="article">
             <section class="article-section" id="sec-1">
-              <h2><span class="sec-index">01</span>带宽 ≠ 实际下载速度</h2>
-              <p>
+              <h2 data-i18n-html="g.s1h"><span class="sec-index">01</span>带宽 ≠ 实际下载速度</h2>
+              <p data-i18n-html="g.s1p1">
                 运营商宣传的「百兆宽带」单位是 <strong>Mbps（兆比特每秒）</strong>，而下载软件显示的通常是
                 <strong>MB/s（兆字节每秒）</strong>。<strong>1 字节 = 8 比特</strong>，所以理论换算要除以 8：
               </p>
               <div class="info-card">
                 <h3>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 22h4M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2Z" /></svg>
-                  换算速查
+                  <span data-i18n="g.s1cardH">换算速查</span>
                 </h3>
                 <ul>
-                  <li>100 Mbps 宽带 → 理论峰值约 <strong>12.5 MB/s</strong></li>
-                  <li>300 Mbps 宽带 → 理论峰值约 <strong>37.5 MB/s</strong></li>
-                  <li>1000 Mbps（千兆）→ 理论峰值约 <strong>125 MB/s</strong></li>
+                  <li data-i18n-html="g.s1li1">100 Mbps 宽带 → 理论峰值约 <strong>12.5 MB/s</strong></li>
+                  <li data-i18n-html="g.s1li2">300 Mbps 宽带 → 理论峰值约 <strong>37.5 MB/s</strong></li>
+                  <li data-i18n-html="g.s1li3">1000 Mbps（千兆）→ 理论峰值约 <strong>125 MB/s</strong></li>
                 </ul>
               </div>
-              <p>
+              <p data-i18n="g.s1p2">
                 实际速度还要扣除协议开销（TCP/IP 头部、测速引擎约 4% 的补偿因子等），跑出理论值的
                 90% 左右已属正常。
               </p>
             </section>
 
             <section class="article-section" id="sec-2">
-              <h2><span class="sec-index">02</span>为什么上传总比下载慢？</h2>
-              <p>
+              <h2 data-i18n-html="g.s2h"><span class="sec-index">02</span>为什么上传总比下载慢？</h2>
+              <p data-i18n-html="g.s2p1">
                 绝大多数家庭宽带采用<strong>上下行不对称</strong>设计：下载通道远宽于上传通道。
                 这符合普通家庭「多下载、少上传」的使用习惯。典型比例：
               </p>
               <ul>
-                <li>普通光纤宽带：下行 300 Mbps，上行往往只有 30 Mbps</li>
-                <li>企业专线或商务套餐：上下行对等，价格也明显更高</li>
+                <li data-i18n="g.s2li1">普通光纤宽带：下行 300 Mbps，上行往往只有 30 Mbps</li>
+                <li data-i18n="g.s2li2">企业专线或商务套餐：上下行对等，价格也明显更高</li>
               </ul>
-              <p>
+              <p data-i18n-html="g.s2p2">
                 如果你经常<strong>直播推流、视频会议、备份网盘</strong>，上行速度比下行更值得
                 <a href="/">测一测</a>。
               </p>
             </section>
 
             <section class="article-section" id="sec-3">
-              <h2><span class="sec-index">03</span>高峰期变慢，是谁的问题？</h2>
-              <p>
+              <h2 data-i18n-html="g.s3h"><span class="sec-index">03</span>高峰期变慢，是谁的问题？</h2>
+              <p data-i18n-html="g.s3p1">
                 晚高峰（20:00–23:00）网速下降，通常是<strong>共享带宽拥堵</strong>：同一小区或同一
                 运营商出口的用户同时在线，人均可用带宽被摊薄。此外还可能受这些因素影响：
               </p>
               <ul>
-                <li><strong>路由器老旧</strong>：只支持 Wi-Fi 4 的路由器，跑不满百兆以上宽带</li>
-                <li><strong>Wi-Fi 干扰</strong>：邻居家的 Wi-Fi 信道与你的重叠</li>
-                <li><strong>网线规格</strong>：五类线（Cat5）只能跑到百兆</li>
-                <li><strong>跨网访问</strong>：联通用户访问电信机房的服务，互联互通瓶颈明显</li>
+                <li data-i18n-html="g.s3li1"><strong>路由器老旧</strong>：只支持 Wi-Fi 4 的路由器，跑不满百兆以上宽带</li>
+                <li data-i18n-html="g.s3li2"><strong>Wi-Fi 干扰</strong>：邻居家的 Wi-Fi 信道与你的重叠</li>
+                <li data-i18n-html="g.s3li3"><strong>网线规格</strong>：五类线（Cat5）只能跑到百兆</li>
+                <li data-i18n-html="g.s3li4"><strong>跨网访问</strong>：联通用户访问电信机房的服务，互联互通瓶颈明显</li>
               </ul>
-              <p>
+              <p data-i18n-html="g.s3p2">
                 建议在不同时段各<a href="/">测速</a>几次对比，如果只有晚高峰慢，多为运营商侧拥堵，
                 可向运营商反馈。
               </p>
             </section>
 
             <section class="article-section" id="sec-4">
-              <h2><span class="sec-index">04</span>什么速度才够用？</h2>
-              <p>对照下表，按家庭最重的使用场景选择套餐，不必盲目追高：</p>
+              <h2 data-i18n-html="g.s4h"><span class="sec-index">04</span>什么速度才够用？</h2>
+              <p data-i18n="g.s4p1">对照下表，按家庭最重的使用场景选择套餐，不必盲目追高：</p>
               <div class="table-scroll">
                 <table class="scene-table">
                   <thead>
-                    <tr><th>使用场景</th><th>建议下载速度</th><th>建议上行</th></tr>
+                    <tr><th data-i18n="g.th1">使用场景</th><th data-i18n="g.th2">建议下载速度</th><th data-i18n="g.th3">建议上行</th></tr>
                   </thead>
                   <tbody>
-                    <tr><td>单人轻度使用（网页 / 社交 / 1080p）</td><td>≥ 50 Mbps</td><td>≥ 10 Mbps</td></tr>
-                    <tr><td>家庭 4K 流媒体 + 视频会议</td><td>≥ 200 Mbps</td><td>≥ 20 Mbps</td></tr>
-                    <tr><td>多设备重度家庭（含 NAS / 云备份）</td><td>≥ 500 Mbps</td><td>≥ 30 Mbps</td></tr>
-                    <tr><td>直播推流 / 内容创作者</td><td>≥ 300 Mbps</td><td>≥ 50 Mbps</td></tr>
-                    <tr><td>电竞玩家（延迟优先）</td><td>≥ 100 Mbps</td><td>≥ 20 Mbps</td></tr>
+                    <tr><td data-i18n="g.r1c1">单人轻度使用（网页 / 社交 / 1080p）</td><td>≥ 50 Mbps</td><td>≥ 10 Mbps</td></tr>
+                    <tr><td data-i18n="g.r2c1">家庭 4K 流媒体 + 视频会议</td><td>≥ 200 Mbps</td><td>≥ 20 Mbps</td></tr>
+                    <tr><td data-i18n="g.r3c1">多设备重度家庭（含 NAS / 云备份）</td><td>≥ 500 Mbps</td><td>≥ 30 Mbps</td></tr>
+                    <tr><td data-i18n="g.r4c1">直播推流 / 内容创作者</td><td>≥ 300 Mbps</td><td>≥ 50 Mbps</td></tr>
+                    <tr><td data-i18n="g.r5c1">电竞玩家（延迟优先）</td><td>≥ 100 Mbps</td><td>≥ 20 Mbps</td></tr>
                   </tbody>
                 </table>
               </div>
-              <p>电竞场景下，<a href="/how-it-works.html#sec-5">延迟与抖动</a>比带宽重要得多。</p>
+              <p data-i18n-html="g.s4p2">电竞场景下，<a href="/how-it-works.html#sec-5">延迟与抖动</a>比带宽重要得多。</p>
             </section>
 
             <div class="inline-cta reveal">
-              <p>
+              <p data-i18n-html="g.ctaP">
                 了解了这些，现在就测一测
                 <span>对照上面的表格，看看你家网络处于什么水平</span>
               </p>
-              <a class="btn btn-primary" href="/">立即测速</a>
+              <a class="btn btn-primary" href="/" data-i18n="btn.startNow">立即测速</a>
             </div>
           </article>
 
-          <aside class="toc card" aria-label="目录">
-            <h4>本页目录</h4>
+          <aside class="toc card" data-i18n-attrs="aria-label:toc.aria" aria-label="目录">
+            <h4 data-i18n="toc.h">本页目录</h4>
             <ol>
-              <li><a href="#sec-1">带宽 ≠ 实际速度</a></li>
-              <li><a href="#sec-2">上下行为何不对称</a></li>
-              <li><a href="#sec-3">高峰期变慢的原因</a></li>
-              <li><a href="#sec-4">什么速度够用</a></li>
+              <li><a href="#sec-1" data-i18n="g.toc1">带宽 ≠ 实际速度</a></li>
+              <li><a href="#sec-2" data-i18n="g.toc2">上下行为何不对称</a></li>
+              <li><a href="#sec-3" data-i18n="g.toc3">高峰期变慢的原因</a></li>
+              <li><a href="#sec-4" data-i18n="g.toc4">什么速度够用</a></li>
             </ol>
           </aside>
         </div>
@@ -210,34 +212,34 @@
             </svg>
             <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
           </a>
-          <p>
+          <p data-i18n="footer.brandDesc">
             免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
-        <nav aria-label="站内导航">
-          <h4>探索</h4>
+        <nav data-i18n-attrs="aria-label:footer.exploreAria" aria-label="站内导航">
+          <h4 data-i18n="footer.explore">探索</h4>
           <ul class="footer-links">
-            <li><a href="/">在线测速</a></li>
-            <li><a href="/guide.html">网速知识</a></li>
-            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
-            <li><a href="/how-it-works.html">测速原理</a></li>
-            <li><a href="/why-different.html">结果差异解读</a></li>
-            <li><a href="/faq.html">常见问题</a></li>
+            <li><a href="/" data-i18n="footer.test">在线测速</a></li>
+            <li><a href="/guide.html" data-i18n="nav.guide">网速知识</a></li>
+            <li><a href="/wifi-tips.html" data-i18n="nav.wifiTips">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html" data-i18n="nav.howItWorks">测速原理</a></li>
+            <li><a href="/why-different.html" data-i18n="footer.whyDifferent">结果差异解读</a></li>
+            <li><a href="/faq.html" data-i18n="nav.faq">常见问题</a></li>
           </ul>
         </nav>
-        <nav aria-label="相关链接">
-          <h4>相关项目</h4>
+        <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
+          <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare 测速引擎</a></li>
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.github">GitHub 开源仓库</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
-        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p>双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
+        <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p data-i18n-html="footer.powered">双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
       </div>
     </footer>
 

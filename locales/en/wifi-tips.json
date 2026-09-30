@@ -1,0 +1,46 @@
+{
+  "title": "Wi-Fi Optimization Guide: 8 Steps to Faster Home Internet | CialloSpeed",
+  "metaDesc": "Weak Wi-Fi signal, slow speeds? 8 practical steps to optimize your home wireless network: router placement, band selection, channel decongestion, mesh networking, firmware updates — each one noticeably improves speed and stability.",
+  "ogTitle": "Wi-Fi Optimization Guide: 8 Steps to Faster Home Internet",
+  "ogDesc": "8 practical steps to get the most out of your router.",
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://speed.ciallo.de/en/" },
+      { "@type": "ListItem", "position": 2, "name": "Wi-Fi Tips", "item": "https://speed.ciallo.de/en/wifi-tips.html" }
+    ]
+  },
+
+  "wf.h1": "Wi-Fi Optimization: <span class=\"grad-text\">squeeze every drop out of your router</span>",
+  "wf.lead": "Often it isn't the broadband that's slow — it's the Wi-Fi. The 8 steps below are ordered from free to paid; after each one, run a speed test on the home page to compare.",
+
+  "wf.s1h": "Put the router at the “geometric center” of your home",
+  "wf.s1p": "Signals spread outward, so place the router <strong>high and central</strong> (e.g. above the living-room TV stand), not buried in a media box or deep in a cabinet. One load-bearing wall can cut the signal in half.",
+  "wf.s2h": "Keep away from interference sources",
+  "wf.s2p": "Microwaves, Bluetooth speakers, wireless mice, fish tanks (water absorbs 2.4GHz), metal objects and large mirrors all cause interference. Keep at least <strong>1 meter</strong> between them and the router.",
+  "wf.s3h": "Pick the right band: 2.4G penetrates, 5G is fast",
+  "wf.s3p": "<strong>2.4GHz</strong> penetrates walls well but is slower and more congested; <strong>5GHz</strong> is fast with clean channels but poor at penetrating walls. Nearby devices on 5G, distant ones on 2.4G. Devices with <strong>6GHz</strong> (Wi-Fi 6E/7) should use it — interference there is still minimal.",
+  "wf.s4h": "Choose the channel manually, dodge your neighbors",
+  "wf.s4p": "2.4GHz has only three non-overlapping channels (1/6/11). Use a Wi-Fi analyzer app to see nearby usage and switch to the emptiest channel. 5GHz has plenty of channels; auto is usually fine.",
+  "wf.s5h": "Reboot regularly + update firmware",
+  "wf.s5p": "Routers accumulate cache and stale connections over time — <strong>reboot monthly</strong>. Vendor firmware updates often include stability and performance fixes; check for updates in the admin panel.",
+  "wf.s6h": "Wire up the important devices",
+  "wf.s6p": "Desktops, TV boxes, NAS and other stationary devices should use Ethernet — faster, stabler, and it frees up Wi-Fi capacity. Mind cable grades: <strong>Cat5e minimum; Cat6 for gigabit and beyond</strong>.",
+  "wf.s7h": "Go mesh for large homes; don't trust “wall-piercing” routers",
+  "wf.s7p": "Over 100㎡ or in duplexes/villas, two entry-level mesh nodes beat any “wall-piercing” router. If possible, use a <strong>wired backhaul</strong> (nodes connected by Ethernet); wireless backhaul loses about half the bandwidth.",
+  "wf.s8h": "Replace aging devices too",
+  "wf.s8p": "However new your router, an <strong>old wireless card in a phone or laptop</strong> still caps your speed. Devices from before 2018 often support only Wi-Fi 4 (802.11n) and rarely exceed 100 Mbps in practice.",
+
+  "wf.ctaP": "Done optimizing? Run a test on the home page to verify <span>we suggest 2–3 tests before and after, averaged — the change is usually obvious</span>",
+  "wf.related": "Further reading: <a href=\"/guide.html\">Speed Basics: understand every megabit you pay for</a> · <a href=\"/how-it-works.html\">How speed tests compute your speed</a>",
+  "wf.tocH": "The 8 steps",
+  "wf.toc1": "Center the router",
+  "wf.toc2": "Avoid interference",
+  "wf.toc3": "Pick the right band",
+  "wf.toc4": "Choose channels manually",
+  "wf.toc5": "Reboots & firmware",
+  "wf.toc6": "Wire up key devices",
+  "wf.toc7": "Mesh for large homes",
+  "wf.toc8": "Upgrade old devices"
+}

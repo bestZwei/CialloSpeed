@@ -3,6 +3,8 @@
  * 首屏主题由各 HTML <head> 中的内联脚本提前设置，避免闪烁（FOUC）。
  */
 
+import { t } from '../i18n'
+
 const THEME_KEY = 'ciallospeed-theme'
 
 export type Theme = 'dark' | 'light'
@@ -14,10 +16,7 @@ export function currentTheme(): Theme {
 function applyTheme(theme: Theme, btn: HTMLButtonElement | null): void {
   document.documentElement.dataset.theme = theme
   if (btn) {
-    btn.setAttribute(
-      'aria-label',
-      theme === 'dark' ? '切换到浅色模式' : '切换到深色模式',
-    )
+    btn.setAttribute('aria-label', t(theme === 'dark' ? 'theme.toLight' : 'theme.toDark'))
   }
 }
 

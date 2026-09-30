@@ -3,13 +3,15 @@
  * 支持手动录入 + 测速组件自动回传两种来源。
  */
 
+import { t, locale, type StringKey } from '../i18n'
+
 /** 测速引擎来源：cf = Cloudflare 边缘引擎；ost = OpenSpeedTest；manual = 手动录入（旧记录缺省视为 manual） */
 export type EngineId = 'cf' | 'ost' | 'manual'
 
-export const ENGINE_LABEL: Record<EngineId, string> = {
-  cf: 'Cloudflare 引擎',
-  ost: 'OpenSpeedTest',
-  manual: '手动录入',
+export const ENGINE_LABEL: Record<EngineId, StringKey> = {
+  cf: 'engine.cf',
+  ost: 'engine.ost',
+  manual: 'engine.manual',
 }
 
 export interface TestRecord {
@@ -82,27 +84,32 @@ let refresh: ((list: TestRecord[]) => void) | null = null
 
 interface Quality {
   tone: 'ok' | 'warn' | 'bad'
-  label: string
+  label: StringKey
 }
 
 function downQuality(v: number): Quality {
-  if (v >= 100) return { tone: 'ok', label: '极佳' }
-  if (v >= 25) return { tone: 'ok', label: '良好' }
-  if (v >= 10) return { tone: 'warn', label: '一般' }
-  return { tone: 'bad', label: '偏慢' }
+  if (v >= 100) return { tone: 'ok', label: 'q.excellent' }
+  if (v >= 25) return { tone: 'ok', label: 'q.good' }
+  if (v >= 10) return { tone: 'warn', label: 'q.fair' }
+  return { tone: 'bad', label: 'q.slow' }
 }
 
 function pingQuality(v: number): Quality {
-  if (v <= 20) return { tone: 'ok', label: '电竞级' }
-  if (v <= 50) return { tone: 'ok', label: '优秀' }
-  if (v <= 100) return { tone: 'warn', label: '良好' }
-  return { tone: 'bad', label: '偏高' }
+  if (v <= 20) return { tone: 'ok', label: 'q.esports' }
+  if (v <= 50) return { tone: 'ok', label: 'q.great' }
+  if (v <= 100) return { tone: 'warn', label: 'q.good' }
+  return { tone: 'bad', label: 'q.high' }
 }
 
 function fmtTime(ts: number): string {
-  const d = new Date(ts)
-  const pad = (n: number) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())} ${pad(d.getHours())}:${pad(d.getMinutes())}`
+  return new Intl.DateTimeFormat(locale === 'en' ? 'en-US' : 'zh-CN', {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: false,
+  }).format(new Date(ts))
 }
 
 export function initHistory(root: HTMLElement): void {
@@ -136,10 +143,10 @@ export function initHistory(root: HTMLElement): void {
       const engine: EngineId = rec.engine ?? 'manual'
 
       metrics.innerHTML =
-        `<span class="metric-chip engine-chip">${ENGINE_LABEL[engine]}</span>` +
-        `<span class="metric-chip"><span class="dot dot-${dq.tone}"></span>↓ ${fmtNum(rec.down)} <small>Mbps · ${dq.label}</small></span>` +
+        `<span class="metric-chip engine-chip">${t(ENGINE_LABEL[engine])}</span>` +
+        `<span class="metric-chip"><span class="dot dot-${dq.tone}"></span>↓ ${fmtNum(rec.down)} <small>Mbps · ${t(dq.label)}</small></span>` +
         `<span class="metric-chip">↑ ${fmtNum(rec.up)} <small>Mbps</small></span>` +
-        `<span class="metric-chip"><span class="dot dot-${pq.tone}"></span>${fmtNum(rec.ping)} <small>ms · ${pq.label}</small></span>`
+        `<span class="metric-chip"><span class="dot dot-${pq.tone}"></span>${fmtNum(rec.ping)} <small>ms · ${t(pq.label)}</small></span>`
 
       li.append(time, metrics)
       listEl.appendChild(li)
@@ -150,7 +157,7 @@ export function initHistory(root: HTMLElement): void {
   render(loadHistory())
 
   clearBtn?.addEventListener('click', () => {
-    if (confirm('确定清空所有本地测速记录吗？')) clearAllRecords()
+    if (confirm(t('history.clearConfirm'))) clearAllRecords()
   })
 
   // 手动录入

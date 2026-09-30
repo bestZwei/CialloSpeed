@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>页面不存在（404） | CialloSpeed</title>
+    <title data-i18n="title">页面不存在（404） | CialloSpeed</title>
     <meta name="robots" content="noindex" />
     <meta name="theme-color" content="#0b101a" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -24,7 +24,7 @@
   <body data-page="notfound">
     <header class="navbar">
       <div class="container navbar-inner">
-        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+        <a class="brand" href="/" data-i18n-attrs="aria-label:brand.home" aria-label="CialloSpeed 首页">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
@@ -37,13 +37,14 @@
           </svg>
           <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
         </a>
-        <nav class="nav-links" id="nav-links" aria-label="主导航">
-          <a href="/guide.html" data-nav="guide">网速知识</a>
-          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
-          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
-          <a href="/faq.html" data-nav="faq">常见问题</a>
+        <nav class="nav-links" id="nav-links" data-i18n-attrs="aria-label:nav.aria" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide" data-i18n="nav.guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips" data-i18n="nav.wifiTips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works" data-i18n="nav.howItWorks">测速原理</a>
+          <a href="/faq.html" data-nav="faq" data-i18n="nav.faq">常见问题</a>
         </nav>
         <div class="nav-actions">
+          <a class="lang-switch" data-lang-switch href="#" data-i18n="langSwitch">EN</a>
           <button class="icon-btn" id="theme-toggle" type="button">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
@@ -53,7 +54,7 @@
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           </button>
-          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+          <button class="hamburger" id="hamburger" data-i18n-attrs="aria-label:menu.open" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -66,10 +67,10 @@
           <h1 style="font-size: clamp(64px, 14vw, 120px); line-height: 1">
             <span class="grad-text">404</span>
           </h1>
-          <p class="hero-sub">这个页面被网络黑洞吞掉了，回首页测个速压压惊。</p>
+          <p class="hero-sub" data-i18n="nf.sub">这个页面被网络黑洞吞掉了，回首页测个速压压惊。</p>
           <div class="hero-actions">
-            <a class="btn btn-primary" href="/">返回首页测速</a>
-            <a class="btn btn-ghost" href="/faq.html">查看常见问题</a>
+            <a class="btn btn-primary" href="/" data-i18n="nf.backHome">返回首页测速</a>
+            <a class="btn btn-ghost" href="/faq.html" data-i18n="nf.viewFaq">查看常见问题</a>
           </div>
         </div>
       </section>
@@ -77,8 +78,8 @@
 
     <footer class="footer">
       <div class="container footer-bottom" style="border-top: 0">
-        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p>双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
+        <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p data-i18n-html="footer.powered">双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
       </div>
     </footer>
 

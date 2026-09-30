@@ -102,6 +102,27 @@
   height: 18px;
 }
 
+.lang-switch {
+  display: inline-flex;
+  align-items: center;
+  height: 38px;
+  padding-inline: 12px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text-muted);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), transform 0.2s var(--ease);
+}
+
+.lang-switch:hover {
+  color: var(--text);
+  border-color: var(--border-strong);
+  transform: scale(1.06);
+}
+
 [data-theme='dark'] .icon-sun { display: block; }
 [data-theme='dark'] .icon-moon { display: none; }
 [data-theme='light'] .icon-sun { display: none; }

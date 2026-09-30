@@ -1,0 +1,62 @@
+{
+  "title": "Why Different Speed Test Tools Give Different Results | CialloSpeed",
+  "metaDesc": "Two speed test tools on the same broadband can disagree by 2x. Understand how test node location, methodology and statistical processing differ, and how to cross-validate with dual engines for trustworthy results.",
+  "ogTitle": "Why Different Speed Test Tools Give Different Results",
+  "ogDesc": "Node location, methodology and statistics — and how to cross-validate with dual engines.",
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://speed.ciallo.de/en/" },
+      { "@type": "ListItem", "position": 2, "name": "Why Results Differ", "item": "https://speed.ciallo.de/en/why-different.html" }
+    ]
+  },
+
+  "w.h1": "Why do different tools <span class=\"grad-text\">disagree so much?</span>",
+  "w.lead": "Same broadband, yet tool A says 500 Mbps and tool B only 320 Mbps — before blaming your ISP, know that this usually comes from the test mechanisms themselves. This article explains where the differences come from and how to test credibly.",
+
+  "w.s1h": "<span class=\"sec-index\">01</span>The biggest variable: where the test node is",
+  "w.s1p1": "A speed test is ultimately about shuttling data between your device and a <strong>test server</strong>, so “how fast” first depends on “how far the server is and which route the traffic takes”:",
+  "w.s1li1": "<strong>Physical distance</strong>: every 1000km of fiber adds roughly 10ms round-trip latency; long distances also depress measured bandwidth",
+  "w.s1li2": "<strong>Carrier routing</strong>: cross-network routes (e.g. a China Unicom user reaching a China Telecom node) pass through interconnection bottlenecks and generally run slower",
+  "w.s1li3": "<strong>Node load</strong>: shared public test nodes can themselves become a bottleneck at peak times",
+  "w.s1p2": "That's why good tools <strong>automatically pick the node nearest you</strong>. The Cloudflare engine uses Cloudflare's edge network spanning 300+ cities worldwide — usually in or near your city — measuring the real speed “to your doorstep”.",
+
+  "w.s2h": "<span class=\"sec-index\">02</span>Different methods: single vs multi-thread, ramp-up pressure",
+  "w.s2p1": "Even measuring the same direction, different engine strategies produce different numbers:",
+  "w.s2cardH": "Common strategy differences",
+  "w.s2li1": "<strong>Single vs multiple connections</strong>: a single stream is more limited by one TCP window; parallel connections saturate bandwidth better but read slightly high",
+  "w.s2li2": "<strong>Progressive ramp-up</strong>: starting small and stepping up (e.g. 100KB → 1MB → 10MB) converges fast while still finding the true ceiling",
+  "w.s2li3": "<strong>Early exit</strong>: modern engines stop ramping once a single request exceeds a threshold (e.g. 1 second), saving data",
+  "w.s2li4": "<strong>Latency under load</strong>: only latency measured while the link is saturated reflects real-world lag — a good unloaded latency doesn't mean no buffering",
+  "w.s2p2": "CialloSpeed's dual engines use different strategies: the Cloudflare engine ramps up gradually and reports 90th-percentile bandwidth, resisting one-off jitter; the OpenSpeedTest engine saturates bandwidth with parallel connections. Each checks the other.",
+
+  "w.s3h": "<span class=\"sec-index\">03</span>Different statistics: one number, many algorithms",
+  "w.s3p1": "A test produces many samples, and what you're finally shown is a <strong>statistically processed value</strong> — with different processing at every provider:",
+  "w.s3li1": "<strong>Which percentile</strong>: the median is conservative; the 90th percentile better reflects peak capability",
+  "w.s3li2": "<strong>Sample filtering</strong>: very short requests (e.g. &lt;10ms) have low signal-to-noise and get discarded",
+  "w.s3li3": "<strong>Overhead compensation</strong>: TCP/IP headers are about 4%; some engines add the compensation back, others don't",
+  "w.s3li4": "<strong>Latency semantics</strong>: mean vs median latency, jitter as range vs standard deviation — every choice changes the number",
+  "w.s3p2": "So a <strong>10%–20%</strong> gap between two tools is normal variation. Don't obsess over exact digits; look at the <strong>magnitude and the trend</strong>.",
+
+  "w.s4h": "<span class=\"sec-index\">04</span>How to test credibly",
+  "w.s4p1": "Rather than agonizing over “which tool is right”, use a method that shrinks the uncertainty:",
+  "w.s4card1H": "Cross-validate with both engines",
+  "w.s4card1P": "Run each engine once in the same time window: the <a href=\"/#speedtest\">Cloudflare engine</a> and the <a href=\"/#speedtest\">OpenSpeedTest engine</a>. The results check each other — only if both are clearly low is your network really at fault.",
+  "w.s4card2H": "Test repeatedly, watch the trend",
+  "w.s4card2P": "A single run is hostage to momentary fluctuation. Test 3 times a few minutes apart and look at the trend — the <a href=\"/#history\">local history</a> on the home page saves and compares automatically.",
+  "w.s4p2": "Also note: a <strong>wired connection</strong> measures your broadband's real capability; Wi-Fi tests include wireless losses (see our <a href=\"/wifi-tips.html\">Wi-Fi optimization guide</a>); and pause downloads, cloud sync and video playback while testing.",
+
+  "w.s5h": "<span class=\"sec-index\">05</span>CialloSpeed's answer: two engines",
+  "w.s5p1": "Because “one tool, one node” is inherently biased, CialloSpeed puts two independent engines on the same page:",
+  "w.s5li1": "<strong>Cloudflare engine</strong>: built on Cloudflare's official open source test kernel (MIT), testing via nearby global edge nodes with a native real-time visual interface",
+  "w.s5li2": "<strong>OpenSpeedTest engine</strong>: the classic open source engine (MIT), saturating bandwidth with parallel connections — ideal for cross-checking",
+  "w.s5p2": "Records from both engines are saved locally in your browser, each tagged with its engine for easy comparison. <a href=\"/#speedtest\">Try the dual-engine test now →</a>",
+
+  "w.ctaP": "Want to go deeper on how testing works? <span>From bandwidth conversion to latency and jitter, we explain it all in plain language.</span>",
+  "w.toc1": "Where the node is",
+  "w.toc2": "Methodology differences",
+  "w.toc3": "Different statistics",
+  "w.toc4": "How to test credibly",
+  "w.toc5": "The dual-engine answer"
+}

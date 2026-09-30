@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>测速原理：网速是怎么测出来的 | CialloSpeed</title>
+    <title data-i18n="title">测速原理：网速是怎么测出来的 | CialloSpeed</title>
     <meta
       name="description"
+      data-i18n-attrs="content:metaDesc"
       content="网速测试的原理是什么？详解下载/上传测试的多线程并发、延迟采样、开销补偿，以及为什么不同测速网站结果不一样。附专业术语表。"
     />
     <link rel="canonical" href="https://speed.ciallo.de/how-it-works.html" />
@@ -13,11 +14,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="CialloSpeed" />
-    <meta property="og:title" content="测速原理：网速是怎么测出来的" />
-    <meta property="og:description" content="详解下载/上传测试、延迟采样与开销补偿。" />
+    <meta property="og:title" data-i18n-attrs="content:ogTitle" content="测速原理：网速是怎么测出来的" />
+    <meta property="og:description" data-i18n-attrs="content:ogDesc" content="详解下载/上传测试、延迟采样与开销补偿。" />
     <meta property="og:url" content="https://speed.ciallo.de/how-it-works.html" />
     <meta property="og:locale" content="zh_CN" />
-    <script type="application/ld+json">
+    <script type="application/ld+json" data-i18n-jsonld="jsonld">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -44,7 +45,7 @@
   <body data-page="how-it-works">
     <header class="navbar">
       <div class="container navbar-inner">
-        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+        <a class="brand" href="/" data-i18n-attrs="aria-label:brand.home" aria-label="CialloSpeed 首页">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
@@ -57,13 +58,14 @@
           </svg>
           <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
         </a>
-        <nav class="nav-links" id="nav-links" aria-label="主导航">
-          <a href="/guide.html" data-nav="guide">网速知识</a>
-          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
-          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
-          <a href="/faq.html" data-nav="faq">常见问题</a>
+        <nav class="nav-links" id="nav-links" data-i18n-attrs="aria-label:nav.aria" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide" data-i18n="nav.guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips" data-i18n="nav.wifiTips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works" data-i18n="nav.howItWorks">测速原理</a>
+          <a href="/faq.html" data-nav="faq" data-i18n="nav.faq">常见问题</a>
         </nav>
         <div class="nav-actions">
+          <a class="lang-switch" data-lang-switch href="#" data-i18n="langSwitch">EN</a>
           <button class="icon-btn" id="theme-toggle" type="button">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
@@ -73,7 +75,7 @@
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           </button>
-          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+          <button class="hamburger" id="hamburger" data-i18n-attrs="aria-label:menu.open" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -83,11 +85,11 @@
     <main>
       <div class="container">
         <div class="page-hero">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <a href="/">首页</a><span class="sep">/</span><span>测速原理</span>
+          <nav class="breadcrumb" data-i18n-attrs="aria-label:toc.crumbAria" aria-label="面包屑">
+            <a href="/" data-i18n="crumb.home">首页</a><span class="sep">/</span><span data-i18n="nav.howItWorks">测速原理</span>
           </nav>
-          <h1>测速原理：<span class="grad-text">网速是怎么测出来的</span></h1>
-          <p class="lead">
+          <h1 data-i18n-html="h.h1">测速原理：<span class="grad-text">网速是怎么测出来的</span></h1>
+          <p class="lead" data-i18n="h.lead">
             打开页面点一下，几秒后跳出一串数字——这中间发生了什么？
             这篇文章拆解现代 HTML5 测速引擎的完整工作流程。
           </p>
@@ -96,8 +98,8 @@
         <div class="article-layout">
           <article class="article">
             <section class="article-section" id="sec-1">
-              <h2><span class="sec-index">01</span>核心思想：吞吐量 = 数据量 ÷ 时间</h2>
-              <p>
+              <h2 data-i18n-html="h.s1h"><span class="sec-index">01</span>核心思想：吞吐量 = 数据量 ÷ 时间</h2>
+              <p data-i18n-html="h.s1p1">
                 所有测速的本质都是同一道算术题：在固定时间内传输尽可能多的数据，再用
                 <strong>数据量 ÷ 耗时</strong>得到速率。测速引擎并不「感知」带宽，
                 而是让线路<strong>跑到饱和</strong>，然后记录跑出了多少。
@@ -105,9 +107,9 @@
               <div class="info-card">
                 <h3>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 6 16 3-8h4" /></svg>
-                  测速链路
+                  <span data-i18n="h.s1cardH">测速链路</span>
                 </h3>
-                <p>
+                <p data-i18n="h.s1cardP">
                   你的设备 → 路由器 → 运营商网络 → 测速服务器。整条链路上最慢的一环决定测速结果，
                   所以 Wi-Fi 太差时，测出的是「你到路由器的速度」，而不是宽带的真实速度。
                 </p>
@@ -115,32 +117,32 @@
             </section>
 
             <section class="article-section" id="sec-2">
-              <h2><span class="sec-index">02</span>下载测试：多线程并发 + 稳定突发均值</h2>
-              <p>
+              <h2 data-i18n-html="h.s2h"><span class="sec-index">02</span>下载测试：多线程并发 + 稳定突发均值</h2>
+              <p data-i18n-html="h.s2p1">
                 浏览器向测速服务器并发发起多个 HTTP 请求（通常 6 个，可配置 1–32）下载随机数据。
                 随机数据无法被压缩，保证测的是线路真实吞吐。引擎会丢弃起步阶段的「热身」数据，
                 取<strong>最稳定的突发平均值</strong>作为结果，避免单次抖动误导。
               </p>
-              <p>
+              <p data-i18n="h.s2p2">
                 这也是为什么测速开始的 1–2 秒数字会「起飞」——TCP 慢启动还没结束，此时的读数并不可信。
               </p>
             </section>
 
             <section class="article-section" id="sec-3">
-              <h2><span class="sec-index">03</span>上传与延迟</h2>
-              <p>
+              <h2 data-i18n-html="h.s3h"><span class="sec-index">03</span>上传与延迟</h2>
+              <p data-i18n-html="h.s3p1">
                 <strong>上传测试</strong>反向操作：浏览器通过 POST 把随机数据推给服务器，统计单位时间
                 发送量。受上行带宽不对称影响，上传结果通常明显低于下载。
               </p>
-              <p>
+              <p data-i18n-html="h.s3p2">
                 <strong>延迟（Ping）</strong>通过多次小请求往返采样，取中位数并计算波动幅度。
                 单次延迟没有意义——偶发的 200ms 尖峰可能是你手机刚好同步了相册。
               </p>
             </section>
 
             <section class="article-section" id="sec-4">
-              <h2><span class="sec-index">04</span>开销补偿因子</h2>
-              <p>
+              <h2 data-i18n-html="h.s4h"><span class="sec-index">04</span>开销补偿因子</h2>
+              <p data-i18n-html="h.s4p1">
                 每个数据包除有效载荷外还携带 TCP/IP 协议头。引擎默认按约 <strong>4%</strong> 的开销
                 补偿因子修正结果，让读数更接近运营商承诺的带宽。不同测速站的补偿策略不同，
                 这是结果差异的来源之一。
@@ -148,14 +150,14 @@
             </section>
 
             <section class="article-section" id="sec-5">
-              <h2><span class="sec-index">05</span>为什么不同测速网站结果不一样？</h2>
+              <h2 data-i18n-html="h.s5h"><span class="sec-index">05</span>为什么不同测速网站结果不一样？</h2>
               <ul>
-                <li><strong>节点位置不同</strong>：到同城节点和跨省节点的延迟、路由路径完全不同</li>
-                <li><strong>互联互通瓶颈</strong>：跨运营商访问（如联通 → 电信机房）常被限速</li>
-                <li><strong>并发策略不同</strong>：并发连接数、采样窗口、补偿因子各异</li>
-                <li><strong>测试时段</strong>：晚高峰共享链路拥堵，任何节点都跑不高</li>
+                <li data-i18n-html="h.s5li1"><strong>节点位置不同</strong>：到同城节点和跨省节点的延迟、路由路径完全不同</li>
+                <li data-i18n-html="h.s5li2"><strong>互联互通瓶颈</strong>：跨运营商访问（如联通 → 电信机房）常被限速</li>
+                <li data-i18n-html="h.s5li3"><strong>并发策略不同</strong>：并发连接数、采样窗口、补偿因子各异</li>
+                <li data-i18n-html="h.s5li4"><strong>测试时段</strong>：晚高峰共享链路拥堵，任何节点都跑不高</li>
               </ul>
-              <p>
+              <p data-i18n-html="h.s5p1">
                 建议<strong>同一引擎多次测试取平均</strong>，横向对比才有意义。
                 CialloSpeed 的 OpenSpeedTest 引擎固定使用同一节点，多次结果可直接对比；
                 不同测速工具结果差异的原因，详见<a href="/why-different.html">结果差异解读</a>。
@@ -163,35 +165,35 @@
             </section>
 
             <section class="article-section" id="sec-6">
-              <h2><span class="sec-index">06</span>专业术语表</h2>
+              <h2 data-i18n-html="h.s6h"><span class="sec-index">06</span>专业术语表</h2>
               <dl class="term-grid">
-                <div class="term-card"><dt>Mbps（兆比特/秒）</dt><dd>带宽单位，运营商标称速度。8 Mbps = 1 MB/s。</dd></div>
-                <div class="term-card"><dt>MB/s（兆字节/秒）</dt><dd>下载软件常用单位，直观体现「每秒下多少文件」。</dd></div>
-                <div class="term-card"><dt>Ping / 延迟</dt><dd>数据包往返时间（ms），影响游戏与实时通话跟手感。</dd></div>
-                <div class="term-card"><dt>抖动 Jitter</dt><dd>多次延迟之间的波动幅度，抖动大时视频通话卡顿。</dd></div>
-                <div class="term-card"><dt>丢包</dt><dd>数据包在途中丢失的比例，哪怕 1% 也会明显劣化体验。</dd></div>
-                <div class="term-card"><dt>吞吐量</dt><dd>单位时间实际传输的数据量，测速测的就是它。</dd></div>
+                <div class="term-card"><dt data-i18n="h.t1d">Mbps（兆比特/秒）</dt><dd data-i18n="h.t1t">带宽单位，运营商标称速度。8 Mbps = 1 MB/s。</dd></div>
+                <div class="term-card"><dt data-i18n="h.t2d">MB/s（兆字节/秒）</dt><dd data-i18n="h.t2t">下载软件常用单位，直观体现「每秒下多少文件」。</dd></div>
+                <div class="term-card"><dt data-i18n="h.t3d">Ping / 延迟</dt><dd data-i18n="h.t3t">数据包往返时间（ms），影响游戏与实时通话跟手感。</dd></div>
+                <div class="term-card"><dt data-i18n="h.t4d">抖动 Jitter</dt><dd data-i18n="h.t4t">多次延迟之间的波动幅度，抖动大时视频通话卡顿。</dd></div>
+                <div class="term-card"><dt data-i18n="h.t5d">丢包</dt><dd data-i18n="h.t5t">数据包在途中丢失的比例，哪怕 1% 也会明显劣化体验。</dd></div>
+                <div class="term-card"><dt data-i18n="h.t6d">吞吐量</dt><dd data-i18n="h.t6t">单位时间实际传输的数据量，测速测的就是它。</dd></div>
               </dl>
             </section>
 
             <div class="inline-cta reveal">
-              <p>
+              <p data-i18n-html="h.ctaP">
                 原理看懂了？来实测一下
                 <span>用真实数据验证上面的一切</span>
               </p>
-              <a class="btn btn-primary" href="/">立即测速</a>
+              <a class="btn btn-primary" href="/" data-i18n="btn.startNow">立即测速</a>
             </div>
           </article>
 
-          <aside class="toc card" aria-label="目录">
-            <h4>本页目录</h4>
+          <aside class="toc card" data-i18n-attrs="aria-label:toc.aria" aria-label="目录">
+            <h4 data-i18n="toc.h">本页目录</h4>
             <ol>
-              <li><a href="#sec-1">核心思想</a></li>
-              <li><a href="#sec-2">下载测试</a></li>
-              <li><a href="#sec-3">上传与延迟</a></li>
-              <li><a href="#sec-4">开销补偿</a></li>
-              <li><a href="#sec-5">结果差异原因</a></li>
-              <li><a href="#sec-6">术语表</a></li>
+              <li><a href="#sec-1" data-i18n="h.toc1">核心思想</a></li>
+              <li><a href="#sec-2" data-i18n="h.toc2">下载测试</a></li>
+              <li><a href="#sec-3" data-i18n="h.toc3">上传与延迟</a></li>
+              <li><a href="#sec-4" data-i18n="h.toc4">开销补偿</a></li>
+              <li><a href="#sec-5" data-i18n="h.toc5">结果差异原因</a></li>
+              <li><a href="#sec-6" data-i18n="h.toc6">术语表</a></li>
             </ol>
           </aside>
         </div>
@@ -214,34 +216,34 @@
             </svg>
             <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
           </a>
-          <p>
+          <p data-i18n="footer.brandDesc">
             免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
-        <nav aria-label="站内导航">
-          <h4>探索</h4>
+        <nav data-i18n-attrs="aria-label:footer.exploreAria" aria-label="站内导航">
+          <h4 data-i18n="footer.explore">探索</h4>
           <ul class="footer-links">
-            <li><a href="/">在线测速</a></li>
-            <li><a href="/guide.html">网速知识</a></li>
-            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
-            <li><a href="/how-it-works.html">测速原理</a></li>
-            <li><a href="/why-different.html">结果差异解读</a></li>
-            <li><a href="/faq.html">常见问题</a></li>
+            <li><a href="/" data-i18n="footer.test">在线测速</a></li>
+            <li><a href="/guide.html" data-i18n="nav.guide">网速知识</a></li>
+            <li><a href="/wifi-tips.html" data-i18n="nav.wifiTips">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html" data-i18n="nav.howItWorks">测速原理</a></li>
+            <li><a href="/why-different.html" data-i18n="footer.whyDifferent">结果差异解读</a></li>
+            <li><a href="/faq.html" data-i18n="nav.faq">常见问题</a></li>
           </ul>
         </nav>
-        <nav aria-label="相关链接">
-          <h4>相关项目</h4>
+        <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
+          <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare 测速引擎</a></li>
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.github">GitHub 开源仓库</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
-        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p>双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
+        <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p data-i18n-html="footer.powered">双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
       </div>
     </footer>
 

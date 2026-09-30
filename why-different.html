@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>为什么不同测速工具结果不一样？| CialloSpeed</title>
+    <title data-i18n="title">为什么不同测速工具结果不一样？| CialloSpeed</title>
     <meta
       name="description"
+      data-i18n-attrs="content:metaDesc"
       content="用两个测速工具测同一宽带，结果能差一倍？一文讲清测速节点位置、测试方法、统计口径的差异，以及如何用双引擎交叉验证得到可信的网速结果。"
     />
     <link rel="canonical" href="https://speed.ciallo.de/why-different.html" />
@@ -13,11 +14,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="CialloSpeed" />
-    <meta property="og:title" content="为什么不同测速工具结果不一样？" />
-    <meta property="og:description" content="测速节点、测试方法与统计口径的差异，以及双引擎交叉验证的正确姿势。" />
+    <meta property="og:title" data-i18n-attrs="content:ogTitle" content="为什么不同测速工具结果不一样？" />
+    <meta property="og:description" data-i18n-attrs="content:ogDesc" content="测速节点、测试方法与统计口径的差异，以及双引擎交叉验证的正确姿势。" />
     <meta property="og:url" content="https://speed.ciallo.de/why-different.html" />
     <meta property="og:locale" content="zh_CN" />
-    <script type="application/ld+json">
+    <script type="application/ld+json" data-i18n-jsonld="jsonld">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -44,7 +45,7 @@
   <body data-page="why-different">
     <header class="navbar">
       <div class="container navbar-inner">
-        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+        <a class="brand" href="/" data-i18n-attrs="aria-label:brand.home" aria-label="CialloSpeed 首页">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
@@ -57,13 +58,14 @@
           </svg>
           <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
         </a>
-        <nav class="nav-links" id="nav-links" aria-label="主导航">
-          <a href="/guide.html" data-nav="guide">网速知识</a>
-          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
-          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
-          <a href="/faq.html" data-nav="faq">常见问题</a>
+        <nav class="nav-links" id="nav-links" data-i18n-attrs="aria-label:nav.aria" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide" data-i18n="nav.guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips" data-i18n="nav.wifiTips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works" data-i18n="nav.howItWorks">测速原理</a>
+          <a href="/faq.html" data-nav="faq" data-i18n="nav.faq">常见问题</a>
         </nav>
         <div class="nav-actions">
+          <a class="lang-switch" data-lang-switch href="#" data-i18n="langSwitch">EN</a>
           <button class="icon-btn" id="theme-toggle" type="button">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
@@ -73,7 +75,7 @@
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           </button>
-          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+          <button class="hamburger" id="hamburger" data-i18n-attrs="aria-label:menu.open" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -83,11 +85,11 @@
     <main>
       <div class="container">
         <div class="page-hero">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <a href="/">首页</a><span class="sep">/</span><span>结果差异解读</span>
+          <nav class="breadcrumb" data-i18n-attrs="aria-label:toc.crumbAria" aria-label="面包屑">
+            <a href="/" data-i18n="crumb.home">首页</a><span class="sep">/</span><span data-i18n="footer.whyDifferent">结果差异解读</span>
           </nav>
-          <h1>为什么不同测速工具，<span class="grad-text">结果差这么多？</span></h1>
-          <p class="lead">
+          <h1 data-i18n-html="w.h1">为什么不同测速工具，<span class="grad-text">结果差这么多？</span></h1>
+          <p class="lead" data-i18n="w.lead">
             同一条宽带，A 工具测出 500 Mbps，B 工具却只有 320 Mbps——先别急着找运营商，
             这通常是测速机制本身的差异。本文讲清楚差异从哪来，以及怎么测才可信。
           </p>
@@ -96,17 +98,17 @@
         <div class="article-layout">
           <article class="article">
             <section class="article-section" id="sec-1">
-              <h2><span class="sec-index">01</span>最大变量：测速节点在哪</h2>
-              <p>
+              <h2 data-i18n-html="w.s1h"><span class="sec-index">01</span>最大变量：测速节点在哪</h2>
+              <p data-i18n-html="w.s1p1">
                 测速的本质是把数据在你设备与<strong>测速服务器</strong>之间来回搬运，所以
                 「测多快」首先取决于「离服务器多远、走哪条线路」：
               </p>
               <ul>
-                <li><strong>物理距离</strong>：每 1000km 光纤往返约增加 10ms 延迟，长距离也会拉低带宽实测值</li>
-                <li><strong>运营商线路</strong>：跨网访问（如联通用户连电信节点）要经过互联互通瓶颈，速度普遍打折</li>
-                <li><strong>节点负载</strong>：共享的公共测速节点在高峰期本身可能成为瓶颈</li>
+                <li data-i18n-html="w.s1li1"><strong>物理距离</strong>：每 1000km 光纤往返约增加 10ms 延迟，长距离也会拉低带宽实测值</li>
+                <li data-i18n-html="w.s1li2"><strong>运营商线路</strong>：跨网访问（如联通用户连电信节点）要经过互联互通瓶颈，速度普遍打折</li>
+                <li data-i18n-html="w.s1li3"><strong>节点负载</strong>：共享的公共测速节点在高峰期本身可能成为瓶颈</li>
               </ul>
-              <p>
+              <p data-i18n-html="w.s1p2">
                 这就是为什么优秀的测速工具会<strong>自动选择离你最近的节点</strong>。
                 Cloudflare 引擎使用 Cloudflare 全球 300+ 城市的边缘节点，
                 通常就在你所在城市或邻近城市，测的是「到你身边」的真实速度。
@@ -114,53 +116,53 @@
             </section>
 
             <section class="article-section" id="sec-2">
-              <h2><span class="sec-index">02</span>测试方法不同：单线程 vs 多线程、渐进加压</h2>
-              <p>即使测同一个方向，不同的引擎策略也会得出不同数字：</p>
+              <h2 data-i18n-html="w.s2h"><span class="sec-index">02</span>测试方法不同：单线程 vs 多线程、渐进加压</h2>
+              <p data-i18n="w.s2p1">即使测同一个方向，不同的引擎策略也会得出不同数字：</p>
               <div class="info-card">
                 <h3>
                   <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12h4l3-8 6 16 3-8h4" /></svg>
-                  常见策略差异
+                  <span data-i18n="w.s2cardH">常见策略差异</span>
                 </h3>
                 <ul>
-                  <li><strong>单线程 vs 多连接</strong>：单连接更容易受单个 TCP 流窗口限制；多连接并发更能压满带宽，但结果会偏高</li>
-                  <li><strong>渐进加压</strong>：从小文件开始逐级加大（如 100KB → 1MB → 10MB），既能快速收敛又能压出真实上限</li>
-                  <li><strong>提前结束</strong>：现代引擎检测到单请求耗时超过阈值（如 1 秒）就停止加压，避免流量浪费</li>
-                  <li><strong>负载延迟</strong>：满速传输时再测延迟，才能反映真实卡顿感—— unloaded 延迟好看不代表不卡</li>
+                  <li data-i18n-html="w.s2li1"><strong>单线程 vs 多连接</strong>：单连接更容易受单个 TCP 流窗口限制；多连接并发更能压满带宽，但结果会偏高</li>
+                  <li data-i18n-html="w.s2li2"><strong>渐进加压</strong>：从小文件开始逐级加大（如 100KB → 1MB → 10MB），既能快速收敛又能压出真实上限</li>
+                  <li data-i18n-html="w.s2li3"><strong>提前结束</strong>：现代引擎检测到单请求耗时超过阈值（如 1 秒）就停止加压，避免流量浪费</li>
+                  <li data-i18n-html="w.s2li4"><strong>负载延迟</strong>：满速传输时再测延迟，才能反映真实卡顿感—— unloaded 延迟好看不代表不卡</li>
                 </ul>
               </div>
-              <p>
+              <p data-i18n-html="w.s2p2">
                 CialloSpeed 双引擎分别采用不同策略：Cloudflare 引擎渐进加压并统计
                 90 分位带宽，抗单次抖动；OpenSpeedTest 引擎则使用多连接压满带宽。两者互为对照。
               </p>
             </section>
 
             <section class="article-section" id="sec-3">
-              <h2><span class="sec-index">03</span>统计口径：同一个数字，算法不一样</h2>
-              <p>
+              <h2 data-i18n-html="w.s3h"><span class="sec-index">03</span>统计口径：同一个数字，算法不一样</h2>
+              <p data-i18n-html="w.s3p1">
                 测速会产生大量采样点，最后报给你的是<strong>统计加工后的值</strong>，而各家算法不同：
               </p>
               <ul>
-                <li><strong>取值分位</strong>：中位数偏保守，90 分位更能反映能力上限</li>
-                <li><strong>样本筛选</strong>：过短的请求（如 &lt;10ms）信噪比低，会被剔除</li>
-                <li><strong>协议开销补偿</strong>：TCP/IP 头部约占 4%，有的引擎会补偿回加，有的不会</li>
-                <li><strong>延迟口径</strong>：平均延迟 vs 中位延迟，抖动用极差还是标准差，结果都不同</li>
+                <li data-i18n-html="w.s3li1"><strong>取值分位</strong>：中位数偏保守，90 分位更能反映能力上限</li>
+                <li data-i18n-html="w.s3li2"><strong>样本筛选</strong>：过短的请求（如 &lt;10ms）信噪比低，会被剔除</li>
+                <li data-i18n-html="w.s3li3"><strong>协议开销补偿</strong>：TCP/IP 头部约占 4%，有的引擎会补偿回加，有的不会</li>
+                <li data-i18n-html="w.s3li4"><strong>延迟口径</strong>：平均延迟 vs 中位延迟，抖动用极差还是标准差，结果都不同</li>
               </ul>
-              <p>
+              <p data-i18n-html="w.s3p2">
                 所以两个工具差 <strong>10%–20%</strong> 属于正常波动，不必纠结具体数字；
                 关心的是<strong>量级和趋势</strong>。
               </p>
             </section>
 
             <section class="article-section" id="sec-4">
-              <h2><span class="sec-index">04</span>怎么测才可信？</h2>
-              <p>与其纠结「哪个工具准」，不如用一套方法把不确定性降下来：</p>
+              <h2 data-i18n-html="w.s4h"><span class="sec-index">04</span>怎么测才可信？</h2>
+              <p data-i18n="w.s4p1">与其纠结「哪个工具准」，不如用一套方法把不确定性降下来：</p>
               <div class="card-grid-2">
                 <div class="info-card">
                   <h3>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4m0 12v4M2 12h4m12 0h4" /><circle cx="12" cy="12" r="5" /></svg>
-                    双引擎交叉验证
+                    <span data-i18n="w.s4card1H">双引擎交叉验证</span>
                   </h3>
-                  <p>
+                  <p data-i18n-html="w.s4card1P">
                     同一时段用两个引擎各测一次：<a href="/#speedtest">Cloudflare 引擎</a>与
                     <a href="/#speedtest">OpenSpeedTest 引擎</a>。结果互相印证，
                     都明显偏低才说明网络真有问题。
@@ -169,15 +171,15 @@
                 <div class="info-card">
                   <h3>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" /></svg>
-                    多次取趋势
+                    <span data-i18n="w.s4card2H">多次取趋势</span>
                   </h3>
-                  <p>
+                  <p data-i18n-html="w.s4card2P">
                     单次结果受瞬时波动影响大。间隔几分钟测 3 次看趋势，
                     可用首页的<a href="/#history">本地历史记录</a>自动保存与对比。
                   </p>
                 </div>
               </div>
-              <p>
+              <p data-i18n-html="w.s4p2">
                 另外注意：<strong>有线连接</strong>测的是宽带真实能力；Wi-Fi 测速包含无线损耗
                 （可参考我们的 <a href="/wifi-tips.html">Wi-Fi 优化教程</a>）；
                 测试时暂停下载、网盘同步和视频播放。
@@ -185,40 +187,40 @@
             </section>
 
             <section class="article-section" id="sec-5">
-              <h2><span class="sec-index">05</span>CialloSpeed 的双引擎答案</h2>
-              <p>
+              <h2 data-i18n-html="w.s5h"><span class="sec-index">05</span>CialloSpeed 的双引擎答案</h2>
+              <p data-i18n="w.s5p1">
                 正因为「单一工具单一节点」天然有偏差，CialloSpeed 把两个独立引擎放在同一个页面：
               </p>
               <ul>
-                <li><strong>Cloudflare 引擎</strong>：基于 Cloudflare 官方开源测速内核（MIT），全球边缘节点就近测速，原生界面实时可视化</li>
-                <li><strong>OpenSpeedTest 引擎</strong>：经典开源引擎（MIT），多连接压满带宽，适合对照验证</li>
+                <li data-i18n-html="w.s5li1"><strong>Cloudflare 引擎</strong>：基于 Cloudflare 官方开源测速内核（MIT），全球边缘节点就近测速，原生界面实时可视化</li>
+                <li data-i18n-html="w.s5li2"><strong>OpenSpeedTest 引擎</strong>：经典开源引擎（MIT），多连接压满带宽，适合对照验证</li>
               </ul>
-              <p>
+              <p data-i18n-html="w.s5p2">
                 两个引擎的测速记录都保存在你的浏览器本地，每条记录都标注来源引擎，
                 方便横向对比。<a href="/#speedtest">现在就去体验双引擎测速 →</a>
               </p>
             </section>
 
             <div class="inline-cta reveal">
-              <p>
+              <p data-i18n-html="w.ctaP">
                 想更深入了解测速原理？
                 <span>从带宽换算到延迟抖动，我们都有通俗的中文讲解。</span>
               </p>
               <div class="hero-actions" style="margin-top: 0">
-                <a class="btn btn-primary" href="/how-it-works.html">测速原理</a>
-                <a class="btn btn-ghost" href="/#speedtest">开始测速</a>
+                <a class="btn btn-primary" href="/how-it-works.html" data-i18n="nav.howItWorks">测速原理</a>
+                <a class="btn btn-ghost" href="/#speedtest" data-i18n="btn.startTest">开始测速</a>
               </div>
             </div>
           </article>
 
-          <aside class="toc card" aria-label="目录">
-            <h4>目录</h4>
+          <aside class="toc card" data-i18n-attrs="aria-label:toc.aria" aria-label="目录">
+            <h4 data-i18n="toc.h">目录</h4>
             <ol>
-              <li><a href="#sec-1">测速节点在哪</a></li>
-              <li><a href="#sec-2">测试方法差异</a></li>
-              <li><a href="#sec-3">统计口径不同</a></li>
-              <li><a href="#sec-4">怎么测才可信</a></li>
-              <li><a href="#sec-5">双引擎答案</a></li>
+              <li><a href="#sec-1" data-i18n="w.toc1">测速节点在哪</a></li>
+              <li><a href="#sec-2" data-i18n="w.toc2">测试方法差异</a></li>
+              <li><a href="#sec-3" data-i18n="w.toc3">统计口径不同</a></li>
+              <li><a href="#sec-4" data-i18n="w.toc4">怎么测才可信</a></li>
+              <li><a href="#sec-5" data-i18n="w.toc5">双引擎答案</a></li>
             </ol>
           </aside>
         </div>
@@ -242,34 +244,34 @@
             </svg>
             <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
           </a>
-          <p>
+          <p data-i18n="footer.brandDesc">
             免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
-        <nav aria-label="站内导航">
-          <h4>探索</h4>
+        <nav data-i18n-attrs="aria-label:footer.exploreAria" aria-label="站内导航">
+          <h4 data-i18n="footer.explore">探索</h4>
           <ul class="footer-links">
-            <li><a href="/">在线测速</a></li>
-            <li><a href="/guide.html">网速知识</a></li>
-            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
-            <li><a href="/how-it-works.html">测速原理</a></li>
-            <li><a href="/why-different.html">结果差异解读</a></li>
-            <li><a href="/faq.html">常见问题</a></li>
+            <li><a href="/" data-i18n="footer.test">在线测速</a></li>
+            <li><a href="/guide.html" data-i18n="nav.guide">网速知识</a></li>
+            <li><a href="/wifi-tips.html" data-i18n="nav.wifiTips">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html" data-i18n="nav.howItWorks">测速原理</a></li>
+            <li><a href="/why-different.html" data-i18n="footer.whyDifferent">结果差异解读</a></li>
+            <li><a href="/faq.html" data-i18n="nav.faq">常见问题</a></li>
           </ul>
         </nav>
-        <nav aria-label="相关链接">
-          <h4>相关项目</h4>
+        <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
+          <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">OpenSpeedTest 开源仓库</a></li>
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare 测速引擎</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.ostRepo">OpenSpeedTest 开源仓库</a></li>
+            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
-        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p>双引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持</p>
+        <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p data-i18n-html="footer.poweredShort">双引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持</p>
       </div>
     </footer>
 

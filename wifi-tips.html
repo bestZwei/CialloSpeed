@@ -3,9 +3,10 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Wi-Fi 优化指南：8 步提升家里网速 | CialloSpeed</title>
+    <title data-i18n="title">Wi-Fi 优化指南：8 步提升家里网速 | CialloSpeed</title>
     <meta
       name="description"
+      data-i18n-attrs="content:metaDesc"
       content="Wi-Fi 信号差、网速慢？8 个实用步骤教你优化家庭无线网络：路由器摆放、频段选择、信道避堵、Mesh 组网、固件升级，每步都能显著提升网速与稳定性。"
     />
     <link rel="canonical" href="https://speed.ciallo.de/wifi-tips.html" />
@@ -13,11 +14,11 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="CialloSpeed" />
-    <meta property="og:title" content="Wi-Fi 优化指南：8 步提升家里网速" />
-    <meta property="og:description" content="8 个实用步骤，把路由器性能榨干。" />
+    <meta property="og:title" data-i18n-attrs="content:ogTitle" content="Wi-Fi 优化指南：8 步提升家里网速" />
+    <meta property="og:description" data-i18n-attrs="content:ogDesc" content="8 个实用步骤，把路由器性能榨干。" />
     <meta property="og:url" content="https://speed.ciallo.de/wifi-tips.html" />
     <meta property="og:locale" content="zh_CN" />
-    <script type="application/ld+json">
+    <script type="application/ld+json" data-i18n-jsonld="jsonld">
       {
         "@context": "https://schema.org",
         "@type": "BreadcrumbList",
@@ -44,7 +45,7 @@
   <body data-page="wifi-tips">
     <header class="navbar">
       <div class="container navbar-inner">
-        <a class="brand" href="/" aria-label="CialloSpeed 首页">
+        <a class="brand" href="/" data-i18n-attrs="aria-label:brand.home" aria-label="CialloSpeed 首页">
           <svg viewBox="0 0 64 64" aria-hidden="true">
             <defs>
               <linearGradient id="logo-g" x1="0" y1="0" x2="1" y2="1">
@@ -57,13 +58,14 @@
           </svg>
           <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
         </a>
-        <nav class="nav-links" id="nav-links" aria-label="主导航">
-          <a href="/guide.html" data-nav="guide">网速知识</a>
-          <a href="/wifi-tips.html" data-nav="wifi-tips">Wi-Fi 优化</a>
-          <a href="/how-it-works.html" data-nav="how-it-works">测速原理</a>
-          <a href="/faq.html" data-nav="faq">常见问题</a>
+        <nav class="nav-links" id="nav-links" data-i18n-attrs="aria-label:nav.aria" aria-label="主导航">
+          <a href="/guide.html" data-nav="guide" data-i18n="nav.guide">网速知识</a>
+          <a href="/wifi-tips.html" data-nav="wifi-tips" data-i18n="nav.wifiTips">Wi-Fi 优化</a>
+          <a href="/how-it-works.html" data-nav="how-it-works" data-i18n="nav.howItWorks">测速原理</a>
+          <a href="/faq.html" data-nav="faq" data-i18n="nav.faq">常见问题</a>
         </nav>
         <div class="nav-actions">
+          <a class="lang-switch" data-lang-switch href="#" data-i18n="langSwitch">EN</a>
           <button class="icon-btn" id="theme-toggle" type="button">
             <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
               <circle cx="12" cy="12" r="4" />
@@ -73,7 +75,7 @@
               <path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8Z" />
             </svg>
           </button>
-          <button class="hamburger" id="hamburger" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
+          <button class="hamburger" id="hamburger" data-i18n-attrs="aria-label:menu.open" aria-label="打开菜单" aria-expanded="false" aria-controls="nav-links">
             <span></span><span></span><span></span>
           </button>
         </div>
@@ -83,11 +85,11 @@
     <main>
       <div class="container">
         <div class="page-hero">
-          <nav class="breadcrumb" aria-label="面包屑">
-            <a href="/">首页</a><span class="sep">/</span><span>Wi-Fi 优化</span>
+          <nav class="breadcrumb" data-i18n-attrs="aria-label:toc.crumbAria" aria-label="面包屑">
+            <a href="/" data-i18n="crumb.home">首页</a><span class="sep">/</span><span data-i18n="nav.wifiTips">Wi-Fi 优化</span>
           </nav>
-          <h1>Wi-Fi 优化指南：<span class="grad-text">把路由器的性能榨干</span></h1>
-          <p class="lead">
+          <h1 data-i18n-html="wf.h1">Wi-Fi 优化指南：<span class="grad-text">把路由器的性能榨干</span></h1>
+          <p class="lead" data-i18n="wf.lead">
             很多时候慢的不是宽带，而是 Wi-Fi。以下 8 个步骤按「零成本 → 花钱」排列，
             每做完一步都可以回首页测速对比效果。
           </p>
@@ -98,24 +100,24 @@
             <div class="steps-grid">
               <section class="article-section card card-hover step-card reveal" id="s1">
                 <span class="step-num" aria-hidden="true">1</span>
-                <h3>路由器放在家的「几何中心」</h3>
-                <p>
+                <h3 data-i18n="wf.s1h">路由器放在家的「几何中心」</h3>
+                <p data-i18n-html="wf.s1p">
                   信号是向四周扩散的，把路由器放在<strong>房屋中心的高处</strong>（如客厅电视柜上方），
                   避免塞进弱电箱、柜子深处。穿一堵承重墙，信号可能直接腰斩。
                 </p>
               </section>
               <section class="article-section card card-hover step-card reveal" id="s2">
                 <span class="step-num" aria-hidden="true">2</span>
-                <h3>远离干扰源</h3>
-                <p>
+                <h3 data-i18n="wf.s2h">远离干扰源</h3>
+                <p data-i18n-html="wf.s2p">
                   微波炉、蓝牙音箱、无线鼠标、鱼缸（水会吸收 2.4GHz 信号）、金属物件和大面积镜子
                   都是干扰源，与路由器保持至少 <strong>1 米</strong>距离。
                 </p>
               </section>
               <section class="article-section card card-hover step-card reveal" id="s3">
                 <span class="step-num" aria-hidden="true">3</span>
-                <h3>选对频段：2.4G 穿墙，5G 高速</h3>
-                <p>
+                <h3 data-i18n="wf.s3h">选对频段：2.4G 穿墙，5G 高速</h3>
+                <p data-i18n-html="wf.s3p">
                   <strong>2.4GHz</strong> 穿墙好但速度低、干扰多；<strong>5GHz</strong> 速度快、信道干净，
                   但穿墙弱。近处设备连 5G，远端设备连 2.4G；支持 <strong>6GHz</strong>（Wi-Fi 6E/7）
                   的设备优先使用，目前干扰极少。
@@ -123,40 +125,40 @@
               </section>
               <section class="article-section card card-hover step-card reveal" id="s4">
                 <span class="step-num" aria-hidden="true">4</span>
-                <h3>手动选信道，避开邻居拥堵</h3>
-                <p>
+                <h3 data-i18n="wf.s4h">手动选信道，避开邻居拥堵</h3>
+                <p data-i18n="wf.s4p">
                   2.4GHz 只有 1/6/11 三个互不重叠信道，用 Wi-Fi 分析 App 查看周围占用，
                   切到最空的信道。5GHz 信道多，默认自动通常即可。
                 </p>
               </section>
               <section class="article-section card card-hover step-card reveal" id="s5">
                 <span class="step-num" aria-hidden="true">5</span>
-                <h3>定期重启 + 升级固件</h3>
-                <p>
+                <h3 data-i18n="wf.s5h">定期重启 + 升级固件</h3>
+                <p data-i18n-html="wf.s5p">
                   路由器长期运行会积累缓存与异常连接，<strong>每月重启一次</strong>；
                   厂商固件更新常包含稳定性与性能修复，在管理后台检查更新。
                 </p>
               </section>
               <section class="article-section card card-hover step-card reveal" id="s6">
                 <span class="step-num" aria-hidden="true">6</span>
-                <h3>重要设备走有线</h3>
-                <p>
+                <h3 data-i18n="wf.s6h">重要设备走有线</h3>
+                <p data-i18n-html="wf.s6p">
                   台式机、电视盒子、NAS 等固定设备插网线，既快又稳，还给 Wi-Fi 腾出容量。
                   注意网线规格：<strong>Cat5e 起步，千兆以上选 Cat6</strong>。
                 </p>
               </section>
               <section class="article-section card card-hover step-card reveal" id="s7">
                 <span class="step-num" aria-hidden="true">7</span>
-                <h3>大户型上 Mesh，别迷信「穿墙王」</h3>
-                <p>
+                <h3 data-i18n="wf.s7h">大户型上 Mesh，别迷信「穿墙王」</h3>
+                <p data-i18n-html="wf.s7p">
                   超过 100㎡ 或复式/别墅，两个入门 Mesh 节点远胜一台「穿墙王」。
                   条件允许优先<strong>有线回程</strong>（节点间用网线连接），无线回程会损失约一半带宽。
                 </p>
               </section>
               <section class="article-section card card-hover step-card reveal" id="s8">
                 <span class="step-num" aria-hidden="true">8</span>
-                <h3>终端太老也要换</h3>
-                <p>
+                <h3 data-i18n="wf.s8h">终端太老也要换</h3>
+                <p data-i18n-html="wf.s8p">
                   路由器再新，<strong>手机/笔记本的无线网卡太老</strong>照样跑不快。
                   2018 年前的设备多只支持 Wi-Fi 4（802.11n），实测往往卡在百兆以内。
                 </p>
@@ -164,30 +166,30 @@
             </div>
 
             <div class="inline-cta reveal" style="margin-top: var(--sp-7)">
-              <p>
+              <p data-i18n-html="wf.ctaP">
                 优化完成？回首页测速验证效果
                 <span>建议优化前后各测 2–3 次取平均，变化会很明显</span>
               </p>
-              <a class="btn btn-primary" href="/">立即测速</a>
+              <a class="btn btn-primary" href="/" data-i18n="btn.startNow">立即测速</a>
             </div>
 
-            <p style="color: var(--text-faint); font-size: var(--fs-sm)">
+            <p style="color: var(--text-faint); font-size: var(--fs-sm)" data-i18n-html="wf.related">
               相关阅读：<a href="/guide.html">网速知识：看懂你的每一兆带宽</a> ·
               <a href="/how-it-works.html">测速是怎么算出速度的</a>
             </p>
           </article>
 
-          <aside class="toc card" aria-label="目录">
-            <h4>优化步骤</h4>
+          <aside class="toc card" data-i18n-attrs="aria-label:toc.aria" aria-label="目录">
+            <h4 data-i18n="wf.tocH">优化步骤</h4>
             <ol>
-              <li><a href="#s1">路由器居中放置</a></li>
-              <li><a href="#s2">远离干扰源</a></li>
-              <li><a href="#s3">选对频段</a></li>
-              <li><a href="#s4">手动选信道</a></li>
-              <li><a href="#s5">重启与固件</a></li>
-              <li><a href="#s6">重要设备走有线</a></li>
-              <li><a href="#s7">大户型 Mesh</a></li>
-              <li><a href="#s8">升级老旧终端</a></li>
+              <li><a href="#s1" data-i18n="wf.toc1">路由器居中放置</a></li>
+              <li><a href="#s2" data-i18n="wf.toc2">远离干扰源</a></li>
+              <li><a href="#s3" data-i18n="wf.toc3">选对频段</a></li>
+              <li><a href="#s4" data-i18n="wf.toc4">手动选信道</a></li>
+              <li><a href="#s5" data-i18n="wf.toc5">重启与固件</a></li>
+              <li><a href="#s6" data-i18n="wf.toc6">重要设备走有线</a></li>
+              <li><a href="#s7" data-i18n="wf.toc7">大户型 Mesh</a></li>
+              <li><a href="#s8" data-i18n="wf.toc8">升级老旧终端</a></li>
             </ol>
           </aside>
         </div>
@@ -210,34 +212,34 @@
             </svg>
             <span class="brand-name">Ciallo<span class="grad-text">Speed</span></span>
           </a>
-          <p>
+          <p data-i18n="footer.brandDesc">
             免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
-        <nav aria-label="站内导航">
-          <h4>探索</h4>
+        <nav data-i18n-attrs="aria-label:footer.exploreAria" aria-label="站内导航">
+          <h4 data-i18n="footer.explore">探索</h4>
           <ul class="footer-links">
-            <li><a href="/">在线测速</a></li>
-            <li><a href="/guide.html">网速知识</a></li>
-            <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
-            <li><a href="/how-it-works.html">测速原理</a></li>
-            <li><a href="/why-different.html">结果差异解读</a></li>
-            <li><a href="/faq.html">常见问题</a></li>
+            <li><a href="/" data-i18n="footer.test">在线测速</a></li>
+            <li><a href="/guide.html" data-i18n="nav.guide">网速知识</a></li>
+            <li><a href="/wifi-tips.html" data-i18n="nav.wifiTips">Wi-Fi 优化</a></li>
+            <li><a href="/how-it-works.html" data-i18n="nav.howItWorks">测速原理</a></li>
+            <li><a href="/why-different.html" data-i18n="footer.whyDifferent">结果差异解读</a></li>
+            <li><a href="/faq.html" data-i18n="nav.faq">常见问题</a></li>
           </ul>
         </nav>
-        <nav aria-label="相关链接">
-          <h4>相关项目</h4>
+        <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
+          <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™ 官网</a></li>
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare 测速引擎</a></li>
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">GitHub 开源仓库</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™ 官网</a></li>
+            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
+            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.github">GitHub 开源仓库</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
-        <p>© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p>双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
+        <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
+        <p data-i18n-html="footer.powered">双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持（均 MIT 开源）</p>
       </div>
     </footer>
 

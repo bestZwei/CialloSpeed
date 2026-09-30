@@ -1,0 +1,105 @@
+{
+  "title": "FAQ — Speed Test Questions Answered | CialloSpeed",
+  "metaDesc": "How accurate are online speed tests? Why is the result lower than your plan? Does testing use data? CialloSpeed's FAQ helps you test correctly and get accurate results.",
+  "ogTitle": "FAQ — Speed Test Questions Answered",
+  "ogDesc": "Is the test accurate? Why lower than your plan? Answers inside.",
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Are the speed test results accurate?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "CialloSpeed uses dual test engines: Cloudflare's official speed test kernel (testing via the nearest of its global edge nodes) and OpenSpeedTest™ (multi-threaded concurrency to saturate your bandwidth), both MIT open source. But any speed test is affected by time of day, Wi-Fi conditions and node location. We recommend cross-validating with both engines and averaging multiple runs."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Why is the measured speed lower than my broadband plan?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Common causes: Wi-Fi signal loss or interference, an underpowered router, low-grade Ethernet cabling, a test node on another carrier's network, peak-hour congestion on shared links, and protocol overhead (about 4%-10%). For a baseline, connect straight to the modem with an Ethernet cable and test again."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "My Wi-Fi result is very different from the wired one — is that normal?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. Wi-Fi is limited by distance, walls, channel congestion and your device's network card, so real-world Wi-Fi throughput is typically a fraction of wired speed. To saturate a gigabit plan, connect important devices by wire."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does a speed test use my data?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Yes. A speed test transfers real data (usually tens to hundreds of MB per run), so mind your data cap when testing on mobile data."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Do I need to install a plugin or an app?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. CialloSpeed is HTML5-based and the test engine runs entirely in your browser — just open it on a phone, tablet, computer or smart TV."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Will my test records be uploaded?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Test history is stored only in your browser's localStorage and never uploaded to any server. Clearing your browser data deletes it."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How do I get more accurate results?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "1. Prefer a wired connection; 2. Stop devices and apps that are downloading, backing up or streaming; 3. Avoid the evening peak; 4. Average multiple runs; 5. Move closer to the router or use the 5GHz band."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is this website free?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Completely free, with no ads and no sign-up. The test engines are provided by the open source projects Cloudflare Speedtest and OpenSpeedTest™ (both MIT licensed)."
+        }
+      }
+    ]
+  },
+
+  "f.h1": "Frequently asked <span class=\"grad-text\">questions</span>",
+  "f.lead": "The 8 most common questions about online speed tests. Tap to expand the answers.",
+
+  "f.q1": "Are the speed test results accurate?",
+  "f.a1": "CialloSpeed uses dual test engines: Cloudflare's official speed test kernel (testing via the nearest of its global edge nodes) and OpenSpeedTest™ (multi-threaded concurrency to saturate your bandwidth). Both are MIT open source and professional. That said, any test is affected by time of day, Wi-Fi conditions and node location — cross-validate with both engines and average several runs.",
+  "f.q2": "Why is the measured speed lower than my broadband plan?",
+  "f.a2li1": "Wi-Fi signal loss or channel interference",
+  "f.a2li2": "Underpowered router or low-grade Ethernet cabling",
+  "f.a2li3": "Test node on another carrier, limited interconnection",
+  "f.a2li4": "Peak-hour congestion on shared links",
+  "f.a2li5": "TCP/IP protocol overhead (about 4%–10%)",
+  "f.a2p": "For a baseline, connect straight to the modem with an Ethernet cable and test again — see <a href=\"/guide.html\">Speed Basics</a>.",
+  "f.q3": "My Wi-Fi result is very different from the wired one — is that normal?",
+  "f.a3": "Yes. Wi-Fi is limited by distance, walls, channel congestion and your device's network card, so real-world Wi-Fi throughput is typically a fraction of wired speed. To saturate a gigabit plan, connect important devices by wire — see the <a href=\"/wifi-tips.html\">Wi-Fi optimization guide</a>.",
+  "f.q4": "Does a speed test use my data?",
+  "f.a4": "Yes. A speed test transfers real data (usually tens to hundreds of MB per run), so mind your data cap when testing on mobile data.",
+  "f.q5": "Do I need to install a plugin or an app?",
+  "f.a5": "No. CialloSpeed is HTML5-based and the test engine runs entirely in your browser — just open it on a phone, tablet, computer or smart TV.",
+  "f.q6": "Will my test records be uploaded?",
+  "f.a6": "No. Test history is stored only in your browser's localStorage and never uploaded to any server. Clearing your browser data deletes it.",
+  "f.q7": "How do I get more accurate results?",
+  "f.a7li1": "Prefer a wired connection",
+  "f.a7li2": "Stop devices and apps that are downloading, backing up or streaming",
+  "f.a7li3": "Avoid the evening peak",
+  "f.a7li4": "Average multiple runs",
+  "f.a7li5": "Move closer to the router or use the 5GHz band",
+  "f.q8": "Is this website free?",
+  "f.a8": "Completely free, with no ads and no sign-up. The test engines are provided by the open source projects <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://github.com/openspeedtest/Speed-Test\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™ (both MIT licensed)</a>."
+}
