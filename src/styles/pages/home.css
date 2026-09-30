@@ -552,6 +552,7 @@
   justify-content: center;
   gap: var(--sp-2);
   margin-top: var(--sp-5);
+  margin-bottom: var(--sp-4);
 }
 
 .cf-aim .metric-chip {
