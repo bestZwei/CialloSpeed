@@ -53,9 +53,9 @@ def gradient_canvas(size):
     return img
 
 
-def place(crop, size, background=False):
+def place(crop, size, background=False, pad=1.0):
     cw, ch = crop.size
-    scale = size / max(cw, ch)
+    scale = size * pad / max(cw, ch)
     nw, nh = max(1, round(cw * scale)), max(1, round(ch * scale))
     resized = crop.resize((nw, nh), Image.LANCZOS)
     canvas = gradient_canvas(size) if background else Image.new("RGBA", (size, size), (0, 0, 0, 0))
@@ -70,12 +70,13 @@ def main():
         "public/favicon-16x16.png": (16, False, crop),
         "public/favicon-32x32.png": (32, False, crop),
         "public/favicon-48x48.png": (48, False, crop),
-        "public/apple-touch-icon.png": (180, True, crop_inv),
+        "public/apple-touch-icon.png": (180, True, crop_inv, 0.80),
         "public/android-chrome-192x192.png": (192, False, crop),
         "public/android-chrome-512x512.png": (512, False, crop),
     }
-    for path, (s, bg, c) in targets.items():
-        place(c, s, bg).save(path)
+    for path, (s, bg, c, *rest) in targets.items():
+        pad = rest[0] if rest else 1.0
+        place(c, s, bg, pad).save(path)
         print(f"  {path}: {s}x{s}  bg={'gradient' if bg else 'transparent'}  logo={'inverted' if bg else 'original'}")
 
 
