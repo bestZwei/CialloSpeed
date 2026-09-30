@@ -409,9 +409,9 @@
   color: var(--text-muted);
 }
 
-/* NDT 面板无 cf-aim 占位，说明文字需自行与内容拉开距离 */
+/* NDT 面板无 cf-aim 占位，说明文字间距对齐 CF 的节奏（24+16=40px） */
 #panel-ndt .speedtest-note {
-  margin-top: var(--sp-6);
+  margin-top: calc(var(--sp-5) + var(--sp-4));
 }
 
 /* ---------- Cloudflare 引擎（原生面板） ---------- */
@@ -658,7 +658,8 @@
   margin-top: var(--sp-5);
 }
 
-.cf-main-btn {
+.cf-main-btn,
+.ndt-main-btn {
   width: 100%;
   font-size: var(--fs-body);
   padding: 14px 28px;
