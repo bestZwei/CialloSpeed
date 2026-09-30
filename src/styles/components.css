@@ -42,7 +42,7 @@
 .brand-logo {
   display: inline-block;
   /* 底部贴住文字基线（字标无下伸部），高度随 .brand 的 19px 字号缩放 */
-  height: 0.8em;
+  height: 1.05em;
   width: auto;
   vertical-align: baseline;
   margin-right: 0.04em;
