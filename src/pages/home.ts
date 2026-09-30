@@ -13,9 +13,6 @@ initReveal()
 
 /* ---------- 多引擎下拉选择器 ---------- */
 
-/** Ookla Speedtest Custom 托管子域：在 ookla.com/speedtest-custom 免费注册并把域名加入白名单后填入；留空则面板显示"配置中"提示 */
-const OOKLA_WIDGET_SRC = ''
-
 const speedtestSection = document.getElementById('speedtest-app')
 if (speedtestSection) {
   const select = speedtestSection.querySelector<HTMLElement>('.engine-select')
@@ -34,24 +31,6 @@ if (speedtestSection) {
 
   const ndtSection = speedtestSection.querySelector<HTMLElement>('#panel-ndt')
   if (ndtSection) initNdt7Engine(ndtSection, addRecord)
-
-  let ooklaHandle: SpeedtestHandle | null = null
-  const ooklaSection = speedtestSection.querySelector<HTMLElement>('#panel-ookla')
-  if (ooklaSection) {
-    const ooklaFrame = ooklaSection.querySelector<HTMLElement>('#ookla-frame')
-    if (OOKLA_WIDGET_SRC) {
-      ooklaFrame?.toggleAttribute('hidden', false)
-      ooklaSection.querySelector<HTMLElement>('.speedtest-setup')?.toggleAttribute('hidden', true)
-      ooklaSection.querySelector<HTMLElement>('.speedtest-skeleton')?.toggleAttribute('hidden', false)
-      ooklaHandle = initSpeedtest(ooklaSection, undefined, { src: OOKLA_WIDGET_SRC })
-    } else {
-      // 未配置子域：隐藏 iframe 与工具栏，展示"配置中"提示
-      ooklaFrame?.toggleAttribute('hidden', true)
-      ooklaSection.querySelector<HTMLElement>('.speedtest-setup')?.toggleAttribute('hidden', false)
-      const toolbar = ooklaSection.querySelector<HTMLElement>('.speedtest-toolbar')
-      if (toolbar) toolbar.hidden = true
-    }
-  }
 
   const selectedOption = () =>
     options.find((o) => o.getAttribute('aria-selected') === 'true') ?? options[0]
@@ -85,7 +64,6 @@ if (speedtestSection) {
     closeMenu()
     // iframe 类引擎首次切换才加载，避免多引擎同时抢带宽
     if (opt.id === 'tab-ost') ostHandle?.ensureLoaded()
-    if (opt.id === 'tab-ookla') ooklaHandle?.ensureLoaded()
   }
 
   if (select && trigger && menu && options.length && panels.length) {

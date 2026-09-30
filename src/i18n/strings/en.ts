@@ -35,7 +35,6 @@ export const strings: Record<StringKey, string> = {
   'engine.cf': 'Cloudflare engine',
   'engine.ost': 'OpenSpeedTest',
   'engine.ndt7': 'M-Lab NDT7',
-  'engine.ookla': 'Ookla',
   'engine.manual': 'Manual entry',
   'ndt.error': 'Could not reach M-Lab servers. Please try again later.',
   'ndt.ready': 'Ready?',

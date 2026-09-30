@@ -39,7 +39,6 @@ export const strings = {
   'engine.cf': 'Cloudflare 引擎',
   'engine.ost': 'OpenSpeedTest',
   'engine.ndt7': 'M-Lab NDT7',
-  'engine.ookla': 'Ookla',
   'engine.manual': '手动录入',
   'ndt.error': 'M-Lab 节点连接失败，请稍后重试',
   'ndt.ready': '准备好了？',

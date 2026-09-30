@@ -148,15 +148,6 @@
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </li>
-                <li class="engine-option" id="tab-ookla" role="option" aria-selected="false" data-panel="panel-ookla" tabindex="-1">
-                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />
-                  </svg>
-                  <span class="engine-option-label" data-i18n-html="st.ooklaTab">Ookla Speedtest<small>行业标杆</small></span>
-                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M20 6 9 17l-5-5" />
-                  </svg>
-                </li>
               </ul>
             </div>
 
@@ -281,53 +272,6 @@
               </div>
             </div>
 
-            <!-- ===== 引擎四：Ookla Speedtest（iframe，首次切换才加载） ===== -->
-            <div class="engine-panel" id="panel-ookla" role="tabpanel" aria-labelledby="tab-ookla" hidden>
-              <div class="speedtest-card">
-                <div class="speedtest-frame-wrap">
-                  <iframe
-                    id="ookla-frame"
-                    title="Ookla Speedtest 测速组件"
-                    data-i18n-attrs="title:st.ooklaIframeTitle"
-                    loading="lazy"
-                    allow="fullscreen"
-                    referrerpolicy="origin-when-cross-origin"
-                    hidden
-                  ></iframe>
-                  <div class="speedtest-setup" hidden>
-                    <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />
-                    </svg>
-                    <h3 data-i18n="st.ooklaSetupTitle">Ookla 引擎配置中</h3>
-                    <p data-i18n="st.ooklaSetupBody">该引擎的托管组件正在接入 Ookla Speedtest Custom，开放后即可在此测速。在此期间可使用其他引擎。</p>
-                  </div>
-                  <div class="speedtest-skeleton" aria-hidden="true" hidden>
-                    <div class="skeleton bar"></div>
-                    <div class="skeleton bar"></div>
-                    <p data-i18n="st.connecting">正在连接测速节点…</p>
-                  </div>
-                  <div class="speedtest-fallback">
-                    <h3 data-i18n="st.slowTitle">测速组件加载较慢</h3>
-                    <p data-i18n-html="st.ooklaSlowBody">
-                      可能是当前网络连接不稳定。请刷新页面重试，或
-                      <a href="https://www.speedtest.net/" target="_blank" rel="noopener">点此直接打开 Speedtest</a>。
-                    </p>
-                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()" data-i18n="st.reload">刷新页面</button>
-                  </div>
-                </div>
-                <div class="speedtest-toolbar">
-                  <button class="btn btn-ghost btn-sm speedtest-retest" type="button">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
-                    </svg>
-                    <span data-i18n="st.retest">重新测速</span>
-                  </button>
-                  <p class="speedtest-note" data-i18n="st.ooklaNote">
-                    测速组件由 Ookla® Speedtest 托管 · 结果无法自动回传，可在下方「测速历史」手动录入对比
-                  </p>
-                </div>
-              </div>
-            </div>
             <noscript>
               <p class="speedtest-note" data-i18n="st.noscript">JavaScript 未启用时无法使用在线测速与历史记录功能，请启用 JavaScript 或前往各引擎官网测速。</p>
             </noscript>
@@ -342,7 +286,7 @@
           <h1 data-i18n-html="hero.h1">你的网速，<span class="grad-text">一测便知</span></h1>
           <p class="hero-sub" data-i18n="hero.sub">
             专业级在线网速测试：下载、上传、延迟一键测量。多测速引擎（Cloudflare 边缘节点 ×
-            OpenSpeedTest™ × M-Lab NDT7 × Ookla）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
+            OpenSpeedTest™ × M-Lab NDT7）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#speedtest">
