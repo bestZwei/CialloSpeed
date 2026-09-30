@@ -92,4 +92,7 @@
   --glow-2: rgba(124, 92, 255, 0.13);
   --skeleton: rgba(30, 41, 59, 0.07);
   --skeleton-shine: rgba(30, 41, 59, 0.13);
+  /* 品牌强调色浅色版：#33d6ff 只适配深色底，浅色底上改用深青保证对比度（≥4.5:1） */
+  --brand-3: #0e7490;
+  --grad-brand-soft: linear-gradient(135deg, rgba(0, 184, 230, 0.2), rgba(124, 92, 255, 0.2));
 }
