@@ -8,19 +8,28 @@
 
 import type { TestRecord } from './history'
 
-const WIDGET_SRC = 'https://openspeedtest.com/speedtest'
+const OST_WIDGET_SRC = 'https://openspeedtest.com/speedtest'
 const LOAD_TIMEOUT_MS = 20_000
 
 export interface SpeedtestHandle {
-  /** 首次切换到 OpenSpeedTest Tab 时才真正加载 iframe（懒加载） */
+  /** 首次切换到对应引擎时才真正加载 iframe（懒加载） */
   ensureLoaded: () => void
+}
+
+export interface SpeedtestOptions {
+  /** iframe 加载地址；缺省为 OpenSpeedTest 官方 widget */
+  src?: string
+  /** postMessage 结果回传的来源过滤片段；缺省不监听 */
+  messageOrigin?: string
 }
 
 export function initSpeedtest(
   section: HTMLElement,
   onResult?: (rec: TestRecord) => void,
+  options: SpeedtestOptions = {},
 ): SpeedtestHandle | null {
-  const frame = section.querySelector<HTMLIFrameElement>('#speedtest-frame')
+  const WIDGET_SRC = options.src ?? OST_WIDGET_SRC
+  const frame = section.querySelector<HTMLIFrameElement>('iframe')
   const skeleton = section.querySelector<HTMLElement>('.speedtest-skeleton')
   const fallback = section.querySelector<HTMLElement>('.speedtest-fallback')
   const retestBtn = section.querySelector<HTMLButtonElement>('.speedtest-retest')
@@ -75,10 +84,11 @@ export function initSpeedtest(
     frame.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   })
 
-  // 尽力而为的结果回传：官方 widget 若通过 postMessage 上报则自动记录
-  if (onResult) {
+  // 尽力而为的结果回传：官方 widget 若通过 postMessage 上报则自动记录（仅 OST）
+  if (onResult && options.messageOrigin) {
+    const origin = options.messageOrigin
     window.addEventListener('message', (ev) => {
-      if (!ev.origin.includes('openspeedtest')) return
+      if (!ev.origin.includes(origin)) return
       const data: unknown = ev.data
       if (typeof data !== 'object' || data === null) return
 

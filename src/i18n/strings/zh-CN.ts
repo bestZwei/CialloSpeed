@@ -38,7 +38,12 @@ export const strings = {
   // 历史记录
   'engine.cf': 'Cloudflare 引擎',
   'engine.ost': 'OpenSpeedTest',
+  'engine.ndt7': 'M-Lab NDT7',
+  'engine.ookla': 'Ookla',
   'engine.manual': '手动录入',
+  'ndt.error': 'M-Lab 节点连接失败，请稍后重试',
+  'ndt.ready': '准备好了？',
+  'ndt.done': '已完成',
   'history.clearConfirm': '确定清空所有本地测速记录吗？',
 
   // 主题

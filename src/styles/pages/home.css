@@ -143,7 +143,8 @@
   min-height: 480px;
 }
 
-#speedtest-frame {
+#speedtest-frame,
+#ookla-frame {
   display: block;
   width: 100%;
   height: clamp(480px, 62vh, 640px);
@@ -220,68 +221,193 @@
   max-width: 44em;
 }
 
-/* ---------- 双引擎 Tab ---------- */
-.engine-tabs {
-  display: flex;
-  justify-content: center;
-  gap: 6px;
+/* ---------- 引擎下拉选择器 ---------- */
+.engine-select {
+  position: relative;
   width: fit-content;
   margin: 0 auto var(--sp-5);
-  padding: 6px;
-  border-radius: var(--radius-pill);
+}
+
+.engine-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 18px;
   border: 1px solid var(--border);
+  border-radius: var(--radius-pill);
   background: var(--surface);
   backdrop-filter: blur(10px);
   box-shadow: var(--shadow-card);
-}
-
-.engine-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  white-space: nowrap;
-  padding: 10px 22px;
-  border: 1px solid transparent;
-  border-radius: var(--radius-pill);
-  background: transparent;
-  color: var(--text-muted);
+  color: var(--text);
   font-size: var(--fs-sm);
   font-weight: 600;
   cursor: pointer;
-  transition: color 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease);
+  transition: border-color 0.25s var(--ease), box-shadow 0.25s var(--ease);
 }
 
-.engine-tab small {
+.engine-trigger:hover,
+.engine-trigger[aria-expanded='true'] {
+  border-color: var(--border-strong);
+  box-shadow: var(--shadow-card), 0 0 0 4px var(--glow-1);
+}
+
+.engine-trigger-label {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.engine-trigger-label small {
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.engine-chevron {
+  flex: none;
+  color: var(--text-faint);
+  transition: transform 0.25s var(--ease);
+}
+
+.engine-trigger[aria-expanded='true'] .engine-chevron {
+  transform: rotate(180deg);
+}
+
+.engine-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 40;
+  min-width: 300px;
+  padding: 6px;
+  margin: 0;
+  list-style: none;
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--surface);
+  backdrop-filter: blur(14px);
+  box-shadow: var(--shadow-card), 0 18px 44px rgba(0, 0, 0, 0.28);
+  animation: engine-menu-in 0.18s var(--ease);
+}
+
+@keyframes engine-menu-in {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
+
+.engine-option {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 11px 14px;
+  border-radius: 12px;
+  cursor: pointer;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background 0.18s var(--ease), color 0.18s var(--ease);
+}
+
+.engine-option svg {
+  flex: none;
+}
+
+.engine-option:hover,
+.engine-option:focus-visible {
+  background: var(--glow-1);
+  color: var(--text);
+  outline: none;
+}
+
+.engine-option small {
   font-size: var(--fs-xs);
   font-weight: 400;
   color: var(--text-faint);
   margin-left: 6px;
 }
 
-.engine-tab:hover {
+.engine-check {
+  margin-left: auto;
+  width: 15px;
+  height: 15px;
+  color: var(--brand-1);
+  opacity: 0;
+  transition: opacity 0.18s var(--ease);
+}
+
+.engine-option.is-active {
   color: var(--text);
 }
 
-.engine-tab svg {
-  width: 16px;
-  height: 16px;
-  flex: none;
+.engine-option.is-active .engine-check {
+  opacity: 1;
 }
 
-.engine-tab.is-active {
-  color: #fff;
+.engine-option.is-active svg:first-child {
+  color: var(--brand-1);
+}
+
+/* ---------- M-Lab NDT7 引擎（原生面板） ---------- */
+.ndt-stage {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  min-height: 300px;
+  padding: var(--sp-5);
+  border-radius: var(--radius-lg);
+  background:
+    radial-gradient(ellipse 70% 60% at 50% 42%, rgba(0, 184, 230, 0.14), transparent 70%),
+    radial-gradient(ellipse 60% 55% at 60% 55%, rgba(124, 92, 255, 0.1), transparent 72%);
+  border: 1px solid var(--border);
+  overflow: hidden;
+}
+
+.ndt-value {
+  font-size: clamp(44px, 8vw, 64px);
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.ndt-unit {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.ndt-progress {
+  width: min(220px, 80%);
+  height: 5px;
+  margin-top: var(--sp-3);
+  border-radius: 99px;
+  background: var(--border);
+  overflow: hidden;
+}
+
+.ndt-bar {
+  width: 0%;
+  height: 100%;
+  border-radius: 99px;
   background: var(--grad-brand);
-  border-color: transparent;
-  box-shadow: 0 6px 20px var(--glow-2);
+  transition: width 0.4s var(--ease);
 }
 
-.engine-tab.is-active small {
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.engine-tab:focus-visible {
-  outline: 2px solid var(--brand-1);
-  outline-offset: 2px;
+.ndt-phase {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
 }
 
 /* ---------- Cloudflare 引擎（原生面板） ---------- */
@@ -821,26 +947,23 @@
     min-height: 420px;
   }
 
-  #speedtest-frame {
+  #speedtest-frame,
+  #ookla-frame {
     height: clamp(420px, 68vh, 560px);
   }
 
-  .engine-tabs {
+  .engine-select {
     width: 100%;
-    max-width: 100%;
   }
 
-  .engine-tab {
-    flex: 1 1 0;
+  .engine-trigger {
+    width: 100%;
     justify-content: center;
-    min-width: 0;
-    gap: 6px;
-    padding: 9px 8px;
-    font-size: 13px;
   }
 
-  .engine-tab small {
-    display: none;
+  .engine-menu {
+    min-width: 100%;
+    white-space: nowrap;
   }
 
   .cf-engine {
@@ -849,5 +972,9 @@
 
   .cf-metric strong {
     font-size: 22px;
+  }
+
+  .ndt-stage {
+    min-height: 240px;
   }
 }

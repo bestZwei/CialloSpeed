@@ -113,19 +113,51 @@
       <section class="section speedtest-section" id="speedtest" data-i18n-attrs="aria-label:st.sectionAria" aria-label="在线网速测试">
         <div class="container">
           <div id="speedtest-app">
-            <div class="engine-tabs" role="tablist" data-i18n-attrs="aria-label:st.tabsAria" aria-label="选择测速引擎">
-              <button class="engine-tab is-active" id="tab-cf" role="tab" aria-selected="true" aria-controls="panel-cf" type="button">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+            <div class="engine-select">
+              <button class="engine-trigger" id="engine-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" aria-controls="engine-menu" data-i18n-attrs="aria-label:st.tabsAria" aria-label="选择测速引擎">
+                <span class="engine-trigger-label" aria-hidden="true">Cloudflare 引擎<small>全球边缘节点</small></span>
+                <svg class="engine-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
                 </svg>
-                <span data-i18n-html="st.cfTab">Cloudflare 引擎<small>全球边缘节点</small></span>
               </button>
-              <button class="engine-tab" id="tab-ost" role="tab" aria-selected="false" aria-controls="panel-ost" type="button" tabindex="-1">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
-                </svg>
-                <span data-i18n-html="st.ostTab">OpenSpeedTest<small>经典引擎</small></span>
-              </button>
+              <ul class="engine-menu" id="engine-menu" role="listbox" aria-labelledby="engine-trigger" hidden>
+                <li class="engine-option is-active" id="tab-cf" role="option" aria-selected="true" data-panel="panel-cf" tabindex="-1">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+                  </svg>
+                  <span class="engine-option-label" data-i18n-html="st.cfTab">Cloudflare 引擎<small>全球边缘节点</small></span>
+                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </li>
+                <li class="engine-option" id="tab-ost" role="option" aria-selected="false" data-panel="panel-ost" tabindex="-1">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+                  </svg>
+                  <span class="engine-option-label" data-i18n-html="st.ostTab">OpenSpeedTest<small>经典引擎</small></span>
+                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </li>
+                <li class="engine-option" id="tab-ndt" role="option" aria-selected="false" data-panel="panel-ndt" tabindex="-1">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
+                  </svg>
+                  <span class="engine-option-label" data-i18n-html="st.ndtTab">M-Lab NDT7<small>学术级测量</small></span>
+                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </li>
+                <li class="engine-option" id="tab-ookla" role="option" aria-selected="false" data-panel="panel-ookla" tabindex="-1">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="m12 14 4-4" /><path d="M3.34 19a10 10 0 1 1 17.32 0" />
+                  </svg>
+                  <span class="engine-option-label" data-i18n-html="st.ooklaTab">Ookla Speedtest<small>行业标杆</small></span>
+                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </li>
+              </ul>
             </div>
 
             <!-- ===== 引擎一：Cloudflare（原生面板） ===== -->
@@ -219,8 +251,77 @@
                 </div>
               </div>
             </div>
+
+            <!-- ===== 引擎三：M-Lab NDT7（原生面板，WebSocket 直连 M-Lab 节点） ===== -->
+            <div class="engine-panel" id="panel-ndt" role="tabpanel" aria-labelledby="tab-ndt" hidden>
+              <div class="speedtest-card cf-engine">
+                <div class="cf-layout">
+                  <div class="ndt-stage">
+                    <div class="ndt-value">--</div>
+                    <div class="ndt-unit">Mbps</div>
+                    <div class="ndt-progress" aria-hidden="true"><div class="ndt-bar"></div></div>
+                    <div class="ndt-phase" data-i18n="st.ndtReady">准备好了？</div>
+                  </div>
+                  <div class="cf-side">
+                    <div class="cf-grid">
+                      <div class="cf-metric ndt-m-down"><span data-i18n="st.down">下载</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric ndt-m-up"><span data-i18n="st.up">上传</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric ndt-m-ping"><span data-i18n="st.ping">延迟</span><strong>--</strong><small>ms</small></div>
+                      <div class="cf-metric ndt-m-bloat"><span data-i18n="st.ndtBloat">负载延迟</span><strong>--</strong><small>ms</small></div>
+                    </div>
+                    <div class="cf-actions">
+                      <button class="btn btn-primary ndt-main-btn" type="button" data-i18n="btn.startTest">开始测速</button>
+                    </div>
+                    <p class="cf-error ndt-error" role="alert"></p>
+                  </div>
+                </div>
+                <p class="speedtest-note" data-i18n="st.ndtNote">
+                  测速引擎由 M-Lab NDT7（Google 支持的开源网络测量平台）提供 · 单 TCP 连接学术级测量，负载延迟为高负载下的延迟增量 · 匿名结果将进入 M-Lab 公开研究数据集
+                </p>
+              </div>
+            </div>
+
+            <!-- ===== 引擎四：Ookla Speedtest（iframe，首次切换才加载） ===== -->
+            <div class="engine-panel" id="panel-ookla" role="tabpanel" aria-labelledby="tab-ookla" hidden>
+              <div class="speedtest-card">
+                <div class="speedtest-frame-wrap">
+                  <iframe
+                    id="ookla-frame"
+                    title="Ookla Speedtest 测速组件"
+                    data-i18n-attrs="title:st.ooklaIframeTitle"
+                    loading="lazy"
+                    allow="fullscreen"
+                    referrerpolicy="origin-when-cross-origin"
+                  ></iframe>
+                  <div class="speedtest-skeleton" aria-hidden="true">
+                    <div class="skeleton bar"></div>
+                    <div class="skeleton bar"></div>
+                    <p data-i18n="st.connecting">正在连接测速节点…</p>
+                  </div>
+                  <div class="speedtest-fallback">
+                    <h3 data-i18n="st.slowTitle">测速组件加载较慢</h3>
+                    <p data-i18n-html="st.ooklaSlowBody">
+                      可能是当前网络连接不稳定。请刷新页面重试，或
+                      <a href="https://www.speedtest.net/" target="_blank" rel="noopener">点此直接打开 Speedtest</a>。
+                    </p>
+                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()" data-i18n="st.reload">刷新页面</button>
+                  </div>
+                </div>
+                <div class="speedtest-toolbar">
+                  <button class="btn btn-ghost btn-sm speedtest-retest" type="button">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
+                    </svg>
+                    <span data-i18n="st.retest">重新测速</span>
+                  </button>
+                  <p class="speedtest-note" data-i18n="st.ooklaNote">
+                    测速组件由 Ookla® Speedtest 托管 · 结果无法自动回传，可在下方「测速历史」手动录入对比
+                  </p>
+                </div>
+              </div>
+            </div>
             <noscript>
-              <p class="speedtest-note" data-i18n="st.noscript">JavaScript 未启用时可切换到 OpenSpeedTest 引擎测速，但主题切换与历史记录功能不可用。</p>
+              <p class="speedtest-note" data-i18n="st.noscript">JavaScript 未启用时无法使用在线测速与历史记录功能，请启用 JavaScript 或前往各引擎官网测速。</p>
             </noscript>
           </div>
         </div>
@@ -232,8 +333,8 @@
           <span class="badge" data-i18n="hero.badge">免费 · 无需插件 · 支持 10Gbps+ 光纤</span>
           <h1 data-i18n-html="hero.h1">你的网速，<span class="grad-text">一测便知</span></h1>
           <p class="hero-sub" data-i18n="hero.sub">
-            专业级在线网速测试：下载、上传、延迟一键测量。双测速引擎（Cloudflare 全球边缘节点 ×
-            OpenSpeedTest™）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
+            专业级在线网速测试：下载、上传、延迟一键测量。多测速引擎（Cloudflare 边缘节点 ×
+            OpenSpeedTest™ × M-Lab NDT7 × Ookla）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#speedtest">

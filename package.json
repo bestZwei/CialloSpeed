@@ -15,6 +15,7 @@
     "vite": "^5.4.8"
   },
   "dependencies": {
-    "@cloudflare/speedtest": "^1.14.1"
+    "@cloudflare/speedtest": "^1.14.1",
+    "@m-lab/ndt7": "^0.1.5"
   }
 }

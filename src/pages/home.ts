@@ -4,17 +4,25 @@ import { initThemeToggle } from '../modules/theme'
 import { initLayout, initReveal } from '../modules/layout'
 import { initSpeedtest, type SpeedtestHandle } from '../modules/speedtest'
 import { initCloudflareEngine } from '../modules/cloudflare-engine'
+import { initNdt7Engine } from '../modules/ndt7-engine'
 import { initHistory, addRecord } from '../modules/history'
 
 initLayout()
 initThemeToggle(document.getElementById('theme-toggle') as HTMLButtonElement | null)
 initReveal()
 
-/* ---------- 双引擎 Tab 切换 ---------- */
+/* ---------- 多引擎下拉选择器 ---------- */
+
+/** Ookla Speedtest Custom 托管子域：需在 ookla.com/speedtest-custom 注册后生效 */
+const OOKLA_WIDGET_SRC = 'https://ciallospeed.speedtestcustom.com/'
 
 const speedtestSection = document.getElementById('speedtest-app')
 if (speedtestSection) {
-  const tabs = Array.from(speedtestSection.querySelectorAll<HTMLButtonElement>('.engine-tab'))
+  const select = speedtestSection.querySelector<HTMLElement>('.engine-select')
+  const trigger = speedtestSection.querySelector<HTMLButtonElement>('#engine-trigger')
+  const triggerLabel = speedtestSection.querySelector<HTMLElement>('.engine-trigger-label')
+  const menu = speedtestSection.querySelector<HTMLElement>('#engine-menu')
+  const options = Array.from(speedtestSection.querySelectorAll<HTMLElement>('.engine-option'))
   const panels = Array.from(speedtestSection.querySelectorAll<HTMLElement>('.engine-panel'))
 
   let ostHandle: SpeedtestHandle | null = null
@@ -24,29 +32,82 @@ if (speedtestSection) {
   const cfSection = speedtestSection.querySelector<HTMLElement>('#panel-cf')
   if (cfSection) initCloudflareEngine(cfSection, addRecord)
 
-  const selectTab = (tab: HTMLButtonElement) => {
-    const index = tabs.indexOf(tab)
-    if (index < 0) return
-    for (let i = 0; i < tabs.length; i++) {
-      const active = i === index
-      tabs[i].classList.toggle('is-active', active)
-      tabs[i].setAttribute('aria-selected', String(active))
-      tabs[i].tabIndex = active ? 0 : -1
-      panels[i]?.toggleAttribute('hidden', !active)
-    }
-    // OpenSpeedTest 引擎首次切换才加载 iframe，避免双引擎同时抢带宽
-    if (tabs[index].id === 'tab-ost') ostHandle?.ensureLoaded()
+  const ndtSection = speedtestSection.querySelector<HTMLElement>('#panel-ndt')
+  if (ndtSection) initNdt7Engine(ndtSection, addRecord)
+
+  let ooklaHandle: SpeedtestHandle | null = null
+  const ooklaSection = speedtestSection.querySelector<HTMLElement>('#panel-ookla')
+  if (ooklaSection) ooklaHandle = initSpeedtest(ooklaSection, undefined, { src: OOKLA_WIDGET_SRC })
+
+  const selectedOption = () =>
+    options.find((o) => o.getAttribute('aria-selected') === 'true') ?? options[0]
+
+  const isOpen = () => menu !== null && !menu.hidden
+
+  const openMenu = () => {
+    if (!menu || !trigger) return
+    menu.hidden = false
+    trigger.setAttribute('aria-expanded', 'true')
+    selectedOption()?.focus()
   }
 
-  for (const tab of tabs) {
-    tab.addEventListener('click', () => selectTab(tab))
-    tab.addEventListener('keydown', (e) => {
-      const index = tabs.indexOf(tab)
-      if (e.key === 'ArrowRight') selectTab(tabs[(index + 1) % tabs.length])
-      else if (e.key === 'ArrowLeft') selectTab(tabs[(index - 1 + tabs.length) % tabs.length])
-      else return
-      e.preventDefault()
-      tabs.find((t) => t.getAttribute('aria-selected') === 'true')?.focus()
+  const closeMenu = (focusTrigger = false) => {
+    if (!menu || !trigger) return
+    menu.hidden = true
+    trigger.setAttribute('aria-expanded', 'false')
+    if (focusTrigger) trigger.focus()
+  }
+
+  const selectOption = (opt: HTMLElement) => {
+    for (const o of options) {
+      const active = o === opt
+      o.classList.toggle('is-active', active)
+      o.setAttribute('aria-selected', String(active))
+    }
+    for (const p of panels) p.toggleAttribute('hidden', p.id !== opt.dataset.panel)
+    // 触发器同步显示当前引擎（图标 + 名称 + 副标题）
+    const label = opt.querySelector<HTMLElement>('.engine-option-label')
+    if (triggerLabel && label) triggerLabel.innerHTML = label.innerHTML
+    closeMenu()
+    // iframe 类引擎首次切换才加载，避免多引擎同时抢带宽
+    if (opt.id === 'tab-ost') ostHandle?.ensureLoaded()
+    if (opt.id === 'tab-ookla') ooklaHandle?.ensureLoaded()
+  }
+
+  if (select && trigger && menu && options.length && panels.length) {
+    trigger.addEventListener('click', () => (isOpen() ? closeMenu() : openMenu()))
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
+        e.preventDefault()
+        openMenu()
+      }
+    })
+
+    for (const opt of options) {
+      opt.addEventListener('click', () => selectOption(opt))
+    }
+
+    menu.addEventListener('keydown', (e) => {
+      const current = document.activeElement as HTMLElement | null
+      const idx = current ? options.indexOf(current) : -1
+      if (e.key === 'Escape') {
+        closeMenu(true)
+      } else if (e.key === 'ArrowDown') {
+        e.preventDefault()
+        options[(idx + 1 + options.length) % options.length]?.focus()
+      } else if (e.key === 'ArrowUp') {
+        e.preventDefault()
+        options[(idx - 1 + options.length) % options.length]?.focus()
+      } else if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault()
+        if (current) selectOption(current)
+      } else if (e.key === 'Tab') {
+        closeMenu()
+      }
+    })
+
+    document.addEventListener('click', (e) => {
+      if (isOpen() && !select.contains(e.target as Node)) closeMenu()
     })
   }
 }
