@@ -3,7 +3,7 @@
   "private": true,
   "version": "1.0.0",
   "type": "module",
-  "description": "CialloSpeed — 免费在线中文网速测试，测速引擎由 OpenSpeedTest™ 提供支持",
+  "description": "CialloSpeed — 免费在线中文网速测试，双测速引擎（Cloudflare × OpenSpeedTest）交叉验证",
   "scripts": {
     "dev": "vite",
     "build": "tsc --noEmit && vite build",
