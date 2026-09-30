@@ -12,7 +12,7 @@
         "name": "Are the speed test results accurate?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "CialloSpeed uses dual test engines: Cloudflare's official speed test kernel (testing via the nearest of its global edge nodes) and OpenSpeedTest™ (multi-threaded concurrency to saturate your bandwidth), both MIT open source. But any speed test is affected by time of day, Wi-Fi conditions and node location. We recommend cross-validating with both engines and averaging multiple runs."
+          "text": "CialloSpeed aggregates six test engines: Cloudflare's official speed test kernel (nearest global edge nodes), OpenSpeedTest™ (multi-threaded concurrency), M-Lab NDT7 (academic single-connection measurement), LibreSpeed (open protocol plus community public nodes), Meter.net and SpeedMeter.dev (independent test networks) — several of them open source. But any speed test is affected by time of day, Wi-Fi conditions and node location. We recommend cross-validating across engines and averaging multiple runs."
         }
       },
       {
@@ -68,7 +68,7 @@
         "name": "Is this website free?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Completely free, with no ads and no sign-up. The test engines are provided by the open source projects Cloudflare Speedtest and OpenSpeedTest™ (both MIT licensed)."
+          "text": "Completely free, with no ads and no sign-up. The engines come from the open source projects Cloudflare Speedtest, OpenSpeedTest™ and LibreSpeed (MIT / Apache-2.0), plus public test services such as M-Lab NDT7, Meter.net and SpeedMeter.dev."
         }
       }
     ]
@@ -78,7 +78,7 @@
   "f.lead": "The 8 most common questions about online speed tests. Tap to expand the answers.",
 
   "f.q1": "Are the speed test results accurate?",
-  "f.a1": "CialloSpeed uses dual test engines: Cloudflare's official speed test kernel (testing via the nearest of its global edge nodes) and OpenSpeedTest™ (multi-threaded concurrency to saturate your bandwidth). Both are MIT open source and professional. That said, any test is affected by time of day, Wi-Fi conditions and node location — cross-validate with both engines and average several runs.",
+  "f.a1": "CialloSpeed aggregates six test engines: Cloudflare's official speed test kernel (nearest global edge nodes), OpenSpeedTest™ (multi-threaded concurrency), M-Lab NDT7 (academic single-connection measurement), LibreSpeed (open protocol plus community public nodes), Meter.net and SpeedMeter.dev (independent test networks) — several of them open source. That said, any test is affected by time of day, Wi-Fi conditions and node location — cross-validate across engines and average several runs.",
   "f.q2": "Why is the measured speed lower than my broadband plan?",
   "f.a2li1": "Wi-Fi signal loss or channel interference",
   "f.a2li2": "Underpowered router or low-grade Ethernet cabling",
@@ -101,5 +101,5 @@
   "f.a7li4": "Average multiple runs",
   "f.a7li5": "Move closer to the router or use the 5GHz band",
   "f.q8": "Is this website free?",
-  "f.a8": "Completely free, with no ads and no sign-up. The test engines are provided by the open source projects <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://github.com/openspeedtest/Speed-Test\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™ (both MIT licensed)</a>."
+  "f.a8": "Completely free, with no ads and no sign-up. The engines come from the open source projects <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a>, <a href=\"https://github.com/openspeedtest/Speed-Test\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™</a> and <a href=\"https://github.com/librespeed/speedtest\" target=\"_blank\" rel=\"noopener\">LibreSpeed</a> (MIT / Apache-2.0), plus public test services such as M-Lab NDT7, Meter.net and SpeedMeter.dev."
 }

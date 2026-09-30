@@ -18,18 +18,20 @@
   "brand.home": "CialloSpeed Home",
   "menu.open": "Open menu",
 
-  "footer.brandDesc": "Free, clean online speed test in your browser. Professional HTML5-based engines, no plugins, works on every device; your test records never leave your browser.",
+  "footer.brandDesc": "Free, clean Chinese speed test. Six test engines cross-validated, HTML5-based with no plugins, works on every device; your records never leave your browser.",
   "footer.exploreAria": "Site navigation",
   "footer.explore": "Explore",
   "footer.test": "Speed Test",
   "footer.whyDifferent": "Why Results Differ",
   "footer.relatedAria": "Related links",
   "footer.related": "Related Projects",
-  "footer.ostSite": "OpenSpeedTest™ Website",
-  "footer.ostRepo": "OpenSpeedTest Repository",
-  "footer.cfEngine": "Cloudflare Speedtest Engine",
-  "footer.github": "GitHub Repository",
+  "footer.ostSite": "OpenSpeedTest™",
+  "footer.cfEngine": "Cloudflare Speedtest",
+  "footer.mlab": "M-Lab NDT7",
+  "footer.meter": "Meter.net",
+  "footer.speedmeter": "SpeedMeter.dev",
+  "footer.librespeed": "LibreSpeed",
   "footer.copyright": "© 2026 CialloSpeed · Results vary with network conditions and are for reference only",
-  "footer.powered": "Dual speed test engines powered by <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://openspeedtest.com\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™</a>",
-  "footer.poweredShort": "Dual engines powered by <a href=\"https://github.com/cloudflare/speedtest\" target=\"_blank\" rel=\"noopener\">Cloudflare Speedtest</a> and <a href=\"https://openspeedtest.com\" target=\"_blank\" rel=\"noopener\">OpenSpeedTest™</a>"
+  "footer.powered": "Multiple engines cross-validated · Results are saved only in your browser",
+  "footer.poweredShort": "Multiple engines cross-validated · Results are saved only in your browser"
 }

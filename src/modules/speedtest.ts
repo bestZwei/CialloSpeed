@@ -6,7 +6,7 @@
  * - 监听 widget postMessage，若官方组件回传结果则自动记录（尽力而为）
  */
 
-import type { TestRecord } from './history'
+import type { EngineId, TestRecord } from './history'
 
 const OST_WIDGET_SRC = 'https://openspeedtest.com/speedtest'
 const LOAD_TIMEOUT_MS = 20_000
@@ -21,6 +21,8 @@ export interface SpeedtestOptions {
   src?: string
   /** postMessage 结果回传的来源过滤片段；缺省不监听 */
   messageOrigin?: string
+  /** 结果写入历史时标注的引擎来源；缺省 ost */
+  engineId?: EngineId
 }
 
 export function initSpeedtest(
@@ -84,21 +86,27 @@ export function initSpeedtest(
     frame.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   })
 
-  // 尽力而为的结果回传：官方 widget 若通过 postMessage 上报则自动记录（仅 OST）
+  // 尽力而为的结果回传：widget 若通过 postMessage 上报则自动记录
+  // 数值可能在顶层（OST）或 results 子对象（SpeedMeter.dev）里，两处都取
   if (onResult && options.messageOrigin) {
     const origin = options.messageOrigin
+    const engineId = options.engineId ?? 'ost'
     window.addEventListener('message', (ev) => {
       if (!ev.origin.includes(origin)) return
       const data: unknown = ev.data
       if (typeof data !== 'object' || data === null) return
 
       const d = data as Record<string, unknown>
-      const down = pickNumber(d, ['download', 'down', 'Download', 'Down'])
-      const up = pickNumber(d, ['upload', 'up', 'Upload', 'Up'])
-      const ping = pickNumber(d, ['ping', 'Ping', 'latency', 'Latency'])
+      const nested =
+        typeof d.results === 'object' && d.results !== null
+          ? (d.results as Record<string, unknown>)
+          : d
+      const down = pickNumber(nested, ['download', 'down', 'Download', 'Down'])
+      const up = pickNumber(nested, ['upload', 'up', 'Upload', 'Up'])
+      const ping = pickNumber(nested, ['ping', 'Ping', 'latency', 'Latency'])
 
       if (down !== undefined && up !== undefined) {
-        onResult({ down, up, ping: ping ?? 0, ts: Date.now(), engine: 'ost' })
+        onResult({ down, up, ping: ping ?? 0, ts: Date.now(), engine: engineId })
       }
     })
   }

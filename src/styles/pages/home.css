@@ -135,19 +135,39 @@
     0 0 24px rgba(0, 184, 230, 0.12);
 }
 
+/* 三个挂件（OST / SpeedMeter / Meter.net）统一高度，切换引擎时不再跳变 */
+.widget-frame {
+  display: block;
+  width: 100%;
+  height: clamp(420px, 55vh, 480px);
+  border: 0;
+  background: var(--surface-solid);
+}
+
+/* SpeedMeter：表盘自然高度，在统一高度的容器内垂直居中（卡片总高与另两个挂件一致） */
+#panel-sm .speedtest-frame-wrap {
+  display: flex;
+  align-items: center;
+  min-height: 0;
+}
+
+.speedmeter-frame {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 28vh, 235px);
+  border: 0;
+  background: transparent;
+}
+
+/* SpeedMeter 挂件始终用浅色主题；暗色站点下反色成暗色（白底→黑底，色相经 hue-rotate 保持） */
+[data-theme='dark'] .speedmeter-frame {
+  filter: invert(1) hue-rotate(180deg);
+}
+
 .speedtest-frame-wrap {
   position: relative;
   border-radius: calc(var(--radius-lg) - 8px);
   overflow: hidden;
-  background: var(--surface-solid);
-  min-height: 480px;
-}
-
-#speedtest-frame {
-  display: block;
-  width: 100%;
-  height: clamp(480px, 62vh, 640px);
-  border: 0;
   background: var(--surface-solid);
 }
 
@@ -1023,11 +1043,11 @@
   }
 
   .speedtest-frame-wrap {
-    min-height: 420px;
+    min-height: 0;
   }
 
-  #speedtest-frame {
-    height: clamp(420px, 68vh, 560px);
+  .widget-frame {
+    height: clamp(380px, 62vh, 440px);
   }
 
   .engine-select {

@@ -32,7 +32,7 @@
   "h.s5li2": "<strong>Interconnection bottlenecks</strong>: cross-carrier routes (e.g. China Unicom → a China Telecom datacenter) are often throttled",
   "h.s5li3": "<strong>Different concurrency strategies</strong>: connection counts, sampling windows and compensation factors vary",
   "h.s5li4": "<strong>Time of day</strong>: during the evening peak, shared links are congested and no node scores high",
-  "h.s5p1": "We recommend <strong>averaging multiple runs on the same engine</strong> — only then is comparison meaningful. CialloSpeed's OpenSpeedTest engine always uses the same node, so repeated results are directly comparable. For why different tools disagree, see <a href=\"/why-different.html\">Why Results Differ</a>.",
+  "h.s5p1": "We recommend <strong>averaging multiple runs on the same engine</strong> — only then is comparison meaningful. Each CialloSpeed engine keeps using the same node across runs (LibreSpeed also lets you pick one manually), so repeated results are directly comparable. For why different tools disagree, see <a href=\"/why-different.html\">Why Results Differ</a>.",
   "h.s6h": "<span class=\"sec-index\">06</span>Glossary",
   "h.t1d": "Mbps (megabits/sec)",
   "h.t1t": "Bandwidth unit used in ISP advertising. 8 Mbps = 1 MB/s.",

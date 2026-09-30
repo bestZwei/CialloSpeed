@@ -32,7 +32,7 @@
             "name": "测速结果准确吗？",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "CialloSpeed 采用双测速引擎：Cloudflare 官方测速内核（全球边缘节点就近测速）与 OpenSpeedTest™（多线程并发压满带宽），均 MIT 开源。但任何测速都受时段、Wi-Fi 状况、节点位置影响，建议双引擎交叉验证并多次测试取平均。"
+              "text": "CialloSpeed 聚合六个测速引擎：Cloudflare 官方测速内核（全球边缘节点就近测速）、OpenSpeedTest™（多线程并发压满带宽）、M-Lab NDT7（学术级单连接测量）、LibreSpeed（开源协议 + 社区公共节点）、Meter.net 与 SpeedMeter.dev（独立测速网络），其中多款开源。但任何测速都受时段、Wi-Fi 状况、节点位置影响，建议多引擎交叉验证并多次测试取平均。"
             }
           },
           {
@@ -88,7 +88,7 @@
             "name": "这个网站免费吗？",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "完全免费，无广告、无需注册。测速引擎由开源项目 Cloudflare Speedtest 与 OpenSpeedTest™（均 MIT 协议）提供支持。"
+              "text": "完全免费，无广告、无需注册。测速引擎来自 Cloudflare Speedtest、OpenSpeedTest™、LibreSpeed 等开源项目（MIT / Apache-2.0），以及 M-Lab NDT7、Meter.net、SpeedMeter.dev 等公开测速服务。"
             }
           }
         ]
@@ -159,9 +159,11 @@
             <div class="accordion-panel">
               <div class="accordion-panel-inner">
                 <p data-i18n="f.a1">
-                  CialloSpeed 采用双测速引擎：Cloudflare 官方测速内核（全球边缘节点就近测速）与
-                  OpenSpeedTest™（多线程并发压满带宽），均 MIT 开源，结果专业可信。
-                  但任何测速都受时段、Wi-Fi 状况、节点位置影响，建议双引擎交叉验证并多次测试取平均。
+                  CialloSpeed 聚合六个测速引擎：Cloudflare 官方测速内核（全球边缘节点就近测速）、
+                  OpenSpeedTest™（多线程并发压满带宽）、M-Lab NDT7（学术级单连接测量）、
+                  LibreSpeed（开源协议 + 社区公共节点）、Meter.net 与 SpeedMeter.dev（独立测速网络），
+                  其中多款开源。
+                  但任何测速都受时段、Wi-Fi 状况、节点位置影响，建议多引擎交叉验证并多次测试取平均。
                 </p>
               </div>
             </div>
@@ -272,9 +274,11 @@
             <div class="accordion-panel">
               <div class="accordion-panel-inner">
                 <p data-i18n-html="f.a8">
-                  完全免费，无广告、无需注册。测速引擎由开源项目
-                  <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与
-                  <a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">OpenSpeedTest™（均 MIT 协议）</a>提供支持。
+                  完全免费，无广告、无需注册。测速引擎来自
+                  <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a>、
+                  <a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener">OpenSpeedTest™</a>、
+                  <a href="https://github.com/librespeed/speedtest" target="_blank" rel="noopener">LibreSpeed</a>
+                  等开源项目（MIT / Apache-2.0），以及 M-Lab NDT7、Meter.net、SpeedMeter.dev 等公开测速服务。
                 </p>
               </div>
             </div>
@@ -290,7 +294,7 @@
             <span class="brand-name"><img class="brand-logo" src="/Ciallo-mark.png" alt="Ciallo" /><span class="grad-text">Speed</span></span>
           </a>
           <p data-i18n="footer.brandDesc">
-            免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
+            免费、纯净的中文网速测试。六大测速引擎交叉验证，基于 HTML5 无需插件、全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
@@ -308,14 +312,18 @@
         <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
           <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.ostRepo">OpenSpeedTest 开源仓库</a></li>
+            <li><a href="https://speed.cloudflare.com" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare Speedtest</a></li>
+            <li><a href="https://www.measurementlab.net" target="_blank" rel="noopener" data-i18n="footer.mlab">M-Lab NDT7</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™</a></li>
+            <li><a href="https://www.meter.net" target="_blank" rel="noopener" data-i18n="footer.meter">Meter.net</a></li>
+            <li><a href="https://speedmeter.dev" target="_blank" rel="noopener" data-i18n="footer.speedmeter">SpeedMeter.dev</a></li>
+            <li><a href="https://librespeed.org" target="_blank" rel="noopener" data-i18n="footer.librespeed">LibreSpeed</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
         <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p data-i18n-html="footer.powered">双测速引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持</p>
+        <p data-i18n-html="footer.powered">多引擎交叉验证 · 测速结果仅保存在你的浏览器本地</p>
       </div>
     </footer>
 

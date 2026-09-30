@@ -5,14 +5,16 @@
 
 import { t, locale, type StringKey } from '../i18n'
 
-/** 测速引擎来源：cf = Cloudflare 边缘引擎；ost = OpenSpeedTest；ndt7 = M-Lab NDT7；ls = LibreSpeed；manual = 手动录入（旧记录缺省视为 manual） */
-export type EngineId = 'cf' | 'ost' | 'ndt7' | 'ls' | 'manual'
+/** 测速引擎来源：cf = Cloudflare 边缘引擎；ost = OpenSpeedTest；ndt7 = M-Lab NDT7；ls = LibreSpeed；sm = SpeedMeter.dev；mn = Meter.net；manual = 手动录入（旧记录缺省视为 manual） */
+export type EngineId = 'cf' | 'ost' | 'ndt7' | 'ls' | 'sm' | 'mn' | 'manual'
 
 export const ENGINE_LABEL: Record<EngineId, StringKey> = {
   cf: 'engine.cf',
   ost: 'engine.ost',
   ndt7: 'engine.ndt7',
   ls: 'engine.ls',
+  sm: 'engine.sm',
+  mn: 'engine.mn',
   manual: 'engine.manual',
 }
 

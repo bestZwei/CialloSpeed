@@ -7,7 +7,7 @@
     <meta
       name="description"
       data-i18n-attrs="content:metaDesc"
-      content="用两个测速工具测同一宽带，结果能差一倍？一文讲清测速节点位置、测试方法、统计口径的差异，以及如何用双引擎交叉验证得到可信的网速结果。"
+      content="用不同测速工具测同一宽带，结果能差一倍？一文讲清测速节点位置、测试方法、统计口径的差异，以及如何用多引擎交叉验证得到可信的网速结果。"
     />
     <link rel="canonical" href="https://speed.ciallo.de/why-different.html" />
     <meta name="theme-color" content="#0b101a" />
@@ -19,7 +19,7 @@
     <meta property="og:type" content="article" />
     <meta property="og:site_name" content="CialloSpeed" />
     <meta property="og:title" data-i18n-attrs="content:ogTitle" content="为什么不同测速工具结果不一样？" />
-    <meta property="og:description" data-i18n-attrs="content:ogDesc" content="测速节点、测试方法与统计口径的差异，以及双引擎交叉验证的正确姿势。" />
+    <meta property="og:description" data-i18n-attrs="content:ogDesc" content="测速节点、测试方法与统计口径的差异，以及多引擎交叉验证的正确姿势。" />
     <meta property="og:url" content="https://speed.ciallo.de/why-different.html" />
     <meta property="og:locale" content="zh_CN" />
     <script type="application/ld+json" data-i18n-jsonld="jsonld">
@@ -127,8 +127,9 @@
                 </ul>
               </div>
               <p data-i18n-html="w.s2p2">
-                CialloSpeed 双引擎分别采用不同策略：Cloudflare 引擎渐进加压并统计
-                90 分位带宽，抗单次抖动；OpenSpeedTest 引擎则使用多连接压满带宽。两者互为对照。
+                CialloSpeed 的六个引擎策略各不相同：Cloudflare 引擎渐进加压并统计
+                90 分位带宽，抗单次抖动；OpenSpeedTest 引擎使用多连接压满带宽；M-Lab NDT7 只走单连接。
+                多个引擎互为对照。
               </p>
             </section>
 
@@ -156,11 +157,11 @@
                 <div class="info-card">
                   <h3>
                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v4m0 12v4M2 12h4m12 0h4" /><circle cx="12" cy="12" r="5" /></svg>
-                    <span data-i18n="w.s4card1H">双引擎交叉验证</span>
+                    <span data-i18n="w.s4card1H">多引擎交叉验证</span>
                   </h3>
                   <p data-i18n-html="w.s4card1P">
-                    同一时段用两个引擎各测一次：<a href="/#speedtest">Cloudflare 引擎</a>与
-                    <a href="/#speedtest">OpenSpeedTest 引擎</a>。结果互相印证，
+                    同一时段挑 2–3 个引擎各测一次，例如<a href="/#speedtest">Cloudflare 引擎</a>与
+                    <a href="/#speedtest">M-Lab NDT7 引擎</a>。结果互相印证，
                     都明显偏低才说明网络真有问题。
                   </p>
                 </div>
@@ -183,17 +184,21 @@
             </section>
 
             <section class="article-section" id="sec-5">
-              <h2 data-i18n-html="w.s5h"><span class="sec-index">05</span>CialloSpeed 的双引擎答案</h2>
+              <h2 data-i18n-html="w.s5h"><span class="sec-index">05</span>CialloSpeed 的多引擎答案</h2>
               <p data-i18n="w.s5p1">
-                正因为「单一工具单一节点」天然有偏差，CialloSpeed 把两个独立引擎放在同一个页面：
+                正因为「单一工具单一节点」天然有偏差，CialloSpeed 把六个独立引擎放在同一个页面：
               </p>
               <ul>
                 <li data-i18n-html="w.s5li1"><strong>Cloudflare 引擎</strong>：基于 Cloudflare 官方开源测速内核（MIT），全球边缘节点就近测速，原生界面实时可视化</li>
                 <li data-i18n-html="w.s5li2"><strong>OpenSpeedTest 引擎</strong>：经典开源引擎（MIT），多连接压满带宽，适合对照验证</li>
+                <li data-i18n-html="w.s5li3"><strong>M-Lab NDT7 引擎</strong>：学术级单连接测量（Apache-2.0），自动就近接入全球节点，附带负载延迟指标</li>
+                <li data-i18n-html="w.s5li4"><strong>LibreSpeed 引擎</strong>：开源测速协议 + 社区公共节点，支持手动选点测国际出口</li>
+                <li data-i18n-html="w.s5li5"><strong>Meter.net 引擎</strong>：独立测速网络，自动就近调度节点，适合作为第三方对照</li>
+                <li data-i18n-html="w.s5li6"><strong>SpeedMeter.dev 引擎</strong>：独立 WebSocket 测速网络，结果可自动写入本地历史</li>
               </ul>
               <p data-i18n-html="w.s5p2">
-                两个引擎的测速记录都保存在你的浏览器本地，每条记录都标注来源引擎，
-                方便横向对比。<a href="/#speedtest">现在就去体验双引擎测速 →</a>
+                各引擎的测速记录都保存在你的浏览器本地，每条记录都标注来源引擎，
+                方便横向对比。<a href="/#speedtest">现在就去体验多引擎测速 →</a>
               </p>
             </section>
 
@@ -216,7 +221,7 @@
               <li><a href="#sec-2" data-i18n="w.toc2">测试方法差异</a></li>
               <li><a href="#sec-3" data-i18n="w.toc3">统计口径不同</a></li>
               <li><a href="#sec-4" data-i18n="w.toc4">怎么测才可信</a></li>
-              <li><a href="#sec-5" data-i18n="w.toc5">双引擎答案</a></li>
+              <li><a href="#sec-5" data-i18n="w.toc5">多引擎答案</a></li>
             </ol>
           </aside>
         </div>
@@ -231,7 +236,7 @@
             <span class="brand-name"><img class="brand-logo" src="/Ciallo-mark.png" alt="Ciallo" /><span class="grad-text">Speed</span></span>
           </a>
           <p data-i18n="footer.brandDesc">
-            免费、纯净的中文网速测试。基于 HTML5 的专业测速引擎，无需插件，全设备支持；
+            免费、纯净的中文网速测试。六大测速引擎交叉验证，基于 HTML5 无需插件、全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>
@@ -249,14 +254,18 @@
         <nav data-i18n-attrs="aria-label:footer.relatedAria" aria-label="相关链接">
           <h4 data-i18n="footer.related">相关项目</h4>
           <ul class="footer-links">
-            <li><a href="https://github.com/openspeedtest/Speed-Test" target="_blank" rel="noopener" data-i18n="footer.ostRepo">OpenSpeedTest 开源仓库</a></li>
-            <li><a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare 测速引擎</a></li>
+            <li><a href="https://speed.cloudflare.com" target="_blank" rel="noopener" data-i18n="footer.cfEngine">Cloudflare Speedtest</a></li>
+            <li><a href="https://www.measurementlab.net" target="_blank" rel="noopener" data-i18n="footer.mlab">M-Lab NDT7</a></li>
+            <li><a href="https://openspeedtest.com" target="_blank" rel="noopener" data-i18n="footer.ostSite">OpenSpeedTest™</a></li>
+            <li><a href="https://www.meter.net" target="_blank" rel="noopener" data-i18n="footer.meter">Meter.net</a></li>
+            <li><a href="https://speedmeter.dev" target="_blank" rel="noopener" data-i18n="footer.speedmeter">SpeedMeter.dev</a></li>
+            <li><a href="https://librespeed.org" target="_blank" rel="noopener" data-i18n="footer.librespeed">LibreSpeed</a></li>
           </ul>
         </nav>
       </div>
       <div class="container footer-bottom">
         <p data-i18n="footer.copyright">© 2026 CialloSpeed · 测速结果受网络环境影响，仅供参考</p>
-        <p data-i18n-html="footer.poweredShort">双引擎由 <a href="https://github.com/cloudflare/speedtest" target="_blank" rel="noopener">Cloudflare Speedtest</a> 与 <a href="https://openspeedtest.com" target="_blank" rel="noopener">OpenSpeedTest™</a> 提供支持</p>
+        <p data-i18n-html="footer.poweredShort">多引擎交叉验证 · 测速结果仅保存在你的浏览器本地</p>
       </div>
     </footer>
 

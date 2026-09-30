@@ -7,6 +7,7 @@ import { initCloudflareEngine } from '../modules/cloudflare-engine'
 import { initNdt7Engine } from '../modules/ndt7-engine'
 import { initLibrespeedEngine } from '../modules/librespeed-engine'
 import { initHistory, addRecord } from '../modules/history'
+import { testState } from '../modules/test-state'
 
 initLayout()
 initThemeToggle(document.getElementById('theme-toggle') as HTMLButtonElement | null)
@@ -29,6 +30,35 @@ if (speedtestSection) {
   let ostHandle: SpeedtestHandle | null = null
   const ostSection = speedtestSection.querySelector<HTMLElement>('#panel-ost')
   if (ostSection) ostHandle = initSpeedtest(ostSection, addRecord)
+
+  let smHandle: SpeedtestHandle | null = null
+  const smSection = speedtestSection.querySelector<HTMLElement>('#panel-sm')
+  if (smSection) {
+    // 挂件始终用浅色 minimal 主题 + 只留表盘区；暗色站点下用 CSS 反色转成暗色
+    // iframe 取内容自然高度，在统一高度的容器内垂直居中
+    const smWidgetSrc = () => 'https://speedmeter.dev/widget.html?theme=minimal&hideMetrics=true'
+    smHandle = initSpeedtest(smSection, addRecord, {
+      src: smWidgetSrc(),
+      messageOrigin: 'speedmeter.dev',
+      engineId: 'sm',
+    })
+    // 主题切换时热更新挂件配色（测速进行中不打断）
+    new MutationObserver(() => {
+      const frame = smSection.querySelector<HTMLIFrameElement>('iframe')
+      if (!frame) return
+      const target = smWidgetSrc()
+      if (!testState.running && !frame.src.endsWith(target)) frame.src = target
+    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  }
+
+  let mnHandle: SpeedtestHandle | null = null
+  const mnSection = speedtestSection.querySelector<HTMLElement>('#panel-mn')
+  if (mnSection) {
+    mnHandle = initSpeedtest(mnSection, addRecord, {
+      src: 'https://www.metercustom.net/plugin/',
+      engineId: 'mn',
+    })
+  }
 
   const cfSection = speedtestSection.querySelector<HTMLElement>('#panel-cf')
   if (cfSection) initCloudflareEngine(cfSection, addRecord)
@@ -82,6 +112,8 @@ if (speedtestSection) {
     closeMenu()
     // iframe 类引擎首次切换才加载，避免多引擎同时抢带宽
     if (opt.id === 'tab-ost') ostHandle?.ensureLoaded()
+    if (opt.id === 'tab-sm') smHandle?.ensureLoaded()
+    if (opt.id === 'tab-mn') mnHandle?.ensureLoaded()
   }
 
   if (select && trigger && menu && options.length && panels.length) {
