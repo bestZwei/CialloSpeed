@@ -42,6 +42,7 @@ def main():
     targets = {
         "public/favicon-16x16.png": 16,
         "public/favicon-32x32.png": 32,
+        "public/favicon-48x48.png": 48,
         "public/apple-touch-icon.png": 180,
         "public/android-chrome-192x192.png": 192,
         "public/android-chrome-512x512.png": 512,
