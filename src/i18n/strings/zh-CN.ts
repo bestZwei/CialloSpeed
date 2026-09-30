@@ -1,14 +1,14 @@
 /** 中文动态文案（键名即契约，en.ts 必须覆盖全部键） */
 export const strings = {
   // 测量阶段
-  'phase.latency': '正在测量延迟…',
-  'phase.latencyUnderLoad': '正在测量负载延迟…',
-  'phase.download': '正在测下载速度',
-  'phase.upload': '正在测上传速度',
-  'phase.preparing': '准备中…',
-  'phase.connecting': '正在连接 Cloudflare 节点…',
-  'phase.paused': '已暂停，点击继续',
-  'phase.done': '测速完成',
+  'phase.latency': '延迟',
+  'phase.latencyUnderLoad': '负载延迟',
+  'phase.download': '下载中',
+  'phase.upload': '上传中',
+  'phase.preparing': '准备中',
+  'phase.connecting': '连接中',
+  'phase.paused': '已暂停',
+  'phase.done': '已完成',
 
   // 按钮
   'btn.start': '开始测速',

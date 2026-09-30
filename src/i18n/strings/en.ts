@@ -2,14 +2,14 @@ import type { StringKey } from '../index'
 
 /** 英文动态文案；类型层面保证与中文键一一对应 */
 export const strings: Record<StringKey, string> = {
-  'phase.latency': 'Measuring latency…',
-  'phase.latencyUnderLoad': 'Measuring latency under load…',
-  'phase.download': 'Testing download speed',
-  'phase.upload': 'Testing upload speed',
-  'phase.preparing': 'Preparing…',
-  'phase.connecting': 'Connecting to a Cloudflare edge node…',
-  'phase.paused': 'Paused — click to resume',
-  'phase.done': 'Test complete',
+  'phase.latency': 'Latency',
+  'phase.latencyUnderLoad': 'Latency (load)',
+  'phase.download': 'Download',
+  'phase.upload': 'Upload',
+  'phase.preparing': 'Preparing',
+  'phase.connecting': 'Connecting',
+  'phase.paused': 'Paused',
+  'phase.done': 'Done',
 
   'btn.start': 'Start Test',
   'btn.pause': 'Pause',
