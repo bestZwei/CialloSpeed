@@ -39,11 +39,18 @@ export const strings = {
   'engine.cf': 'Cloudflare 引擎',
   'engine.ost': 'OpenSpeedTest',
   'engine.ndt7': 'M-Lab NDT7',
+  'engine.ls': 'LibreSpeed',
   'engine.manual': '手动录入',
   'langSwitchConfirm': '测速进行中，切换语言会中断当前测试（结果不会保存）。确定继续吗？',
   'ndt.error': 'M-Lab 节点连接失败，请稍后重试',
   'ndt.ready': '准备好了？',
   'ndt.done': '已完成',
+  'ls.selecting': '正在选择节点…',
+  'ls.ready': '准备好了？',
+  'ls.done': '已完成',
+  'ls.error': 'LibreSpeed 节点连接失败，请稍后重试',
+  'ls.serverAuto': '自动选择',
+  'ls.retry': '备用',
   'history.clearConfirm': '确定清空所有本地测速记录吗？',
 
   // 主题

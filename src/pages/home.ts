@@ -5,6 +5,7 @@ import { initLayout, initReveal } from '../modules/layout'
 import { initSpeedtest, type SpeedtestHandle } from '../modules/speedtest'
 import { initCloudflareEngine } from '../modules/cloudflare-engine'
 import { initNdt7Engine } from '../modules/ndt7-engine'
+import { initLibrespeedEngine } from '../modules/librespeed-engine'
 import { initHistory, addRecord } from '../modules/history'
 
 initLayout()
@@ -34,6 +35,9 @@ if (speedtestSection) {
 
   const ndtSection = speedtestSection.querySelector<HTMLElement>('#panel-ndt')
   if (ndtSection) initNdt7Engine(ndtSection, addRecord)
+
+  const lsSection = speedtestSection.querySelector<HTMLElement>('#panel-ls')
+  if (lsSection) initLibrespeedEngine(lsSection, addRecord)
 
   const selectedOption = () =>
     options.find((o) => o.getAttribute('aria-selected') === 'true') ?? options[0]

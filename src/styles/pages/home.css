@@ -354,8 +354,9 @@
   color: var(--brand-1);
 }
 
-/* ---------- M-Lab NDT7 引擎（原生面板） ---------- */
-.ndt-stage {
+/* ---------- M-Lab NDT7 引擎（原生面板；LibreSpeed 面板复用同一套布局） ---------- */
+.ndt-stage,
+.ls-stage {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -372,7 +373,8 @@
   overflow: hidden;
 }
 
-.ndt-value {
+.ndt-value,
+.ls-value {
   font-size: clamp(44px, 8vw, 64px);
   font-weight: 700;
   line-height: 1;
@@ -380,13 +382,15 @@
   font-variant-numeric: tabular-nums;
 }
 
-.ndt-unit {
+.ndt-unit,
+.ls-unit {
   font-size: var(--fs-sm);
   font-weight: 500;
   color: var(--text-faint);
 }
 
-.ndt-progress {
+.ndt-progress,
+.ls-progress {
   width: min(220px, 80%);
   height: 5px;
   margin-top: var(--sp-3);
@@ -395,7 +399,8 @@
   overflow: hidden;
 }
 
-.ndt-bar {
+.ndt-bar,
+.ls-bar {
   width: 0%;
   height: 100%;
   border-radius: 99px;
@@ -403,15 +408,69 @@
   transition: width 0.4s var(--ease);
 }
 
-.ndt-phase {
+.ndt-phase,
+.ls-phase {
   margin-top: var(--sp-2);
   font-size: var(--fs-sm);
   color: var(--text-muted);
 }
 
-/* NDT 面板无 cf-aim 占位，说明文字间距对齐 CF 的节奏（24+16=40px） */
-#panel-ndt .speedtest-note {
+/* NDT/LS 面板无 cf-aim 占位，说明文字间距对齐 CF 的节奏（24+16=40px） */
+#panel-ndt .speedtest-note,
+.ls-server-note {
   margin-top: calc(var(--sp-5) + var(--sp-4));
+}
+
+/* LS 面板第二条说明（引擎介绍）跟随节点行，收紧间距 */
+#panel-ls .speedtest-note:not(.ls-server-note) {
+  margin-top: var(--sp-2);
+}
+
+/* LS 节点选择器：复用引擎选择器样式，小号、向上弹出（节点行位于卡片底部） */
+.ls-node-select {
+  margin: 0;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.ls-node-select .ls-node-trigger {
+  gap: 8px;
+  padding: 5px 12px;
+  font-size: var(--fs-xs);
+}
+
+.ls-node-select .ls-node-menu {
+  top: auto;
+  bottom: calc(100% + 8px);
+  left: 0;
+  transform: none;
+  min-width: 0;
+  width: max-content;
+  animation: ls-node-menu-in 0.18s var(--ease);
+}
+
+@keyframes ls-node-menu-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ls-node-select .engine-option {
+  padding: 8px 12px;
+  font-size: var(--fs-xs);
+}
+
+.ls-server {
+  margin-left: var(--sp-2);
+}
+
+.ls-server[hidden] {
+  display: none;
 }
 
 /* ---------- Cloudflare 引擎（原生面板） ---------- */
@@ -668,7 +727,8 @@
 }
 
 .cf-main-btn,
-.ndt-main-btn {
+.ndt-main-btn,
+.ls-main-btn {
   width: 100%;
   font-size: var(--fs-body);
   padding: 14px 28px;
@@ -992,7 +1052,8 @@
     font-size: 22px;
   }
 
-  .ndt-stage {
+  .ndt-stage,
+  .ls-stage {
     min-height: 240px;
   }
 }

@@ -148,6 +148,15 @@
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </li>
+                <li class="engine-option" id="tab-ls" role="option" aria-selected="false" data-panel="panel-ls" tabindex="-1">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <circle cx="12" cy="12" r="10" /><path d="M2 12h20M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+                  </svg>
+                  <span class="engine-option-label" data-i18n-html="st.lsTab">LibreSpeed<small>国际节点</small></span>
+                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </li>
               </ul>
             </div>
 
@@ -272,6 +281,48 @@
               </div>
             </div>
 
+            <!-- ===== 引擎四：LibreSpeed（社区公共节点，原生面板） ===== -->
+            <div class="engine-panel" id="panel-ls" role="tabpanel" aria-labelledby="tab-ls" hidden>
+              <div class="speedtest-card cf-engine">
+                <div class="cf-layout">
+                  <div class="ls-stage">
+                    <div class="ls-value">--</div>
+                    <div class="ls-unit">Mbps</div>
+                    <div class="ls-progress" aria-hidden="true"><div class="ls-bar"></div></div>
+                    <div class="ls-phase" data-i18n="st.lsReady">准备好了？</div>
+                  </div>
+                  <div class="cf-side">
+                    <div class="cf-grid">
+                      <div class="cf-metric ls-m-down"><span data-i18n="st.down">下载</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric ls-m-up"><span data-i18n="st.up">上传</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric ls-m-ping"><span data-i18n="st.ping">延迟</span><strong>--</strong><small>ms</small></div>
+                      <div class="cf-metric ls-m-jitter"><span data-i18n="st.jitter">抖动</span><strong>--</strong><small>ms</small></div>
+                    </div>
+                    <div class="cf-actions">
+                      <button class="btn btn-primary ls-main-btn" type="button" data-i18n="btn.startTest">开始测速</button>
+                    </div>
+                    <p class="cf-error ls-error" role="alert"></p>
+                  </div>
+                </div>
+                <div class="speedtest-note ls-server-note">
+                  <span class="ls-node-label" data-i18n="st.lsServer">测速节点</span>：
+                  <span class="engine-select ls-node-select">
+                    <button class="engine-trigger ls-node-trigger" id="ls-node-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-attrs="aria-label:st.lsServer" aria-label="测速节点">
+                      <span class="ls-node-trigger-label">自动选择</span>
+                      <svg class="engine-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="m6 9 6 6 6-6" />
+                      </svg>
+                    </button>
+                    <ul class="engine-menu ls-node-menu" role="listbox" aria-labelledby="ls-node-trigger" hidden></ul>
+                  </span>
+                  <span class="ls-server" data-i18n="st.lsServerAuto">自动选择</span>
+                </div>
+                <p class="speedtest-note" data-i18n="st.lsNote">
+                  测速引擎由开源项目 LibreSpeed 的社区公共节点提供（当前接入 Sharktech 欧洲/北美节点） · 适合测国际出口与跨境链路质量 · 海外节点延迟天然较高，属正常现象
+                </p>
+              </div>
+            </div>
+
             <noscript>
               <p class="speedtest-note" data-i18n="st.noscript">JavaScript 未启用时无法使用在线测速与历史记录功能，请启用 JavaScript 或前往各引擎官网测速。</p>
             </noscript>
@@ -286,7 +337,7 @@
           <h1 data-i18n-html="hero.h1">你的网速，<span class="grad-text">一测便知</span></h1>
           <p class="hero-sub" data-i18n="hero.sub">
             专业级在线网速测试：下载、上传、延迟一键测量。多测速引擎（Cloudflare 边缘节点 ×
-            OpenSpeedTest™ × M-Lab NDT7）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
+            OpenSpeedTest™ × M-Lab NDT7 × LibreSpeed）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#speedtest">
