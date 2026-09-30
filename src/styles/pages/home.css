@@ -255,6 +255,7 @@
   font-size: var(--fs-xs);
   font-weight: 400;
   color: var(--text-faint);
+  margin-left: 6px;
 }
 
 .engine-tab:hover {
