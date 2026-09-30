@@ -3,6 +3,15 @@
  * 支持手动录入 + 测速组件自动回传两种来源。
  */
 
+/** 测速引擎来源：cf = Cloudflare 边缘引擎；ost = OpenSpeedTest；manual = 手动录入（旧记录缺省视为 manual） */
+export type EngineId = 'cf' | 'ost' | 'manual'
+
+export const ENGINE_LABEL: Record<EngineId, string> = {
+  cf: 'Ciallo 引擎',
+  ost: 'OpenSpeedTest',
+  manual: '手动录入',
+}
+
 export interface TestRecord {
   /** 下载速度 Mbps */
   down: number
@@ -12,6 +21,8 @@ export interface TestRecord {
   ping: number
   /** 时间戳 */
   ts: number
+  /** 测速引擎来源（旧记录可能缺失） */
+  engine?: EngineId
 }
 
 const HISTORY_KEY = 'ciallospeed-history'
@@ -32,12 +43,16 @@ export function loadHistory(): TestRecord[] {
 function isRecord(v: unknown): v is TestRecord {
   if (typeof v !== 'object' || v === null) return false
   const r = v as Record<string, unknown>
-  return (
-    typeof r.down === 'number' && isFinite(r.down) && r.down >= 0 &&
-    typeof r.up === 'number' && isFinite(r.up) && r.up >= 0 &&
-    typeof r.ping === 'number' && isFinite(r.ping) && r.ping >= 0 &&
-    typeof r.ts === 'number' && r.ts > 0
-  )
+  if (
+    typeof r.down !== 'number' || !isFinite(r.down) || r.down < 0 ||
+    typeof r.up !== 'number' || !isFinite(r.up) || r.up < 0 ||
+    typeof r.ping !== 'number' || !isFinite(r.ping) || r.ping < 0 ||
+    typeof r.ts !== 'number' || r.ts <= 0
+  ) return false
+  // engine 为可选字段：缺失（旧记录）按 manual 处理，非法值一律丢弃
+  const eng: unknown = r.engine
+  if (eng !== undefined && (typeof eng !== 'string' || !(eng in ENGINE_LABEL))) return false
+  return true
 }
 
 /** 保存一条记录并刷新 UI（若已初始化） */
@@ -118,8 +133,10 @@ export function initHistory(root: HTMLElement): void {
 
       const dq = downQuality(rec.down)
       const pq = pingQuality(rec.ping)
+      const engine: EngineId = rec.engine ?? 'manual'
 
       metrics.innerHTML =
+        `<span class="metric-chip engine-chip">${ENGINE_LABEL[engine]}</span>` +
         `<span class="metric-chip"><span class="dot dot-${dq.tone}"></span>↓ ${fmtNum(rec.down)} <small>Mbps · ${dq.label}</small></span>` +
         `<span class="metric-chip">↑ ${fmtNum(rec.up)} <small>Mbps</small></span>` +
         `<span class="metric-chip"><span class="dot dot-${pq.tone}"></span>${fmtNum(rec.ping)} <small>ms · ${pq.label}</small></span>`

@@ -11,17 +11,23 @@ import type { TestRecord } from './history'
 const WIDGET_SRC = 'https://openspeedtest.com/speedtest'
 const LOAD_TIMEOUT_MS = 20_000
 
+export interface SpeedtestHandle {
+  /** 首次切换到 OpenSpeedTest Tab 时才真正加载 iframe（懒加载） */
+  ensureLoaded: () => void
+}
+
 export function initSpeedtest(
   section: HTMLElement,
   onResult?: (rec: TestRecord) => void,
-): void {
+): SpeedtestHandle | null {
   const frame = section.querySelector<HTMLIFrameElement>('#speedtest-frame')
   const skeleton = section.querySelector<HTMLElement>('.speedtest-skeleton')
   const fallback = section.querySelector<HTMLElement>('.speedtest-fallback')
   const retestBtn = section.querySelector<HTMLButtonElement>('.speedtest-retest')
-  if (!frame) return
+  if (!frame) return null
 
   let loaded = false
+  let requested = false
 
   const showSkeleton = () => {
     loaded = false
@@ -46,7 +52,20 @@ export function initSpeedtest(
       }
     }, LOAD_TIMEOUT_MS)
   }
-  armTimeout()
+
+  /** 双 Tab 懒加载：用户首次切到 OpenSpeedTest 引擎时才发起 iframe 加载 */
+  const ensureLoaded = () => {
+    if (requested) return
+    requested = true
+    if (!frame.getAttribute('src')) frame.src = WIDGET_SRC
+    armTimeout()
+  }
+
+  // HTML 中预置了 src 时直接进入加载流程（兼容无 JS 场景）
+  if (frame.getAttribute('src')) {
+    requested = true
+    armTimeout()
+  }
 
   // 重新测速：重载 widget（带时间戳防缓存），回到初始 Start 状态
   retestBtn?.addEventListener('click', () => {
@@ -69,10 +88,12 @@ export function initSpeedtest(
       const ping = pickNumber(d, ['ping', 'Ping', 'latency', 'Latency'])
 
       if (down !== undefined && up !== undefined) {
-        onResult({ down, up, ping: ping ?? 0, ts: Date.now() })
+        onResult({ down, up, ping: ping ?? 0, ts: Date.now(), engine: 'ost' })
       }
     })
   }
+
+  return { ensureLoaded }
 }
 
 function pickNumber(obj: Record<string, unknown>, keys: string[]): number | undefined {

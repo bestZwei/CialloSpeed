@@ -102,8 +102,8 @@
           <span class="badge">免费 · 无需插件 · 支持 10Gbps+ 光纤</span>
           <h1>你的网速，<span class="grad-text">一测便知</span></h1>
           <p class="hero-sub">
-            专业级在线网速测试：下载、上传、延迟一键测量。测速引擎在浏览器本地运行，由
-            OpenSpeedTest™ 全球节点提供支持，手机、电脑、电视全设备可用。
+            专业级在线网速测试：下载、上传、延迟一键测量。双测速引擎（Cloudflare 全球边缘节点 ×
+            OpenSpeedTest™）交叉验证，测速引擎在浏览器本地运行，手机、电脑、电视全设备可用。
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#speedtest">
@@ -135,44 +135,100 @@
       <section class="section speedtest-section" id="speedtest" aria-label="在线网速测试">
         <div class="container">
           <div id="speedtest-app">
-            <div class="speedtest-card">
-              <div class="speedtest-frame-wrap">
-                <iframe
-                  id="speedtest-frame"
-                  title="CialloSpeed 在线网速测试组件"
-                  src="https://openspeedtest.com/speedtest"
-                  loading="lazy"
-                  allow="fullscreen"
-                  referrerpolicy="no-referrer-when-downgrade"
-                ></iframe>
-                <div class="speedtest-skeleton" aria-hidden="true">
-                  <div class="skeleton bar"></div>
-                  <div class="skeleton bar"></div>
-                  <p>正在连接测速节点…</p>
+            <div class="engine-tabs" role="tablist" aria-label="选择测速引擎">
+              <button class="engine-tab is-active" id="tab-cf" role="tab" aria-selected="true" aria-controls="panel-cf" type="button">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8Z" />
+                </svg>
+                Ciallo 引擎<small>Cloudflare 全球节点</small>
+              </button>
+              <button class="engine-tab" id="tab-ost" role="tab" aria-selected="false" aria-controls="panel-ost" type="button" tabindex="-1">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <circle cx="12" cy="12" r="10" /><path d="M12 6v6l4 2" />
+                </svg>
+                OpenSpeedTest<small>经典引擎</small>
+              </button>
+            </div>
+
+            <!-- ===== 引擎一：Ciallo（Cloudflare 原生引擎） ===== -->
+            <div class="engine-panel" id="panel-cf" role="tabpanel" aria-labelledby="tab-cf">
+              <div class="speedtest-card cf-engine">
+                <div class="cf-layout">
+                  <div class="cf-stage">
+                    <svg class="cf-ring" viewBox="0 0 200 200" aria-hidden="true">
+                      <defs>
+                        <linearGradient id="cf-ring-g" x1="0" y1="0" x2="1" y2="1">
+                          <stop offset="0" stop-color="#06B6D4" />
+                          <stop offset="1" stop-color="#7C3AED" />
+                        </linearGradient>
+                      </defs>
+                      <circle class="cf-ring-track" cx="100" cy="100" r="88" />
+                      <circle class="cf-ring-fill" cx="100" cy="100" r="88" />
+                    </svg>
+                    <div class="cf-stage-center">
+                      <div class="cf-value">--</div>
+                      <div class="cf-unit">Mbps</div>
+                      <div class="cf-phase">准备好就开始吧</div>
+                    </div>
+                  </div>
+                  <div class="cf-side">
+                    <div class="cf-grid">
+                      <div class="cf-metric cf-metric-down"><span>下载</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric cf-metric-up"><span>上传</span><strong>--</strong><small>Mbps</small></div>
+                      <div class="cf-metric cf-metric-ping"><span>延迟</span><strong>--</strong><small>ms</small></div>
+                      <div class="cf-metric cf-metric-jitter"><span>抖动</span><strong>--</strong><small>ms</small></div>
+                    </div>
+                    <div class="cf-actions">
+                      <button class="btn btn-primary cf-main-btn" type="button">开始测速</button>
+                    </div>
+                    <p class="cf-error" role="alert"></p>
+                  </div>
                 </div>
-                <div class="speedtest-fallback">
-                  <h3>测速组件加载较慢</h3>
-                  <p>
-                    可能是当前网络到测速节点的连接不稳定。请刷新页面重试，或
-                    <a href="https://openspeedtest.com/speedtest" target="_blank" rel="noopener">点此直接打开测速引擎</a>。
+                <div class="cf-aim" hidden aria-label="场景体验评分"></div>
+                <p class="speedtest-note">测速流量经由 Cloudflare 全球边缘节点 · 测试过程会真实传输数据，移动流量用户请注意套餐余量 · 结果仅保存在你的浏览器本地</p>
+              </div>
+            </div>
+
+            <!-- ===== 引擎二：OpenSpeedTest（iframe，首次切换才加载） ===== -->
+            <div class="engine-panel" id="panel-ost" role="tabpanel" aria-labelledby="tab-ost" hidden>
+              <div class="speedtest-card">
+                <div class="speedtest-frame-wrap">
+                  <iframe
+                    id="speedtest-frame"
+                    title="CialloSpeed 在线网速测试组件"
+                    loading="lazy"
+                    allow="fullscreen"
+                    referrerpolicy="no-referrer-when-downgrade"
+                  ></iframe>
+                  <div class="speedtest-skeleton" aria-hidden="true">
+                    <div class="skeleton bar"></div>
+                    <div class="skeleton bar"></div>
+                    <p>正在连接测速节点…</p>
+                  </div>
+                  <div class="speedtest-fallback">
+                    <h3>测速组件加载较慢</h3>
+                    <p>
+                      可能是当前网络到测速节点的连接不稳定。请刷新页面重试，或
+                      <a href="https://openspeedtest.com/speedtest" target="_blank" rel="noopener">点此直接打开测速引擎</a>。
+                    </p>
+                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()">刷新页面</button>
+                  </div>
+                </div>
+                <div class="speedtest-toolbar">
+                  <button class="btn btn-ghost btn-sm speedtest-retest" type="button">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
+                    </svg>
+                    重新测速
+                  </button>
+                  <p class="speedtest-note">
+                    测速引擎由 OpenSpeedTest™（MIT 开源）提供 · 结果仅保存在你的浏览器本地
                   </p>
-                  <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()">刷新页面</button>
                 </div>
               </div>
             </div>
-            <div class="speedtest-toolbar">
-              <button class="btn btn-ghost btn-sm speedtest-retest" type="button">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M21 12a9 9 0 1 1-2.64-6.36M21 3v6h-6" />
-                </svg>
-                重新测速
-              </button>
-              <p class="speedtest-note">
-                测速引擎由 OpenSpeedTest™（MIT 开源）提供 · 测试过程会真实传输数据，移动流量用户请注意套餐余量
-              </p>
-            </div>
             <noscript>
-              <p class="speedtest-note">JavaScript 未启用时测速组件仍可运行，但主题切换与历史记录功能不可用。</p>
+              <p class="speedtest-note">JavaScript 未启用时可切换到 OpenSpeedTest 引擎测速，但主题切换与历史记录功能不可用。</p>
             </noscript>
           </div>
         </div>
@@ -320,6 +376,7 @@
             <li><a href="/guide.html">网速知识</a></li>
             <li><a href="/wifi-tips.html">Wi-Fi 优化</a></li>
             <li><a href="/how-it-works.html">测速原理</a></li>
+            <li><a href="/why-different.html">结果差异解读</a></li>
             <li><a href="/faq.html">常见问题</a></li>
           </ul>
         </nav>

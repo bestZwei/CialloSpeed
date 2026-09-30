@@ -4,6 +4,7 @@ dist/
 
 # 本地的验证截图（非源码）
 .shots/
+.playwright-cli/
 
 # 编辑器 / 系统
 .vscode/

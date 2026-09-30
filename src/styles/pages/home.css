@@ -111,6 +111,12 @@
   inherits: false;
 }
 
+/* 浅色主题下光效收敛，避免整卡发花 */
+[data-theme='light'] .speedtest-card::before {
+  opacity: 0.3;
+  filter: blur(2px);
+}
+
 @keyframes border-spin {
   to { --angle: 360deg; }
 }
@@ -202,6 +208,250 @@
   font-size: var(--fs-sm);
   color: var(--text-faint);
   max-width: 44em;
+}
+
+/* ---------- 双引擎 Tab ---------- */
+.engine-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  width: fit-content;
+  margin: 0 auto var(--sp-5);
+  padding: 6px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border);
+  background: var(--surface);
+  backdrop-filter: blur(10px);
+  box-shadow: var(--shadow-card);
+}
+
+.engine-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border: 1px solid transparent;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.25s var(--ease), background 0.25s var(--ease), box-shadow 0.25s var(--ease);
+}
+
+.engine-tab small {
+  font-size: var(--fs-xs);
+  font-weight: 400;
+  color: var(--text-faint);
+}
+
+.engine-tab:hover {
+  color: var(--text);
+}
+
+.engine-tab svg {
+  width: 16px;
+  height: 16px;
+  flex: none;
+}
+
+.engine-tab.is-active {
+  color: #fff;
+  background: var(--grad-brand);
+  border-color: transparent;
+  box-shadow: 0 6px 20px var(--glow-2);
+}
+
+.engine-tab.is-active small {
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.engine-tab:focus-visible {
+  outline: 2px solid var(--brand-1);
+  outline-offset: 2px;
+}
+
+/* ---------- Ciallo 引擎（Cloudflare 原生面板） ---------- */
+.cf-engine {
+  padding: var(--sp-6);
+}
+
+.cf-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 380px) 1fr;
+  gap: var(--sp-6);
+  align-items: center;
+}
+
+/* 进度环 */
+.cf-stage {
+  position: relative;
+  width: 100%;
+  max-width: 340px;
+  margin-inline: auto;
+  aspect-ratio: 1;
+}
+
+.cf-ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.cf-ring-track,
+.cf-ring-fill {
+  fill: none;
+  stroke-width: 9;
+  cx: 100px;
+  cy: 100px;
+  r: 88px;
+}
+
+.cf-ring-track {
+  stroke: var(--border);
+}
+
+.cf-ring-fill {
+  stroke: url(#cf-ring-g);
+  stroke-linecap: round;
+  transform: rotate(-90deg);
+  transform-origin: 100px 100px;
+  stroke-dasharray: 0 553;
+  opacity: 0;
+  transition: stroke-dasharray 0.35s var(--ease), opacity 0.3s var(--ease);
+  filter: drop-shadow(0 0 10px var(--glow-1));
+}
+
+.cf-ring-fill.is-on {
+  opacity: 1;
+}
+
+/* 相位强调：下载偏青、上传偏紫、完成态呼吸光 */
+.cf-stage.is-down .cf-ring-fill { filter: drop-shadow(0 0 14px rgba(6, 182, 212, 0.55)); }
+.cf-stage.is-up .cf-ring-fill { filter: drop-shadow(0 0 14px rgba(124, 58, 237, 0.55)); }
+
+.cf-stage.is-done .cf-ring-fill {
+  animation: ring-glow 2.2s ease-in-out infinite;
+}
+
+@keyframes ring-glow {
+  0%, 100% { filter: drop-shadow(0 0 10px rgba(6, 182, 212, 0.4)); }
+  50% { filter: drop-shadow(0 0 18px rgba(124, 58, 237, 0.6)); }
+}
+
+.cf-stage-center {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-content: center;
+  justify-items: center;
+  gap: 2px;
+  text-align: center;
+}
+
+.cf-value {
+  font-size: clamp(44px, 7vw, 58px);
+  font-weight: 700;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.cf-unit {
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+  letter-spacing: 0.08em;
+}
+
+.cf-phase {
+  margin-top: 10px;
+  font-size: var(--fs-sm);
+  color: var(--text-muted);
+  min-height: 1.4em;
+  transition: color 0.25s var(--ease);
+}
+
+/* 侧栏：四宫格 + 主按钮 */
+.cf-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--sp-3);
+}
+
+.cf-metric {
+  padding: var(--sp-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: var(--bg-soft);
+  display: grid;
+  gap: 2px;
+  transition: border-color 0.25s var(--ease), transform 0.25s var(--ease);
+}
+
+.cf-metric span {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  letter-spacing: 0.06em;
+}
+
+.cf-metric strong {
+  font-size: 26px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.cf-metric small {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
+.cf-metric-down.is-live, .cf-metric:hover { border-color: var(--border-strong); }
+
+.cf-actions {
+  margin-top: var(--sp-5);
+}
+
+.cf-main-btn {
+  width: 100%;
+  font-size: var(--fs-body);
+  padding: 14px 28px;
+}
+
+.cf-error {
+  display: none;
+  margin-top: var(--sp-3);
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--bad);
+}
+
+.cf-error.show {
+  display: block;
+}
+
+/* AIM 场景评分 */
+.cf-aim {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-5);
+}
+
+.cf-aim .metric-chip {
+  background: var(--bg-soft);
+  animation: item-in 0.4s var(--ease);
+}
+
+/* 历史记录：引擎徽标 */
+.engine-chip {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  background: var(--grad-brand-soft);
+  align-self: center;
 }
 
 /* ---------- 结果解读卡片 ---------- */
@@ -433,6 +683,14 @@
   .interpret-grid {
     grid-template-columns: 1fr;
   }
+
+  .cf-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .cf-stage {
+    max-width: 280px;
+  }
 }
 
 @media (max-width: 640px) {
@@ -450,5 +708,26 @@
 
   #speedtest-frame {
     height: clamp(420px, 68vh, 560px);
+  }
+
+  .engine-tabs {
+    max-width: 100%;
+    overflow-x: auto;
+  }
+
+  .engine-tab {
+    padding: 9px 16px;
+  }
+
+  .engine-tab small {
+    display: none;
+  }
+
+  .cf-engine {
+    padding: var(--sp-4);
+  }
+
+  .cf-metric strong {
+    font-size: 22px;
   }
 }

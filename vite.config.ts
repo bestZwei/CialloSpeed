@@ -17,6 +17,7 @@ export default defineConfig({
         guide: page('guide'),
         wifiTips: page('wifi-tips'),
         howItWorks: page('how-it-works'),
+        whyDifferent: page('why-different'),
         faq: page('faq'),
         notFound: page('404'),
       },
