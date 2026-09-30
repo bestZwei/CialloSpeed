@@ -826,12 +826,17 @@
   }
 
   .engine-tabs {
+    width: 100%;
     max-width: 100%;
-    overflow-x: auto;
   }
 
   .engine-tab {
-    padding: 9px 16px;
+    flex: 1 1 0;
+    justify-content: center;
+    min-width: 0;
+    gap: 6px;
+    padding: 9px 8px;
+    font-size: 13px;
   }
 
   .engine-tab small {
