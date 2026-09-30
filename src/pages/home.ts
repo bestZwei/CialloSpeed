@@ -13,6 +13,9 @@ initReveal()
 
 /* ---------- 多引擎下拉选择器 ---------- */
 
+/** 记住用户最后使用的引擎，跨页面/跨语言保持一致；失效（引擎已下架）时自动回退 */
+const ENGINE_STORAGE_KEY = 'ciallospeed-engine'
+
 const speedtestSection = document.getElementById('speedtest-app')
 if (speedtestSection) {
   const select = speedtestSection.querySelector<HTMLElement>('.engine-select')
@@ -67,6 +70,11 @@ if (speedtestSection) {
     for (const p of panels) p.toggleAttribute('hidden', p.id !== opt.dataset.panel)
     // 触发器同步显示当前引擎（名称 + 副标题）
     syncTriggerFrom(opt)
+    try {
+      localStorage.setItem(ENGINE_STORAGE_KEY, opt.id)
+    } catch {
+      /* 隐私模式下忽略 */
+    }
     closeMenu()
     // iframe 类引擎首次切换才加载，避免多引擎同时抢带宽
     if (opt.id === 'tab-ost') ostHandle?.ensureLoaded()
@@ -107,6 +115,16 @@ if (speedtestSection) {
     document.addEventListener('click', (e) => {
       if (isOpen() && !select.contains(e.target as Node)) closeMenu()
     })
+
+    // 恢复上次使用的引擎：跨语言、跨页面保持一致（记录失效时保持默认 Cloudflare）
+    let saved: string | null = null
+    try {
+      saved = localStorage.getItem(ENGINE_STORAGE_KEY)
+    } catch {
+      /* 隐私模式下忽略 */
+    }
+    const savedOpt = saved ? options.find((o) => o.id === saved) : undefined
+    if (savedOpt && savedOpt !== selectedOption()) selectOption(savedOpt)
   }
 }
 

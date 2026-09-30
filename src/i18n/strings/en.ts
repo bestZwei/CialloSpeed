@@ -36,6 +36,7 @@ export const strings: Record<StringKey, string> = {
   'engine.ost': 'OpenSpeedTest',
   'engine.ndt7': 'M-Lab NDT7',
   'engine.manual': 'Manual entry',
+  'langSwitchConfirm': 'A test is running. Switching language will abort it (the result won\'t be saved). Continue?',
   'ndt.error': 'Could not reach M-Lab servers. Please try again later.',
   'ndt.ready': 'Ready?',
   'ndt.done': 'Done',

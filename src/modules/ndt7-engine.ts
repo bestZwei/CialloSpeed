@@ -10,6 +10,7 @@ import ndt7 from '@m-lab/ndt7'
 import type { Ndt7Measurement } from '@m-lab/ndt7'
 import { t } from '../i18n'
 import type { TestRecord } from './history'
+import { testState } from './test-state'
 
 /** 每方向测量时长（毫秒），NDT7 默认 10s */
 const DURATION_MS = 10_000
@@ -72,6 +73,7 @@ export function initNdt7Engine(
     if (running) return
     running = true
     phase = 'running'
+    testState.running = true
     mainBtn.disabled = true
     reset()
 
@@ -188,6 +190,7 @@ export function initNdt7Engine(
     } finally {
       running = false
       phase = phase === 'running' ? 'idle' : phase
+      testState.running = false
       mainBtn.disabled = false
     }
   }

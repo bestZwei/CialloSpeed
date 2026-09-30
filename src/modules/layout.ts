@@ -3,7 +3,8 @@
  * （导航与页脚为静态 HTML，保证 SEO 与无 JS 可用；此模块只负责行为增强。）
  */
 
-import { LOCALE_STORAGE_KEY } from '../i18n'
+import { LOCALE_STORAGE_KEY, t } from '../i18n'
+import { testState } from './test-state'
 
 /** 初始化导航：当前页高亮、汉堡菜单、滚动毛玻璃边框 */
 export function initLayout(): void {
@@ -16,7 +17,12 @@ export function initLayout(): void {
 /** 语言切换：跳转 href 由构建期填好，这里只记录用户偏好供下次协商 */
 function initLangSwitch(): void {
   document.querySelectorAll<HTMLAnchorElement>('[data-lang-switch]').forEach((a) => {
-    a.addEventListener('click', () => {
+    a.addEventListener('click', (e) => {
+      // 切换语言是整页跳转，会中断进行中的测试且不写入历史 —— 先确认
+      if (testState.running && !window.confirm(t('langSwitchConfirm'))) {
+        e.preventDefault()
+        return
+      }
       const next = document.documentElement.lang === 'en' ? 'zh-CN' : 'en'
       try {
         localStorage.setItem(LOCALE_STORAGE_KEY, next)

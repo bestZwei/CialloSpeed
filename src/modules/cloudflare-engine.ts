@@ -10,6 +10,7 @@ import SpeedTest from '@cloudflare/speedtest'
 import type { Results } from '@cloudflare/speedtest'
 import { t, type StringKey } from '../i18n'
 import type { TestRecord } from './history'
+import { testState } from './test-state'
 
 /** 测量阶段：不包含 packetLoss（需要 TURN 服务器），带宽档位沿用官方由小到大的策略 */
 const MEASUREMENTS = [
@@ -315,6 +316,7 @@ export function initCloudflareEngine(
   engine.onFinish = (r) => {
     finished = true
     phase = 'done'
+    testState.running = false
     window.cancelAnimationFrame(rafId)
 
     const downBps = r.getDownloadBandwidth()
@@ -343,6 +345,7 @@ export function initCloudflareEngine(
   }
 
   engine.onError = (message) => {
+    testState.running = false
     window.cancelAnimationFrame(rafId)
     showError(t('engine.error', { message }))
   }
@@ -355,6 +358,7 @@ export function initCloudflareEngine(
     if (phase === 'idle' || phase === 'error') {
       finished = false
       phase = 'running'
+      testState.running = true
       if (phaseEl) phaseEl.textContent = t('phase.connecting')
       mainBtn.textContent = t('btn.pause')
       engine.play()
@@ -367,6 +371,7 @@ export function initCloudflareEngine(
     } else if (phase === 'done') {
       finished = false
       phase = 'running'
+      testState.running = true
       stageEl?.classList.remove('is-done')
       setRing(0)
       resetGauge()

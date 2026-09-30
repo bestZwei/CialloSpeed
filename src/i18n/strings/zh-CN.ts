@@ -40,6 +40,7 @@ export const strings = {
   'engine.ost': 'OpenSpeedTest',
   'engine.ndt7': 'M-Lab NDT7',
   'engine.manual': '手动录入',
+  'langSwitchConfirm': '测速进行中，切换语言会中断当前测试（结果不会保存）。确定继续吗？',
   'ndt.error': 'M-Lab 节点连接失败，请稍后重试',
   'ndt.ready': '准备好了？',
   'ndt.done': '已完成',
