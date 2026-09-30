@@ -51,6 +51,17 @@ export const strings: Record<StringKey, string> = {
   'ls.retry': 'fallback',
   'history.clearConfirm': 'Clear all local speed test records?',
 
+  // Visitor network info (IP / location / ISP)
+  'ip.view': 'Show my IP info',
+  'ip.hide': 'Hide',
+  'ip.ip': 'IP',
+  'ip.place': 'Location',
+  'ip.isp': 'ISP',
+  'ip.loading': 'Looking up…',
+  'ip.failed': 'Lookup failed, please try again',
+  'ip.retry': 'Retry',
+  'ip.unknown': 'Unknown',
+
   'theme.toLight': 'Switch to light mode',
   'theme.toDark': 'Switch to dark mode',
 }

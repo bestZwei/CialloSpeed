@@ -386,6 +386,57 @@
   color: var(--brand-1);
 }
 
+/* ---------- 访客网络信息条（IP / 归属地 / 运营商） ---------- */
+.ip-bar {
+  margin-top: var(--sp-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.ip-result {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+}
+
+.ip-result[hidden] {
+  display: none;
+}
+
+.ip-chip {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 10px;
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  background: var(--surface);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.ip-chip small {
+  font-size: var(--fs-xs);
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.ip-chip-muted {
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.ip-note {
+  flex-basis: 100%;
+  margin: 0;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
 /* ---------- M-Lab NDT7 引擎（原生面板；LibreSpeed 面板复用同一套布局） ---------- */
 .ndt-stage,
 .ls-stage {

@@ -1,7 +1,7 @@
 {
-  "name": "CialloSpeed 中文网速测试",
+  "name": "CialloSpeed — Free Online Speed Test",
   "short_name": "CialloSpeed",
-  "description": "免费、纯净的中文在线网速测试，六大测速引擎交叉验证。",
+  "description": "Free, clean online speed test with six cross-validated engines. 免费、纯净的在线网速测试，六大测速引擎交叉验证。",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#0b101a",

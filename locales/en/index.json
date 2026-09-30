@@ -9,7 +9,7 @@
     "@type": "WebSite",
     "name": "CialloSpeed",
     "alternateName": "CialloSpeed Speed Test",
-    "url": "https://speed.ciallo.de/en/",
+    "url": "https://speed.ciallo.de/",
     "description": "Free, professional online speed test in your browser",
     "inLanguage": "en"
   },
@@ -17,6 +17,9 @@
   "st.sectionAria": "Online speed test",
   "st.tabsAria": "Choose a speed test engine",
   "st.recommended": "Recommended",
+  "ip.view": "Show my IP info",
+  "ip.hide": "Hide",
+  "ip.note": "Off by default — location and ISP come from the third-party ipwho.is database once you click. Display only.",
   "st.cfTab": "Cloudflare",
   "st.ostTab": "OpenSpeedTest",
   "st.ndtTab": "M-Lab NDT7",

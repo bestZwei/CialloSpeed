@@ -55,6 +55,17 @@ export const strings = {
   'ls.retry': '备用',
   'history.clearConfirm': '确定清空所有本地测速记录吗？',
 
+  // 访客网络信息（IP / 归属地 / 运营商）
+  'ip.view': '查看我的 IP 信息',
+  'ip.hide': '隐藏',
+  'ip.ip': 'IP',
+  'ip.place': '归属地',
+  'ip.isp': '运营商',
+  'ip.loading': '查询中…',
+  'ip.failed': '查询失败，请稍后重试',
+  'ip.retry': '重试',
+  'ip.unknown': '未知',
+
   // 主题
   'theme.toLight': '切换到浅色模式',
   'theme.toDark': '切换到深色模式',

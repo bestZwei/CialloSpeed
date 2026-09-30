@@ -65,10 +65,10 @@
         try {
           saved = localStorage.getItem('ciallospeed-locale')
         } catch (e) {}
-        if (saved || location.pathname.indexOf('/en') === 0) return
+        if (saved || location.pathname.indexOf('/zh') === 0) return
         var lang = (navigator.language || '').toLowerCase()
-        if (lang.indexOf('zh') === 0) return
-        location.replace('/en/')
+        if (lang.indexOf('zh') !== 0) return
+        location.replace('/zh/')
       })()
     </script>
     <!-- Umami 隐私分析 -->
@@ -403,7 +403,7 @@
                   <span class="ls-node-label" data-i18n="st.lsServer">测速节点</span>：
                   <span class="engine-select ls-node-select">
                     <button class="engine-trigger ls-node-trigger" id="ls-node-trigger" type="button" aria-haspopup="listbox" aria-expanded="false" data-i18n-attrs="aria-label:st.lsServer" aria-label="测速节点">
-                      <span class="ls-node-trigger-label">自动选择</span>
+                      <span class="ls-node-trigger-label" data-i18n="st.lsServerAuto">自动选择</span>
                       <svg class="engine-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                         <path d="m6 9 6 6 6-6" />
                       </svg>
@@ -416,6 +416,15 @@
                   测速引擎由开源项目 LibreSpeed 的社区公共节点提供（当前接入 Sharktech 欧洲/北美节点） · 适合测国际出口与跨境链路质量 · 海外节点延迟天然较高，属正常现象
                 </p>
               </div>
+            </div>
+
+            <!-- ===== 访客网络信息（默认收起，点击才向 IP 库发起查询） ===== -->
+            <div class="ip-bar" id="ip-bar">
+              <button class="btn btn-ghost btn-sm" id="ip-toggle" type="button" aria-expanded="false" aria-controls="ip-result" data-i18n="ip.view">查看我的 IP 信息</button>
+              <div class="ip-result" id="ip-result" hidden></div>
+              <p class="ip-note" data-i18n="ip.note">
+                默认不查询；点击后由第三方 IP 库 ipwho.is 提供归属与运营商信息，仅用于展示。
+              </p>
             </div>
 
             <noscript>

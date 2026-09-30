@@ -1,6 +1,6 @@
 /**
- * 构建时 i18n 插件：源 HTML（中文）为唯一来源，
- * 构建时按 locales/en/*.json 生成 /en/ 子目录下的英文变体（零运行时开销）。
+ * 构建时 i18n 插件：源 HTML（中文）为唯一来源。
+ * 路径约定：根路径为英文主站，中文变体放在 /zh/ 子目录。
  *
  * 标注约定（写在源 HTML 上）：
  * - data-i18n="key"        → 替换 textContent
@@ -9,13 +9,13 @@
  * - data-i18n-jsonld="key" → 用字典里的 JSON 对象整体替换 <script type="application/ld+json"> 内容
  * - data-lang-switch       → 语言切换链接，href 由插件按页面填充
  *
- * 英文变体同时获得：lang="en"、og:locale=en_US、内链加 /en 前缀、
- * canonical/og:url 改写、hreflang 三连（与中文版共用注入逻辑）。
+ * 两个变体都注入 hreflang 三连（zh-CN → /zh/，en → 根路径，x-default → 英文根）：
+ * - 英文变体：lang="en"、og:locale=en_US、JSON-LD 由词典整体替换
+ * - 中文变体：内链与 canonical/og:url 加 /zh 前缀
  */
 
 import { parse } from 'node-html-parser'
 import { readFileSync } from 'node:fs'
-import { fileURLToPath, URL } from 'node:url'
 import type { Plugin, ViteDevServer } from 'vite'
 
 const ORIGIN = 'https://speed.ciallo.de'
@@ -24,9 +24,11 @@ type PageName = (typeof PAGES)[number]
 
 type Dict = Record<string, string | Record<string, unknown>>
 
-const zhPath = (page: PageName) => (page === 'index' ? '/' : `/${page}.html`)
-const enPath = (page: PageName) => (page === 'index' ? '/en/' : `/en/${page}.html`)
-const enFileName = (page: PageName) => (page === 'index' ? 'en/index.html' : `en/${page}.html`)
+/** 英文（主站）路径：根目录原文件名 */
+const rootPath = (page: PageName) => (page === 'index' ? '/' : `/${page}.html`)
+/** 中文变体路径：/zh/ 子目录 */
+const zhPath = (page: PageName) => (page === 'index' ? '/zh/' : `/zh/${page}.html`)
+const zhFileName = (page: PageName) => (page === 'index' ? 'zh/index.html' : `zh/${page}.html`)
 
 // vite.config 会被 Vite 打包到临时目录执行，import.meta.url 不可靠，统一用项目根定位
 const projectRoot = () => process.cwd()
@@ -45,42 +47,46 @@ function loadDict(page: PageName): Dict {
   return { ...readJson(`${dir}shared.json`), ...readJson(`${dir}${page}.json`) }
 }
 
-/** hreflang 三连（404 为 noindex，不参与互链） */
+/** hreflang 三连（404 为 noindex，不参与互链）；x-default 指向英文主站 */
 function hreflangLinks(page: PageName): string {
   if (page === '404') return ''
+  const en = ORIGIN + rootPath(page)
   const zh = ORIGIN + zhPath(page)
-  const en = ORIGIN + enPath(page)
   return [
     `<link rel="alternate" hreflang="zh-CN" href="${zh}" />`,
     `<link rel="alternate" hreflang="en" href="${en}" />`,
-    `<link rel="alternate" hreflang="x-default" href="${zh}" />`,
+    `<link rel="alternate" hreflang="x-default" href="${en}" />`,
   ].join('\n')
 }
 
-/** 中文版注入：切换链接 + hreflang（正则做最小改动，保留原文件格式） */
-function injectZh(html: string, page: PageName): string {
-  let out = html
-  out = out.replace(
+/** 注入语言切换链接 + hreflang（正则做最小改动，保留原文件格式） */
+function injectLang(html: string, page: PageName, switchHref: string): string {
+  let out = html.replace(
     /(<a\b[^>]*data-lang-switch[^>]*?href=")[^"]*(")/,
-    `$1${enPath(page)}$2`,
+    `$1${switchHref}$2`,
   )
   const links = hreflangLinks(page)
   if (links) out = out.replace('</head>', `${links}\n  </head>`)
   return out
 }
 
-/** 站内链接加 /en 前缀：仅匹配 "/"、"/xxx.html" 及同域绝对路径（不动锚点/外链/静态资源） */
-function rewriteInternalHref(href: string): string {
+/** 英文变体注入：切换链接指向中文 /zh/ */
+const injectEn = (html: string, page: PageName) => injectLang(html, page, zhPath(page))
+/** 中文变体注入：切换链接指向英文根路径 */
+const injectZh = (html: string, page: PageName) => injectLang(html, page, rootPath(page))
+
+/** 站内链接加 /zh 前缀：仅匹配 "/"、"/xxx.html" 及同域绝对路径（不动锚点/外链/静态资源） */
+function rewriteInternalHrefZh(href: string): string {
   let m = href.match(/^\/(?:([\w-]+\.html))?(#.*|\?.*)?$/)
-  if (m) return '/en' + (m[1] ? `/${m[1]}` : '/') + (m[2] ?? '')
+  if (m) return '/zh' + (m[1] ? `/${m[1]}` : '/') + (m[2] ?? '')
   m = href.match(new RegExp(`^${ORIGIN}/(?:([\\w-]+\\.html))?(#.*|\\?.*)?$`))
-  if (m) return '/en' + (m[1] ? `/${m[1]}` : '/') + (m[2] ?? '')
+  if (m) return ORIGIN + '/zh' + (m[1] ? `/${m[1]}` : '/') + (m[2] ?? '')
   return href
 }
 
-function rewriteCanonical(url: string): string {
-  if (url === ORIGIN || url === `${ORIGIN}/`) return `${ORIGIN}/en/`
-  if (url.startsWith(`${ORIGIN}/`)) return `${ORIGIN}/en/${url.slice(ORIGIN.length + 1)}`
+function rewriteCanonicalZh(url: string): string {
+  if (url === ORIGIN || url === `${ORIGIN}/`) return `${ORIGIN}/zh/`
+  if (url.startsWith(`${ORIGIN}/`)) return `${ORIGIN}/zh/${url.slice(ORIGIN.length + 1)}`
   return url
 }
 
@@ -110,40 +116,55 @@ function applyDict(root: ReturnType<typeof parse>, dict: Dict): void {
   }
 }
 
-/** 由已构建（或 dev 源码）的中文 HTML 生成英文变体 */
-function toEnglish(html: string, dict: Dict, page: PageName): string {
-  // noscript 内容需可解析才能翻译；script 保持原文（JSON-LD 走 data-i18n-jsonld 整体替换）
+/** 由中文源 HTML 生成英文主站页面：内链/canonical 保持根路径不变 */
+function toEnglish(html: string, dict: Dict): string {
   const root = parse(html, { blockTextElements: { script: true, noscript: false, style: true, pre: true } })
   root.querySelector('html')?.setAttribute('lang', 'en')
   root.querySelector('meta[property="og:locale"]')?.setAttribute('content', 'en_US')
-
   applyDict(root, dict)
+  return root.outerHTML
+}
+
+/** 由中文源 HTML 生成 /zh/ 中文变体：内链与 canonical/og:url 加 /zh 前缀 */
+function toChinese(html: string): string {
+  const root = parse(html, { blockTextElements: { script: true, noscript: false, style: true, pre: true } })
 
   for (const a of root.querySelectorAll('a[href]')) {
+    // 语言切换链接由 injectLang 填充（指向英文根路径），不参与 /zh 前缀改写
+    if (a.hasAttribute('data-lang-switch')) continue
     const href = a.getAttribute('href') ?? ''
-    const next = rewriteInternalHref(href)
+    const next = rewriteInternalHrefZh(href)
     if (next !== href) a.setAttribute('href', next)
   }
   const canonical = root.querySelector('link[rel="canonical"]')
-  if (canonical) canonical.setAttribute('href', rewriteCanonical(canonical.getAttribute('href') ?? ''))
+  if (canonical) canonical.setAttribute('href', rewriteCanonicalZh(canonical.getAttribute('href') ?? ''))
   const ogUrl = root.querySelector('meta[property="og:url"]')
-  if (ogUrl) ogUrl.setAttribute('content', rewriteCanonical(ogUrl.getAttribute('content') ?? ''))
+  if (ogUrl) ogUrl.setAttribute('content', rewriteCanonicalZh(ogUrl.getAttribute('content') ?? ''))
 
-  const langSwitch = root.querySelector('[data-lang-switch]')
-  langSwitch?.setAttribute('href', zhPath(page))
+  // JSON-LD 内的同域 URL 同步加 /zh 前缀（面包屑等结构化数据）
+  for (const script of root.querySelectorAll('script[type="application/ld+json"]')) {
+    const raw = script.innerHTML ?? ''
+    const next = raw.replaceAll(`${ORIGIN}/`, `${ORIGIN}/zh/`)
+    if (next !== raw) script.innerHTML = next
+  }
 
   return root.outerHTML
 }
 
-/** dev 下拦截 /en/* 请求，实时生成英文页面 */
+/** dev 下按路径实时生成变体：根路径 = 英文主站，/zh/* = 中文变体 */
 function devMiddleware(server: ViteDevServer): void {
   server.middlewares.use((req, res, next) => {
     void (async () => {
       const raw = (req.url ?? '').split(/[?#]/)[0]
-      if (!/^\/en(?:\/|$)/.test(raw)) return next()
-      const rel =
-        raw === '/en' || raw === '/en/' ? '/index.html' : raw.replace(/^\/en\//, '/')
-      if (!rel.endsWith('.html')) return next()
+      const isZh = raw === '/zh' || raw === '/zh/' || raw.startsWith('/zh/')
+      let rel: string | null = null
+      if (isZh) {
+        const p = raw === '/zh' || raw === '/zh/' ? '/index.html' : raw.slice('/zh'.length)
+        if (p.endsWith('.html')) rel = p
+      } else if (raw === '/' || raw.endsWith('.html')) {
+        rel = raw === '/' ? '/index.html' : raw
+      }
+      if (rel === null) return next()
 
       const page = rel.replace(/^\//, '').replace(/\.html$/, '') as PageName
       if (!PAGES.includes(page)) return next()
@@ -155,14 +176,14 @@ function devMiddleware(server: ViteDevServer): void {
       } catch {
         return next()
       }
-      html = await server.transformIndexHtml(req.url ?? raw, html)
-      html = injectZh(html, page)
-      html = toEnglish(html, loadDict(page), page)
+      const url = isZh ? zhPath(page) : rootPath(page)
+      html = await server.transformIndexHtml(url, html)
+      html = isZh ? toChinese(injectZh(html, page)) : toEnglish(injectEn(html, page), loadDict(page))
       res.statusCode = 200
       res.setHeader('Content-Type', 'text/html; charset=utf-8')
       res.end(html)
     })().catch((err) => {
-      console.error('[i18n] en 渲染失败:', err)
+      console.error('[i18n] 变体渲染失败:', err)
       next()
     })
   })
@@ -183,12 +204,16 @@ export function i18nPlugin(): Plugin {
         const asset = bundle[fileName]
         if (asset.type !== 'asset') continue
 
-        const zhHtml = injectZh(String(asset.source), page)
-        asset.source = zhHtml
+        const source = String(asset.source)
+
+        // 英文主站：原文件名原路径（根目录）
+        asset.source = toEnglish(injectEn(source, page), loadDict(page))
+
+        // 中文变体：/zh/ 子目录
         this.emitFile({
           type: 'asset',
-          fileName: enFileName(page),
-          source: toEnglish(zhHtml, loadDict(page), page),
+          fileName: zhFileName(page),
+          source: toChinese(injectZh(source, page)),
         })
       }
       },
