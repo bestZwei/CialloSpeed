@@ -313,7 +313,7 @@
 .cf-ring-track,
 .cf-ring-fill {
   fill: none;
-  stroke-width: 9;
+  stroke-width: 8;
   cx: 100px;
   cy: 100px;
   r: 88px;
@@ -355,14 +355,14 @@
   opacity: 1;
 }
 
-/* 量级弧：对数刻度显示当前速度量级（1M → 10Gbps） */
+/* 量级弧：对数刻度显示当前速度量级（1M → 10Gbps），半径内收与进度环拉开层次 */
 .cf-mag-track,
 .cf-mag-fill {
   fill: none;
-  stroke-width: 2.5;
+  stroke-width: 2;
   cx: 100px;
   cy: 100px;
-  r: 72px;
+  r: 62px;
 }
 
 .cf-mag-track {
@@ -376,12 +376,22 @@
   opacity: 0;
   transform: rotate(-90deg);
   transform-origin: 100px 100px;
-  stroke-dasharray: 0 452;
+  stroke-dasharray: 0 390;
   transition: stroke-dasharray 0.4s var(--ease), opacity 0.3s var(--ease);
 }
 
 .cf-mag-fill.is-on {
   opacity: 0.9;
+}
+
+/* 完成态：进度环已是主表达，量级弧与刻度退为背景，避免三层满格叠加 */
+.cf-stage.is-done .cf-mag-track,
+.cf-stage.is-done .cf-mag-fill {
+  opacity: 0.3;
+}
+
+.cf-stage.is-done .cf-ticks {
+  opacity: 0.45;
 }
 
 /* 实时速度轨迹线 */
@@ -454,11 +464,25 @@
 }
 
 .cf-phase {
-  margin-top: 10px;
+  margin-top: 16px;
   font-size: var(--fs-sm);
   color: var(--text-muted);
   min-height: 1.4em;
   transition: color 0.25s var(--ease);
+}
+
+/* 浅色主题：隐藏径向底晕（白底上呈灰紫雾感），光效整体收敛 */
+[data-theme='light'] .cf-stage-bg {
+  display: none;
+}
+
+[data-theme='light'] .cf-ring-fill {
+  filter: none;
+}
+
+[data-theme='light'] .cf-stage.is-done .cf-ring-fill {
+  animation: none;
+  filter: drop-shadow(0 0 6px rgba(0, 184, 230, 0.22));
 }
 
 /* 侧栏：四宫格 + 主按钮 */

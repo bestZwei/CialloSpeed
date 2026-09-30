@@ -88,7 +88,7 @@ export function initCloudflareEngine(
   if (!valueEl || !unitEl || !phaseEl || !mainBtn) return
 
   const RING_LEN = 2 * Math.PI * 88
-  const MAG_LEN = 2 * Math.PI * 72
+  const MAG_LEN = 2 * Math.PI * 62
   const SPARK_W = 140
   const SPARK_H = 34
   const SPARK_N = 40
