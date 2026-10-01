@@ -10,6 +10,7 @@ import ndt7 from '@m-lab/ndt7'
 import type { Ndt7Measurement } from '@m-lab/ndt7'
 import { t } from '../i18n'
 import type { TestRecord } from './history'
+import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
 
 /** 每方向测量时长（毫秒），NDT7 默认 10s */
@@ -39,6 +40,7 @@ export function initNdt7Engine(
   const pingEl = section.querySelector<HTMLElement>('.ndt-m-ping strong')
   const bloatEl = section.querySelector<HTMLElement>('.ndt-m-bloat strong')
   const mainBtn = section.querySelector<HTMLButtonElement>('.ndt-main-btn')
+  const aimEl = section.querySelector<HTMLElement>('.scene-aim')
   const errEl = section.querySelector<HTMLElement>('.ndt-error')
   if (!valueEl || !phaseEl || !mainBtn) return
 
@@ -61,6 +63,10 @@ export function initNdt7Engine(
     if (pingEl) pingEl.textContent = '--'
     if (bloatEl) bloatEl.textContent = '--'
     if (barEl) barEl.style.width = '0%'
+    if (aimEl) {
+      aimEl.innerHTML = ''
+      aimEl.hidden = true
+    }
     errEl?.classList.remove('show')
   }
 
@@ -189,6 +195,12 @@ export function initNdt7Engine(
         setValue(downMbps)
         setPhase(t('ndt.done'))
         phase = 'done'
+        // NDT7 无抖动指标：传 undefined，游戏评分退化为仅按延迟判定
+        renderSceneVerdicts(aimEl, {
+          down: downMbps,
+          up: upMbps,
+          ping: minRttUs !== Infinity ? pingMs : undefined,
+        })
         onResult?.({
           down: downMbps,
           up: upMbps,

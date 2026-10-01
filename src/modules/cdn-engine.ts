@@ -19,6 +19,7 @@
 
 import { t, type StringKey } from '../i18n'
 import type { TestRecord } from './history'
+import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
 
 interface CdnTarget {
@@ -165,6 +166,7 @@ export function initCdnEngine(
   const mainBtn = section.querySelector<HTMLButtonElement>('.cdn-main-btn')
   const customBtn = section.querySelector<HTMLButtonElement>('.cdn-custom-btn')
   const urlInput = section.querySelector<HTMLInputElement>('.cdn-url-input')
+  const aimEl = section.querySelector<HTMLElement>('.scene-aim')
   const errEl = section.querySelector<HTMLElement>('.cf-error')
   if (!valueEl || !phaseEl || !mainBtn) return
 
@@ -248,6 +250,10 @@ export function initCdnEngine(
     if (urlInput) urlInput.disabled = true
     valueEl.textContent = '--'
     setBar(0)
+    if (aimEl) {
+      aimEl.innerHTML = ''
+      aimEl.hidden = true
+    }
     errEl?.classList.remove('show')
 
     const rows = renderRows(list, list === TARGETS, false)
@@ -319,6 +325,8 @@ export function initCdnEngine(
         bestRow?.li.classList.add('is-best')
         setValue(best)
         phaseEl.textContent = t('cdn.doneBest', { v: fmtMbps(best) })
+        // CDN 直链只有下载指标：仅给出「视频流媒体」一个场景评价
+        renderSceneVerdicts(aimEl, { down: best })
         onResult?.({ down: best, up: 0, ping: 0, ts: Date.now(), engine: 'cdn' })
       } else {
         showError(t('cdn.failedAll'))

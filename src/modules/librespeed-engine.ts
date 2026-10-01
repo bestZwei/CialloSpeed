@@ -10,6 +10,7 @@
 
 import { t } from '../i18n'
 import type { TestRecord } from './history'
+import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
 
 interface LsNode {
@@ -100,6 +101,7 @@ export function initLibrespeedEngine(
   const nodeTriggerLabel = section.querySelector<HTMLElement>('.ls-node-trigger-label')
   const nodeMenu = section.querySelector<HTMLUListElement>('.ls-node-menu')
   const mainBtn = section.querySelector<HTMLButtonElement>('.ls-main-btn')
+  const aimEl = section.querySelector<HTMLElement>('.scene-aim')
   const errEl = section.querySelector<HTMLElement>('.ls-error')
   if (!valueEl || !phaseEl || !mainBtn) return
 
@@ -226,6 +228,10 @@ export function initLibrespeedEngine(
     if (pingEl) pingEl.textContent = '--'
     if (jitterEl) jitterEl.textContent = '--'
     if (barEl) barEl.style.width = '0%'
+    if (aimEl) {
+      aimEl.innerHTML = ''
+      aimEl.hidden = true
+    }
     errEl?.classList.remove('show')
   }
 
@@ -411,6 +417,7 @@ export function initLibrespeedEngine(
         setValue(down)
         setPhase(t('ls.done'))
         phase = 'done'
+        renderSceneVerdicts(aimEl, { down, up, ping, jitter })
         onResult?.({ down, up, ping: Math.round(ping), ts: Date.now(), engine: 'ls' })
       } else {
         showError()

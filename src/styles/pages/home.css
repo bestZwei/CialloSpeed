@@ -500,11 +500,7 @@
   color: var(--text-muted);
 }
 
-/* NDT/LS 面板无 cf-aim 占位，说明文字间距对齐 CF 的节奏（24+16=40px） */
-#panel-ndt .speedtest-note,
-.ls-server-note {
-  margin-top: calc(var(--sp-5) + var(--sp-4));
-}
+
 
 /* LS 面板第二条说明（引擎介绍）跟随节点行，收紧间距 */
 #panel-ls .speedtest-note:not(.ls-server-note) {
@@ -978,8 +974,8 @@
   display: block;
 }
 
-/* AIM 场景评分 */
-.cf-aim {
+/* 场景体验评分（CF / NDT7 / LibreSpeed / CDN 面板共用） */
+.scene-aim {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -988,7 +984,7 @@
   margin-bottom: var(--sp-4);
 }
 
-.cf-aim .metric-chip {
+.scene-aim .metric-chip {
   background: var(--bg-soft);
   animation: item-in 0.4s var(--ease);
 }

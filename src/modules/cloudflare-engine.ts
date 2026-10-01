@@ -10,6 +10,7 @@ import SpeedTest from '@cloudflare/speedtest'
 import type { Results } from '@cloudflare/speedtest'
 import { t, type StringKey } from '../i18n'
 import type { TestRecord } from './history'
+import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
 
 /** 测量阶段：不包含 packetLoss（需要 TURN 服务器），带宽档位沿用官方由小到大的策略 */
@@ -32,38 +33,6 @@ const PHASE_KEY: Record<string, StringKey> = {
   upload: 'phase.upload',
 }
 
-/** 场景评分：基于实测指标本地计算（引擎 AIM 评分依赖 packetLoss，需要 TURN 服务器，故不使用） */
-interface SceneVerdict {
-  tone: 'ok' | 'warn' | 'bad'
-  label: StringKey
-}
-
-function sceneVerdicts(m: { down: number; up: number; ping: number; jitter: number }): Array<{ label: StringKey; v: SceneVerdict }> {
-  const streaming: SceneVerdict =
-    m.down >= 50 ? { tone: 'ok', label: 'q.excellent' } :
-    m.down >= 25 ? { tone: 'ok', label: 'q.good' } :
-    m.down >= 10 ? { tone: 'warn', label: 'q.fair' } :
-    { tone: 'bad', label: 'q.weak' }
-
-  const gaming: SceneVerdict =
-    m.ping <= 20 && m.jitter <= 3 ? { tone: 'ok', label: 'q.esports' } :
-    m.ping <= 50 && m.jitter <= 8 ? { tone: 'ok', label: 'q.good' } :
-    m.ping <= 100 ? { tone: 'warn', label: 'q.fair' } :
-    { tone: 'bad', label: 'q.high' }
-
-  const rtc: SceneVerdict =
-    m.up >= 20 && m.ping <= 50 ? { tone: 'ok', label: 'q.excellent' } :
-    m.up >= 8 && m.ping <= 80 ? { tone: 'ok', label: 'q.good' } :
-    m.up >= 3 ? { tone: 'warn', label: 'q.fair' } :
-    { tone: 'bad', label: 'q.weak' }
-
-  return [
-    { label: 'scene.streaming', v: streaming },
-    { label: 'scene.gaming', v: gaming },
-    { label: 'scene.rtc', v: rtc },
-  ]
-}
-
 const BPS_TO_MBPS = 1e6
 
 export function initCloudflareEngine(
@@ -80,7 +49,7 @@ export function initCloudflareEngine(
   const upEl = section.querySelector<HTMLElement>('.cf-metric-up strong')
   const pingEl = section.querySelector<HTMLElement>('.cf-metric-ping strong')
   const jitterEl = section.querySelector<HTMLElement>('.cf-metric-jitter strong')
-  const aimEl = section.querySelector<HTMLElement>('.cf-aim')
+  const aimEl = section.querySelector<HTMLElement>('.scene-aim')
   const errEl = section.querySelector<HTMLElement>('.cf-error')
   const ticksG = section.querySelector<SVGGElement>('.cf-ticks')
   const magFill = section.querySelector<SVGCircleElement>('.cf-mag-fill')
@@ -213,20 +182,12 @@ export function initCloudflareEngine(
   }
 
   const renderAim = (r: Results) => {
-    if (!aimEl) return
-    const down = (r.getDownloadBandwidth() ?? 0) / BPS_TO_MBPS
-    const up = (r.getUploadBandwidth() ?? 0) / BPS_TO_MBPS
-    const ping = r.getUnloadedLatency() ?? 999
-    const jitter = r.getUnloadedJitter() ?? 999
-
-    aimEl.innerHTML = ''
-    for (const { label, v } of sceneVerdicts({ down, up, ping, jitter })) {
-      const chip = document.createElement('span')
-      chip.className = 'metric-chip'
-      chip.innerHTML = `<span class="dot dot-${v.tone}"></span>${t(label)} <small>${t(v.label)}</small>`
-      aimEl.appendChild(chip)
-    }
-    aimEl.hidden = aimEl.childElementCount === 0
+    renderSceneVerdicts(aimEl, {
+      down: (r.getDownloadBandwidth() ?? 0) / BPS_TO_MBPS,
+      up: (r.getUploadBandwidth() ?? 0) / BPS_TO_MBPS,
+      ping: r.getUnloadedLatency(),
+      jitter: r.getUnloadedJitter() ?? undefined,
+    })
   }
 
   const clearError = () => errEl?.classList.remove('show')
