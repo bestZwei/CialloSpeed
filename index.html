@@ -452,12 +452,12 @@
                       <input class="cdn-url-input" type="url" inputmode="url" spellcheck="false" autocomplete="off"
                         placeholder="粘贴文件直链（https://…，需支持跨域）"
                         data-i18n-attrs="placeholder:st.cdnUrlPh" aria-label="自定义测速链接" />
-                      <button class="btn btn-ghost btn-sm cdn-custom-btn" type="button" data-i18n="st.cdnCustomBtn">测这个链接</button>
+                      <button class="btn btn-ghost cdn-custom-btn" type="button" data-i18n="st.cdnCustomBtn">测这个链接</button>
                     </div>
                   </div>
                 </div>
                 <p class="speedtest-note" data-i18n="st.cdnNote">
-                  通过大厂 CDN 固定文件测「你的网络 → 该 CDN」的下载速度：目标全部选用开放跨域（CORS）的源（阿里云 npmmirror、腾讯云 npm 镜像、Vultr 新加坡/东京/洛杉矶），测速期间持续下载约 10 秒（一个文件下完立刻接下一个），精确计量并跳过前 1.5 秒的 TCP 慢启动窗口 · 仅测下载，不含上传与延迟；会消耗与网速相应的流量 · 口径与裸带宽引擎不同，适合对比各 CDN 到你网络的质量 · 第三方直链可能随版本更新失效，失败项自动跳过
+                  通过大厂 CDN 固定文件测「你的网络 → 该 CDN」的下载速度：勾选下方要测的目标（至少一个），目标全部选用开放跨域（CORS）的源（阿里云 npmmirror、腾讯云 npm 镜像、Vultr 新加坡/东京/洛杉矶）；测速期间持续下载约 10 秒（一个文件下完立刻接下一个），精确计量并跳过前 1.5 秒的 TCP 慢启动窗口 · 测速中可随时停止 · 仅测下载，不含上传与延迟；会消耗与网速相应的流量 · 口径与裸带宽引擎不同，适合对比各 CDN 到你网络的质量 · 第三方直链可能随版本更新失效，失败项自动跳过
                 </p>
               </div>
             </div>

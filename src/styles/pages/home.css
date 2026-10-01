@@ -571,6 +571,11 @@
   color: var(--text-faint);
 }
 
+/* 表头标题与目标名左对齐（让出勾选框的宽度） */
+.cdn-head > :first-child {
+  padding-left: 22px;
+}
+
 .cdn-results {
   display: flex;
   flex-direction: column;
@@ -594,6 +599,28 @@
   border-radius: var(--radius-sm);
   background: var(--bg-soft);
   transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+/* 勾选控件：整行可点，测速期间禁用 */
+.cdn-row-pick {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.cdn-row-check {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  margin: 0;
+  accent-color: var(--brand-1);
+  cursor: pointer;
+}
+
+.cdn-row-check:disabled {
+  cursor: default;
 }
 
 .cdn-row-name {
@@ -645,20 +672,26 @@
 
 .cdn-custom {
   display: flex;
+  align-items: stretch;
   gap: var(--sp-2);
   margin-top: var(--sp-4);
+}
+
+/* 自定义链接按钮：次要操作，用 ghost，但尺寸/圆角与主按钮同档 */
+.cdn-custom-btn {
+  flex: none;
 }
 
 .cdn-url-input {
   flex: 1;
   min-width: 0;
-  padding: 7px 12px;
-  font-size: var(--fs-xs);
+  padding: 12px 20px;
+  font-size: var(--fs-sm);
   font-family: inherit;
   color: inherit;
   background: transparent;
   border: 1px solid var(--border);
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-pill);
   transition: border-color 0.25s var(--ease);
 }
 
@@ -926,7 +959,8 @@
 
 .cf-main-btn,
 .ndt-main-btn,
-.ls-main-btn {
+.ls-main-btn,
+.cdn-main-btn {
   width: 100%;
   font-size: var(--fs-body);
   padding: 14px 28px;
@@ -1218,6 +1252,11 @@
 
   .history-form .btn {
     grid-column: 1 / -1;
+  }
+
+  /* 窄屏下输入框与按钮改为上下排列，避免相互挤压 */
+  .cdn-custom {
+    flex-direction: column;
   }
 
   .speedtest-frame-wrap {

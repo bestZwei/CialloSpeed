@@ -14,8 +14,10 @@ export const strings: Record<StringKey, string> = {
   'btn.start': 'Start Test',
   'btn.pause': 'Pause',
   'btn.resume': 'Resume',
+  'btn.stop': 'Stop',
   'btn.retry': 'Retry',
   'btn.again': 'Test Again',
+  'state.stopped': 'Stopped',
 
   'engine.error': 'Test failed: {message}. Check your network and try again.',
 
@@ -56,6 +58,7 @@ export const strings: Record<StringKey, string> = {
   'cdn.failed': 'Failed',
   'cdn.failedAll': 'CDN direct-link test failed. Please try again later.',
   'cdn.invalidUrl': 'Enter a direct file link starting with https://',
+  'cdn.selectAtLeastOne': 'Select at least one target',
   'cdn.customName': 'Custom link',
   'cdn.aliElectron': 'Alibaba · npmmirror',
   'cdn.tencentNpm': 'Tencent Cloud · npm mirror',

@@ -14,8 +14,10 @@ export const strings = {
   'btn.start': '开始测速',
   'btn.pause': '暂 停',
   'btn.resume': '继续测速',
+  'btn.stop': '停 止',
   'btn.retry': '重 试',
   'btn.again': '再测一次',
+  'state.stopped': '已停止',
 
   // 错误
   'engine.error': '测速出错：{message}。请检查网络后重试。',
@@ -60,6 +62,7 @@ export const strings = {
   'cdn.failed': '失败',
   'cdn.failedAll': 'CDN 直链测速失败，请稍后重试',
   'cdn.invalidUrl': '请输入 https:// 开头的文件直链',
+  'cdn.selectAtLeastOne': '请至少勾选一个测速目标',
   'cdn.customName': '自定义链接',
   'cdn.aliElectron': '阿里云 · npmmirror',
   'cdn.tencentNpm': '腾讯云 · npm 镜像',

@@ -42,9 +42,11 @@ type Phase = 'idle' | 'running' | 'done'
 const fmtMbps = (mbps: number): string =>
   mbps >= 100 ? mbps.toFixed(0) : mbps >= 10 ? mbps.toFixed(1) : mbps.toFixed(2)
 
-/** 单次 fetch 计时（用于探测/延迟），失败或超时返回 null */
-async function timedFetch(url: string): Promise<number | null> {
+/** 单次 fetch 计时（用于探测/延迟）；失败、超时或被用户停止均返回 null */
+async function timedFetch(url: string, external?: AbortSignal): Promise<number | null> {
   const ctrl = new AbortController()
+  const onStop = () => ctrl.abort()
+  external?.addEventListener('abort', onStop, { once: true })
   const timer = window.setTimeout(() => ctrl.abort(), PROBE_TIMEOUT_MS)
   const start = performance.now()
   try {
@@ -58,6 +60,7 @@ async function timedFetch(url: string): Promise<number | null> {
     return null
   } finally {
     window.clearTimeout(timer)
+    external?.removeEventListener('abort', onStop)
   }
 }
 
@@ -102,6 +105,8 @@ export function initLibrespeedEngine(
 
   let phase: Phase = 'idle'
   let running = false
+  let stopCtrl: AbortController | null = null // 外部「停止」信号
+  let stopped = false // 用户主动停止后，本轮结果作废
 
   /* ---------- 节点选择：自绘下拉（与引擎选择器同风格），手动优先，默认自动 ---------- */
 
@@ -232,12 +237,12 @@ export function initLibrespeedEngine(
   }
 
   /** 并行探测全部节点，按延迟升序返回可达节点；全部失败返回空 */
-  const pickNodes = async (): Promise<LsNode[]> => {
+  const pickNodes = async (stopSignal: AbortSignal): Promise<LsNode[]> => {
     const results = await Promise.all(
       NODES.map(async (node) => {
         let best = Infinity
         for (let i = 0; i < PROBE_COUNT; i++) {
-          const ms = await timedFetch(`${node.base}/empty.php`)
+          const ms = await timedFetch(`${node.base}/empty.php`, stopSignal)
           if (ms !== null && ms < best) best = ms
         }
         return { node, best }
@@ -250,10 +255,14 @@ export function initLibrespeedEngine(
   }
 
   /** 精测延迟：取最小值为延迟，相邻样本平均偏差为抖动 */
-  const measureLatency = async (node: LsNode): Promise<{ ping: number; jitter: number }> => {
+  const measureLatency = async (
+    node: LsNode,
+    stopSignal: AbortSignal,
+  ): Promise<{ ping: number; jitter: number }> => {
     const samples: number[] = []
     for (let i = 0; i < PING_COUNT; i++) {
-      const ms = await timedFetch(`${node.base}/empty.php`)
+      if (stopSignal.aborted) break
+      const ms = await timedFetch(`${node.base}/empty.php`, stopSignal)
       if (ms !== null) samples.push(ms)
     }
     if (samples.length < 3) throw new Error('latency samples insufficient')
@@ -266,37 +275,40 @@ export function initLibrespeedEngine(
   }
 
   /** 下载：PARALLEL 路并行读流，时间盒内累计字节；单流提前结束则续发新请求 */
-  const measureDownload = async (node: LsNode): Promise<number> => {
+  const measureDownload = async (node: LsNode, stopSignal: AbortSignal): Promise<number> => {
     const deadline = performance.now() + DL_DURATION_MS
     let totalBytes = 0
     const startOne = async (): Promise<void> => {
-      while (performance.now() < deadline) {
+      while (performance.now() < deadline && !stopSignal.aborted) {
         const ctrl = new AbortController()
+        const onStop = () => ctrl.abort()
+        stopSignal.addEventListener('abort', onStop, { once: true })
         const remain = deadline - performance.now()
         const timer = window.setTimeout(() => ctrl.abort(), Math.max(remain, 1))
-      try {
-        const res = await fetch(`${node.base}/garbage.php?ckSize=100&r=${Math.random()}`, {
-          signal: ctrl.signal,
-          cache: 'no-store',
-        })
-        const reader = res.body?.getReader()
-        if (!reader) return
-        for (;;) {
-          if (performance.now() >= deadline) {
-            ctrl.abort()
-            return
+        try {
+          const res = await fetch(`${node.base}/garbage.php?ckSize=100&r=${Math.random()}`, {
+            signal: ctrl.signal,
+            cache: 'no-store',
+          })
+          const reader = res.body?.getReader()
+          if (!reader) return
+          for (;;) {
+            if (performance.now() >= deadline || stopSignal.aborted) {
+              ctrl.abort()
+              return
+            }
+            const { done, value } = await reader.read()
+            if (done) break
+            totalBytes += value.byteLength
+            const elapsed = (performance.now() + 1 - (deadline - DL_DURATION_MS)) / 1000
+            setValue((totalBytes * 8) / elapsed / 1e6)
           }
-          const { done, value } = await reader.read()
-          if (done) break
-          totalBytes += value.byteLength
-          const elapsed = (performance.now() + 1 - (deadline - DL_DURATION_MS)) / 1000
-          setValue((totalBytes * 8) / elapsed / 1e6)
+        } catch {
+          return
+        } finally {
+          window.clearTimeout(timer)
+          stopSignal.removeEventListener('abort', onStop)
         }
-      } catch {
-        return
-      } finally {
-        window.clearTimeout(timer)
-      }
       }
     }
     await Promise.all(Array.from({ length: PARALLEL }, () => startOne()))
@@ -305,7 +317,7 @@ export function initLibrespeedEngine(
   }
 
   /** 上传：PARALLEL 路并行 POST，按已完成请求的字节计吞吐 */
-  const measureUpload = async (node: LsNode): Promise<number> => {
+  const measureUpload = async (node: LsNode, stopSignal: AbortSignal): Promise<number> => {
     // getRandomValues 单次上限 64KB，分块填充（body 经 TLS 加密，无需真随机防压缩）
     const chunk = new Uint8Array(UL_CHUNK_BYTES)
     for (let off = 0; off < chunk.length; off += 65536) {
@@ -314,8 +326,10 @@ export function initLibrespeedEngine(
     const deadline = performance.now() + UL_DURATION_MS
     let totalBytes = 0
     const startOne = async (): Promise<void> => {
-      while (performance.now() < deadline) {
+      while (performance.now() < deadline && !stopSignal.aborted) {
         const ctrl = new AbortController()
+        const onStop = () => ctrl.abort()
+        stopSignal.addEventListener('abort', onStop, { once: true })
         const remain = deadline - performance.now()
         const timer = window.setTimeout(() => ctrl.abort(), Math.max(remain, 1))
         try {
@@ -332,6 +346,7 @@ export function initLibrespeedEngine(
           return
         } finally {
           window.clearTimeout(timer)
+          stopSignal.removeEventListener('abort', onStop)
         }
       }
     }
@@ -345,7 +360,11 @@ export function initLibrespeedEngine(
     running = true
     phase = 'running'
     testState.running = true
-    mainBtn.disabled = true
+    stopped = false
+    const ctrl = new AbortController()
+    stopCtrl = ctrl
+    mainBtn.disabled = false
+    mainBtn.textContent = t('btn.stop') // 测速中可随时停止
     reset()
 
     try {
@@ -357,7 +376,7 @@ export function initLibrespeedEngine(
         candidates = [node]
       } else {
         setPhase(t('ls.selecting'))
-        candidates = await pickNodes()
+        candidates = await pickNodes(ctrl.signal)
         if (candidates.length === 0) throw new Error('no reachable node')
         node = candidates[0]
         if (serverEl) serverEl.textContent = node.name
@@ -365,25 +384,27 @@ export function initLibrespeedEngine(
 
       // 2. 空载延迟
       setPhase(t('phase.latency'))
-      const { ping, jitter } = await measureLatency(node)
+      const { ping, jitter } = await measureLatency(node, ctrl.signal)
       if (pingEl) pingEl.textContent = Math.round(ping).toString()
       if (jitterEl) jitterEl.textContent = jitter.toFixed(1)
 
       // 3. 下载（仅自动模式：主节点 0 字节时换次优节点重试一次，防节点瞬时抖动）
       setPhase(t('phase.download'))
-      let down = await measureDownload(node)
-      if (down <= 0 && !preferredNode && candidates.length > 1) {
+      let down = await measureDownload(node, ctrl.signal)
+      if (down <= 0 && !ctrl.signal.aborted && !preferredNode && candidates.length > 1) {
         const fallback = candidates[1]
         if (serverEl) serverEl.textContent = `${fallback.name} (${t('ls.retry')})`
-        down = await measureDownload(fallback)
+        down = await measureDownload(fallback, ctrl.signal)
         if (serverEl) serverEl.textContent = fallback.name
       }
       if (downEl) downEl.textContent = fmtMbps(down)
 
       // 4. 上传
       setPhase(t('phase.upload'))
-      const up = await measureUpload(node)
+      const up = await measureUpload(node, ctrl.signal)
       if (upEl) upEl.textContent = fmtMbps(up)
+
+      if (stopped) return // 用户主动停止：本轮结果作废，不写历史
 
       if (barEl) barEl.style.width = '100%'
       if (down > 0) {
@@ -395,15 +416,28 @@ export function initLibrespeedEngine(
         showError()
       }
     } catch (err) {
-      console.error('[librespeed]', err)
-      showError()
+      if (!stopped) {
+        console.error('[librespeed]', err)
+        showError()
+      }
     } finally {
       running = false
       phase = phase === 'running' ? 'idle' : phase
       testState.running = false
+      stopCtrl = null
       mainBtn.disabled = false
+      mainBtn.textContent = t('btn.start')
     }
   }
 
-  mainBtn.addEventListener('click', runTest)
+  mainBtn.addEventListener('click', () => {
+    if (running) {
+      stopped = true
+      stopCtrl?.abort() // 中断当前请求
+      reset()
+      setPhase(t('state.stopped'))
+      return
+    }
+    void runTest()
+  })
 }

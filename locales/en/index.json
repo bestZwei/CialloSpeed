@@ -36,7 +36,7 @@
   "st.cdnColTarget": "Target",
   "st.cdnUrlPh": "Paste a file URL (https://…, must allow cross-origin)",
   "st.cdnCustomBtn": "Test this link",
-  "st.cdnNote": "Measures download speed from your network to major CDNs (Alibaba npmmirror, Tencent Cloud npm mirror, Vultr Singapore/Tokyo/Los Angeles) using fixed public files · Every target allows cross-origin (CORS); downloading runs continuously for about 10 seconds (a new file starts the moment the previous one finishes) with precise measurement, skipping the first 1.5s TCP slow-start window · Download only, no upload or latency; consumes data proportional to your speed · Different methodology from the raw-bandwidth engines; third-party links may break with version updates; failed targets are skipped automatically",
+  "st.cdnNote": "Measures download speed from your network to major CDNs (Alibaba npmmirror, Tencent Cloud npm mirror, Vultr Singapore/Tokyo/Los Angeles) using fixed public files · Tick the targets you want (at least one); every target allows cross-origin (CORS); downloading runs continuously for about 10 seconds (a new file starts the moment the previous one finishes) with precise measurement, skipping the first 1.5s TCP slow-start window · You can stop at any time · Download only, no upload or latency; consumes data proportional to your speed · Different methodology from the raw-bandwidth engines; third-party links may break with version updates; failed targets are skipped automatically",
   "st.smTab": "SpeedMeter.dev",
   "st.smIframe": "SpeedMeter.dev online speed test widget",
   "st.smSlowBody": "The connection from your network to the test node may be unstable. Refresh the page and try again.",

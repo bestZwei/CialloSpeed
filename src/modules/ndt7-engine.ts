@@ -44,6 +44,7 @@ export function initNdt7Engine(
 
   let phase: Phase = 'idle'
   let running = false
+  let stopped = false // 用户主动停止：本轮结果作废（库内部 worker 无法中断，测量会在后台自然结束）
 
   const setPhase = (text: string) => {
     phaseEl.textContent = text
@@ -74,7 +75,9 @@ export function initNdt7Engine(
     running = true
     phase = 'running'
     testState.running = true
-    mainBtn.disabled = true
+    stopped = false
+    mainBtn.disabled = false
+    mainBtn.textContent = t('btn.stop') // 测速中可停止
     reset()
 
     // 指标收集容器
@@ -94,6 +97,7 @@ export function initNdt7Engine(
     }
 
     const handleMeasurement = (m: Ndt7Measurement, isUpload: boolean) => {
+      if (stopped) return
       if (m.Source === 'client' && typeof m.Data.MeanClientMbps === 'number') {
         currentMean = m.Data.MeanClientMbps
         // 主数字始终跟随当前阶段的实时速度（上传阶段不能停留在下载末值）
@@ -132,37 +136,45 @@ export function initNdt7Engine(
         },
         {
           start: () => {
+            if (stopped) return
             phaseStart = performance.now()
             setPhase(t('phase.latency'))
           },
           downloadStart: () => {
+            if (stopped) return
             phaseStart = performance.now()
             setPhase(t('phase.download'))
           },
           downloadMeasurement: (m) => handleMeasurement(m, false),
           downloadComplete: (r) => {
+            if (stopped) return
             const c = r.LastClientMeasurement?.MeanClientMbps
             downMbps = c ?? currentMean
             if (downEl) downEl.textContent = downMbps >= 100 ? Math.round(downMbps).toString() : downMbps.toFixed(1)
             phaseStart = 0
           },
           uploadStart: () => {
+            if (stopped) return
             phaseStart = performance.now()
             setPhase(t('phase.upload'))
           },
           uploadMeasurement: (m) => handleMeasurement(m, true),
           uploadComplete: (r) => {
+            if (stopped) return
             const c = r.LastClientMeasurement?.MeanClientMbps
             upMbps = c ?? upMbps
             if (upEl) upEl.textContent = upMbps >= 100 ? Math.round(upMbps).toString() : upMbps.toFixed(1)
             phaseStart = 0
           },
           error: (message) => {
+            if (stopped) return
             console.error('[ndt7]', message)
             showError()
           },
         },
       )
+
+      if (stopped) return // 已停止：本轮结果作废，不写历史
 
       if (barEl) barEl.style.width = '100%'
 
@@ -188,15 +200,29 @@ export function initNdt7Engine(
         showError()
       }
     } catch (err) {
-      console.error('[ndt7]', err)
-      showError()
+      if (!stopped) {
+        console.error('[ndt7]', err)
+        showError()
+      }
     } finally {
       running = false
       phase = phase === 'running' ? 'idle' : phase
       testState.running = false
       mainBtn.disabled = false
+      mainBtn.textContent = t('btn.start')
     }
   }
 
-  mainBtn.addEventListener('click', runTest)
+  mainBtn.addEventListener('click', () => {
+    if (running) {
+      // 停止：ndt7 库内部创建的 worker 无法从外部中断，底层测量会在后台自然跑完，
+      // 这里只立即复位界面并丢弃本轮结果（按钮保持禁用，待后台结束后恢复）
+      stopped = true
+      reset()
+      setPhase(t('state.stopped'))
+      mainBtn.disabled = true
+      return
+    }
+    void runTest()
+  })
 }

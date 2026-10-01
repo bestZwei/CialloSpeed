@@ -11,6 +11,7 @@
  *   几秒就下完，只能退化成整包平均速度、丢掉「跳过慢启动取稳态」的意义。
  *   代价：流量 = 时间盒 × 线路速度；且单次传输时间需明显大于 RTT，否则请求间隙
  *   （同域复用连接约 1 个 RTT）会显著拉低读数 —— 故单文件仍不宜小于 1MB 量级。
+ * - 目标可由用户勾选（状态存 localStorage），测速期间可随时「停止」（结果作废，不记历史）
  * - 第三方直链会随版本更迭失效（npmmirror / npm 版本号固定不变），单项失败自动跳过
  * - 仅测下载（up/ping 记 0，历史展示为「—」且不参与质量评级）；
  *   支持粘贴任意 https 直链自定义测速（仅限带跨域头的源）；结果仅保存浏览器本地（onResult 回调 addRecord）
@@ -27,6 +28,9 @@ interface CdnTarget {
 
 const DL_DURATION_S = 10 // 单目标时间盒时长：期间持续下载（一个文件读完立刻接下一个）
 const RAMP_S = 1.5 // 速度计算跳过的 TCP 慢启动窗口（秒）
+
+/** 勾选状态存储键（存选中目标的 URL 数组，跨语言/会话保持） */
+const PICKED_STORAGE_KEY = 'ciallospeed-cdn-targets'
 
 /**
  * 预设测速目标（2026-10 实测，均返回 ACAO 且支持流式读取）。
@@ -49,16 +53,43 @@ const TARGETS: CdnTarget[] = [
 const fmtMbps = (mbps: number): string =>
   mbps >= 100 ? mbps.toFixed(0) : mbps >= 10 ? mbps.toFixed(1) : mbps.toFixed(2)
 
+/** 读取勾选的目标；未设置过、或保存项已全部失效时回落为全选 */
+function loadPicked(): Set<string> {
+  const all = TARGETS.map((tg) => tg.url)
+  try {
+    const raw = localStorage.getItem(PICKED_STORAGE_KEY)
+    if (!raw) return new Set(all)
+    const parsed: unknown = JSON.parse(raw)
+    if (!Array.isArray(parsed)) return new Set(all)
+    const valid = new Set(all)
+    const kept = parsed.filter((u): u is string => typeof u === 'string' && valid.has(u))
+    return kept.length > 0 ? new Set(kept) : new Set(all)
+  } catch {
+    return new Set(all)
+  }
+}
+
+function savePicked(picked: Set<string>): void {
+  try {
+    localStorage.setItem(PICKED_STORAGE_KEY, JSON.stringify([...picked]))
+  } catch {
+    /* 隐私模式下忽略 */
+  }
+}
+
 /**
  * 时间盒内连续下载：一个文件读完立刻接下一个（同一个 URL 就重复请求），把时间盒喂满。
  * 速度 = 跳过慢启动窗口（RAMP_S）之后的字节增量 ÷ 对应时长，避免峰值被爬坡期拉低。
- * 连续下载的好处：不要求单个文件足够大，几 MB~几十 MB 的源也能测出稳态速率。
+ * external 用于外部「停止」：一旦 abort，立即中断当前请求并结束。
  */
 async function measureTimebox(
   url: string,
   onTick?: (mbps: number, frac: number) => void,
+  external?: AbortSignal,
 ): Promise<number | null> {
   const controller = new AbortController()
+  const onExternalAbort = () => controller.abort()
+  external?.addEventListener('abort', onExternalAbort, { once: true })
   const hardTimer = window.setTimeout(() => controller.abort(), DL_DURATION_S * 1000 + 3000)
   const start = performance.now()
   const deadline = start + DL_DURATION_S * 1000
@@ -109,6 +140,7 @@ async function measureTimebox(
     finished = true
   } finally {
     window.clearTimeout(hardTimer)
+    external?.removeEventListener('abort', onExternalAbort)
     controller.abort()
   }
 
@@ -137,6 +169,8 @@ export function initCdnEngine(
   if (!valueEl || !phaseEl || !mainBtn) return
 
   let running = false
+  let batchAbort: AbortController | null = null
+  const picked = loadPicked() // 用户勾选的测速目标（URL 集合）
 
   const setValue = (v: number) => {
     valueEl.textContent = fmtMbps(v)
@@ -149,24 +183,48 @@ export function initCdnEngine(
   interface Row {
     li: HTMLElement
     speedEl: HTMLElement
+    box: HTMLInputElement | null
   }
 
-  /** 渲染目标行（初始 -- 待测态）；开始测速与页面加载时各渲染一次 */
-  const renderRows = (names: string[]): Row[] => {
+  /**
+   * 渲染目标行（速度重置为 --）。
+   * withCheck 控制是否带勾选框（预设清单带、自定义单行不带）；
+   * enabled 控制勾选框是否可用（测速期间禁用，避免中途改动）。
+   */
+  const renderRows = (targets: CdnTarget[], withCheck: boolean, enabled: boolean): Row[] => {
     if (!listEl) return []
     listEl.textContent = ''
-    return names.map((name) => {
+    return targets.map((tg) => {
       const li = document.createElement('li')
       li.className = 'cdn-row'
+
+      const wrap = document.createElement('label')
+      wrap.className = 'cdn-row-pick'
+      let box: HTMLInputElement | null = null
+      if (withCheck) {
+        box = document.createElement('input')
+        box.type = 'checkbox'
+        box.className = 'cdn-row-check'
+        box.checked = picked.has(tg.url)
+        box.disabled = !enabled
+        box.addEventListener('change', () => {
+          if (box?.checked) picked.add(tg.url)
+          else picked.delete(tg.url)
+          savePicked(picked)
+        })
+        wrap.appendChild(box)
+      }
       const nameEl = document.createElement('span')
       nameEl.className = 'cdn-row-name'
-      nameEl.textContent = name
+      nameEl.textContent = t(tg.name)
+      wrap.appendChild(nameEl)
+
       const speedEl = document.createElement('span')
       speedEl.className = 'cdn-row-speed'
       speedEl.textContent = '--'
-      li.append(nameEl, speedEl)
+      li.append(wrap, speedEl)
       listEl.appendChild(li)
-      return { li, speedEl }
+      return { li, speedEl, box }
     })
   }
 
@@ -176,36 +234,65 @@ export function initCdnEngine(
     phaseEl.textContent = t('cdn.ready')
   }
 
-  /** 跑一批目标（预设或单个自定义），取最高值记入历史 */
-  const runBatch = async (targets: CdnTarget[]) => {
+  /**
+   * 跑一批目标：list 为要渲染的行（预设=全部目标，自定义=单行），
+   * execute 为实际要测的目标（预设=勾选子集，自定义=同一行）。
+   * restoreToPreset 为真时，结束后把列表恢复成预设清单（自定义测速用）。
+   */
+  const runBatch = async (list: CdnTarget[], execute: CdnTarget[], restoreToPreset: boolean) => {
     running = true
     testState.running = true
-    mainBtn.disabled = true
+    mainBtn.disabled = false
+    mainBtn.textContent = t('btn.stop') // 测速中可随时停止
     if (customBtn) customBtn.disabled = true
     if (urlInput) urlInput.disabled = true
     valueEl.textContent = '--'
     setBar(0)
     errEl?.classList.remove('show')
-    const rows = renderRows(targets.map((tg) => t(tg.name)))
+
+    const rows = renderRows(list, list === TARGETS, false)
+    const rowOf = new Map<CdnTarget, Row>()
+    list.forEach((tg, i) => {
+      const r = rows[i]
+      if (r) rowOf.set(tg, r)
+    })
+
+    const ctrl = new AbortController()
+    batchAbort = ctrl
 
     let best = 0 // 已测得的最高速度（最终展示/记录值）
     let bestRow: Row | undefined
     let okCount = 0
+    let done = 0
+    let stopped = false
     try {
-      for (let i = 0; i < targets.length; i++) {
-        const target = targets[i]
-        const row = rows[i]
+      for (const target of execute) {
+        if (ctrl.signal.aborted) {
+          stopped = true
+          break
+        }
+        const row = rowOf.get(target)
         if (!row) continue
 
-        phaseEl.textContent = t('cdn.testing', { name: t(target.name), i: i + 1, n: targets.length })
+        phaseEl.textContent = t('cdn.testing', { name: t(target.name), i: done + 1, n: execute.length })
         row.li.classList.add('is-active')
-        const base = i / targets.length
-        const mbps = await measureTimebox(target.url, (v, frac) => {
-          setValue(v)
-          row.speedEl.textContent = fmtMbps(v)
-          setBar(base + frac / targets.length)
-        })
+        const mbps = await measureTimebox(
+          target.url,
+          (v, frac) => {
+            setValue(v)
+            row.speedEl.textContent = fmtMbps(v)
+            setBar((done + frac) / execute.length)
+          },
+          ctrl.signal,
+        )
         row.li.classList.remove('is-active')
+
+        if (ctrl.signal.aborted) {
+          stopped = true
+          break
+        }
+
+        done += 1
         if (mbps !== null) {
           okCount++
           row.li.classList.add('is-done')
@@ -217,7 +304,15 @@ export function initCdnEngine(
           row.speedEl.textContent = t('cdn.failed')
           row.li.classList.add('is-fail')
         }
-        setBar((i + 1) / targets.length)
+        setBar(done / execute.length)
+      }
+
+      if (stopped) {
+        // 用户主动停止：本轮结果作废，不写入历史
+        valueEl.textContent = '--'
+        setBar(0)
+        phaseEl.textContent = t('state.stopped')
+        return
       }
 
       if (okCount > 0 && best > 0) {
@@ -234,15 +329,30 @@ export function initCdnEngine(
     } finally {
       running = false
       testState.running = false
+      batchAbort = null
       mainBtn.disabled = false
+      mainBtn.textContent = t('btn.start')
       if (customBtn) customBtn.disabled = false
       if (urlInput) urlInput.disabled = false
+      if (restoreToPreset) {
+        renderRows(TARGETS, true, true)
+      } else {
+        for (const r of rows) if (r.box) r.box.disabled = false
+      }
     }
   }
 
   mainBtn.addEventListener('click', () => {
-    if (running) return
-    void runBatch(TARGETS)
+    if (running) {
+      batchAbort?.abort() // 停止当前测速
+      return
+    }
+    const selected = TARGETS.filter((tg) => picked.has(tg.url))
+    if (selected.length === 0) {
+      showError(t('cdn.selectAtLeastOne'))
+      return
+    }
+    void runBatch(TARGETS, selected, false)
   })
 
   customBtn?.addEventListener('click', () => {
@@ -252,9 +362,10 @@ export function initCdnEngine(
       showError(t('cdn.invalidUrl'))
       return
     }
-    void runBatch([{ name: 'cdn.customName', url: raw }])
+    const target: CdnTarget = { name: 'cdn.customName', url: raw }
+    void runBatch([target], [target], true)
   })
 
-  // 初始即展示预设目标清单（待测态），让用户在开始前知道会测哪些源
-  renderRows(TARGETS.map((tg) => t(tg.name)))
+  // 初始即展示预设目标清单（可勾选），让用户在开始前决定要测哪些源
+  renderRows(TARGETS, true, true)
 }
