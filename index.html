@@ -179,6 +179,15 @@
                     <path d="M20 6 9 17l-5-5" />
                   </svg>
                 </li>
+                <li class="engine-option" id="tab-cdn" role="option" aria-selected="false" data-panel="panel-cdn" tabindex="-1">
+                  <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3" />
+                  </svg>
+                  <span class="engine-option-label" data-i18n-html="st.cdnTab">CDN 直链</span>
+                  <svg class="engine-check" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M20 6 9 17l-5-5" />
+                  </svg>
+                </li>
               </ul>
             </div>
 
@@ -415,6 +424,40 @@
                 </div>
                 <p class="speedtest-note" data-i18n="st.lsNote">
                   测速引擎由开源项目 LibreSpeed 的社区公共节点提供（当前接入 Sharktech 欧洲/北美节点） · 适合测国际出口与跨境链路质量 · 海外节点延迟天然较高，属正常现象
+                </p>
+              </div>
+            </div>
+
+            <!-- ===== 引擎七：CDN 直链（大厂固定文件下载测速） ===== -->
+            <div class="engine-panel" id="panel-cdn" role="tabpanel" aria-labelledby="tab-cdn" hidden>
+              <div class="speedtest-card cf-engine">
+                <div class="cf-layout">
+                  <div class="ls-stage">
+                    <div class="ls-value">--</div>
+                    <div class="ls-unit">Mbps</div>
+                    <div class="ls-progress" aria-hidden="true"><div class="ls-bar"></div></div>
+                    <div class="ls-phase" data-i18n="st.cdnReady">准备好了？</div>
+                  </div>
+                  <div class="cf-side">
+                    <div class="cdn-head">
+                      <span data-i18n="st.cdnColTarget">测速目标</span>
+                      <span>Mbps</span>
+                    </div>
+                    <ul class="cdn-results"></ul>
+                    <div class="cf-actions">
+                      <button class="btn btn-primary cdn-main-btn" type="button" data-i18n="btn.startTest">开始测速</button>
+                    </div>
+                    <p class="cf-error" role="alert"></p>
+                    <div class="cdn-custom">
+                      <input class="cdn-url-input" type="url" inputmode="url" spellcheck="false" autocomplete="off"
+                        placeholder="粘贴文件直链（https://…，需支持跨域）"
+                        data-i18n-attrs="placeholder:st.cdnUrlPh" aria-label="自定义测速链接" />
+                      <button class="btn btn-ghost btn-sm cdn-custom-btn" type="button" data-i18n="st.cdnCustomBtn">测这个链接</button>
+                    </div>
+                  </div>
+                </div>
+                <p class="speedtest-note" data-i18n="st.cdnNote">
+                  通过大厂 CDN 固定文件测「你的网络 → 该 CDN」的下载速度：目标全部选用开放跨域（CORS）的源（阿里云 npmmirror、腾讯云 npm 镜像、Vultr 新加坡/东京/洛杉矶），测速期间持续下载约 10 秒（一个文件下完立刻接下一个），精确计量并跳过前 1.5 秒的 TCP 慢启动窗口 · 仅测下载，不含上传与延迟；会消耗与网速相应的流量 · 口径与裸带宽引擎不同，适合对比各 CDN 到你网络的质量 · 第三方直链可能随版本更新失效，失败项自动跳过
                 </p>
               </div>
             </div>

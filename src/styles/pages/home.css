@@ -558,6 +558,119 @@
   display: none;
 }
 
+/* ---------- CDN 直链引擎（舞台复用 ls-* 样式） ---------- */
+.cdn-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 0 12px;
+  margin-bottom: 6px;
+  font-size: var(--fs-xs);
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+
+.cdn-results {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.cdn-results:empty {
+  margin-bottom: 0;
+}
+
+.cdn-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  padding: 7px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-soft);
+  transition: border-color 0.25s var(--ease), background 0.25s var(--ease);
+}
+
+.cdn-row-name {
+  font-size: var(--fs-xs);
+  color: var(--text-muted);
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cdn-row-speed {
+  flex: none;
+  min-width: 4.5em;
+  text-align: right;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+/* 进行中：品牌色高亮当前行 */
+.cdn-row.is-active {
+  border-color: color-mix(in srgb, var(--brand-1) 35%, transparent);
+  background: color-mix(in srgb, var(--brand-1) 6%, transparent);
+}
+
+.cdn-row.is-active .cdn-row-speed {
+  color: var(--brand-1);
+}
+
+/* 完成：取最高值的一行重点标注 */
+.cdn-row.is-best {
+  border-color: color-mix(in srgb, var(--brand-1) 45%, transparent);
+}
+
+.cdn-row.is-best .cdn-row-name,
+.cdn-row.is-best .cdn-row-speed {
+  color: var(--brand-1);
+}
+
+.cdn-row.is-fail .cdn-row-speed {
+  font-weight: 500;
+  color: var(--text-faint);
+}
+
+.cdn-row.is-fail .cdn-row-name {
+  color: var(--text-faint);
+}
+
+.cdn-custom {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-4);
+}
+
+.cdn-url-input {
+  flex: 1;
+  min-width: 0;
+  padding: 7px 12px;
+  font-size: var(--fs-xs);
+  font-family: inherit;
+  color: inherit;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  transition: border-color 0.25s var(--ease);
+}
+
+.cdn-url-input:focus {
+  outline: none;
+  border-color: var(--border-strong);
+}
+
+.cdn-url-input::placeholder {
+  color: var(--text-faint);
+}
+
 /* ---------- Cloudflare 引擎（原生面板） ---------- */
 .cf-engine {
   padding: var(--sp-6);

@@ -5,8 +5,8 @@
 
 import { t, locale, type StringKey } from '../i18n'
 
-/** 测速引擎来源：cf = Cloudflare 边缘引擎；ost = OpenSpeedTest；ndt7 = M-Lab NDT7；ls = LibreSpeed；sm = SpeedMeter.dev；mn = Meter.net；manual = 手动录入（旧记录缺省视为 manual） */
-export type EngineId = 'cf' | 'ost' | 'ndt7' | 'ls' | 'sm' | 'mn' | 'manual'
+/** 测速引擎来源：cf = Cloudflare 边缘引擎；ost = OpenSpeedTest；ndt7 = M-Lab NDT7；ls = LibreSpeed；sm = SpeedMeter.dev；mn = Meter.net；cdn = CDN 直链下载；manual = 手动录入（旧记录缺省视为 manual） */
+export type EngineId = 'cf' | 'ost' | 'ndt7' | 'ls' | 'sm' | 'mn' | 'cdn' | 'manual'
 
 export const ENGINE_LABEL: Record<EngineId, StringKey> = {
   cf: 'engine.cf',
@@ -15,6 +15,7 @@ export const ENGINE_LABEL: Record<EngineId, StringKey> = {
   ls: 'engine.ls',
   sm: 'engine.sm',
   mn: 'engine.mn',
+  cdn: 'engine.cdn',
   manual: 'engine.manual',
 }
 
@@ -145,12 +146,19 @@ export function initHistory(root: HTMLElement): void {
       const dq = downQuality(rec.down)
       const pq = pingQuality(rec.ping)
       const engine: EngineId = rec.engine ?? 'manual'
+      // CDN 直链引擎只测下载：up/ping 无有效值，展示为「—」且不参与质量评级，
+      // 否则 0 会被误评成「0 Mbps 上传 / 0 ms 电竞级」这种自相矛盾的结果
+      const hasUpPing = engine !== 'cdn'
 
       metrics.innerHTML =
         `<span class="metric-chip engine-chip">${t(ENGINE_LABEL[engine])}</span>` +
         `<span class="metric-chip"><span class="dot dot-${dq.tone}"></span>↓ ${fmtNum(rec.down)} <small>Mbps · ${t(dq.label)}</small></span>` +
-        `<span class="metric-chip">↑ ${fmtNum(rec.up)} <small>Mbps</small></span>` +
-        `<span class="metric-chip"><span class="dot dot-${pq.tone}"></span>${fmtNum(rec.ping)} <small>ms · ${t(pq.label)}</small></span>`
+        (hasUpPing
+          ? `<span class="metric-chip">↑ ${fmtNum(rec.up)} <small>Mbps</small></span>`
+          : `<span class="metric-chip">↑ — <small>Mbps</small></span>`) +
+        (hasUpPing
+          ? `<span class="metric-chip"><span class="dot dot-${pq.tone}"></span>${fmtNum(rec.ping)} <small>ms · ${t(pq.label)}</small></span>`
+          : `<span class="metric-chip">— <small>ms</small></span>`)
 
       li.append(time, metrics)
       listEl.appendChild(li)

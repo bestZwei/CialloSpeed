@@ -6,6 +6,7 @@ import { initSpeedtest, type SpeedtestHandle } from '../modules/speedtest'
 import { initCloudflareEngine } from '../modules/cloudflare-engine'
 import { initNdt7Engine } from '../modules/ndt7-engine'
 import { initLibrespeedEngine } from '../modules/librespeed-engine'
+import { initCdnEngine } from '../modules/cdn-engine'
 import { initIpInfo } from '../modules/ip-info'
 import { initHistory, addRecord } from '../modules/history'
 import { testState } from '../modules/test-state'
@@ -69,6 +70,9 @@ if (speedtestSection) {
 
   const lsSection = speedtestSection.querySelector<HTMLElement>('#panel-ls')
   if (lsSection) initLibrespeedEngine(lsSection, addRecord)
+
+  const cdnSection = speedtestSection.querySelector<HTMLElement>('#panel-cdn')
+  if (cdnSection) initCdnEngine(cdnSection, addRecord)
 
   // 访客 IP 信息：默认收起，仅用户点击后才向第三方 IP 库发请求
   initIpInfo(speedtestSection)
