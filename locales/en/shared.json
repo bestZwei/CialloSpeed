@@ -1,5 +1,6 @@
 {
   "langSwitch": "中文",
+  "ogImageAlt": "CialloSpeed free online speed test — real bandwidth, measured in one go",
   "skip": "Skip to speed test",
   "btn.startTest": "Start Test",
   "btn.startNow": "Test Now",
@@ -18,7 +19,7 @@
   "brand.home": "CialloSpeed Home",
   "menu.open": "Open menu",
 
-  "footer.brandDesc": "Free, clean Chinese speed test. Six test engines cross-validated, HTML5-based with no plugins, works on every device; your records never leave your browser.",
+  "footer.brandDesc": "Free, clean Chinese speed test. Seven test engines cross-validated, HTML5-based with no plugins, works on every device; your records never leave your browser.",
   "footer.exploreAria": "Site navigation",
   "footer.explore": "Explore",
   "footer.test": "Speed Test",

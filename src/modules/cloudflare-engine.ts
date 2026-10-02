@@ -156,6 +156,7 @@ export function initCloudflareEngine(
 
   let phase: Phase = 'idle'
   let finished = false
+  let needsRestart = false // 曾中途停止：引擎残留半轮数据，下次启动必须 restart
   let rafId = 0
 
   /* ---------- 渲染辅助 ---------- */
@@ -192,6 +193,17 @@ export function initCloudflareEngine(
 
   const clearError = () => errEl?.classList.remove('show')
 
+  /** 清空全部读数（重新开始 / 切走引擎时作废上一轮结果） */
+  const clearReadouts = () => {
+    valueEl.textContent = '--'
+    unitEl.textContent = 'Mbps'
+    if (downEl) downEl.textContent = '--'
+    if (upEl) upEl.textContent = '--'
+    if (pingEl) pingEl.textContent = '--'
+    if (jitterEl) jitterEl.textContent = '--'
+    if (aimEl) aimEl.hidden = true
+  }
+
   const showError = (msg: string) => {
     phase = 'error'
     setPhase('idle')
@@ -210,8 +222,9 @@ export function initCloudflareEngine(
     stageEl?.classList.toggle('is-up', key.startsWith('upload'))
   }
 
-  // 测速中：进度环做旋转动画（rAF 驱动，暂停时停止）
+  // 测速中：进度环做旋转动画（rAF 驱动，暂停时停止；显式调用与 onRunningChange 回调重复触发时保持幂等）
   const spinRing = () => {
+    window.cancelAnimationFrame(rafId)
     const start = performance.now()
     const tick = (now: number) => {
       if (phase !== 'running') return
@@ -277,7 +290,7 @@ export function initCloudflareEngine(
   engine.onFinish = (r) => {
     finished = true
     phase = 'done'
-    testState.running = false
+    testState.release('cf')
     window.cancelAnimationFrame(rafId)
 
     const downBps = r.getDownloadBandwidth()
@@ -306,47 +319,62 @@ export function initCloudflareEngine(
   }
 
   engine.onError = (message) => {
-    testState.running = false
+    testState.release('cf')
     window.cancelAnimationFrame(rafId)
     showError(t('engine.error', { message }))
   }
 
   /* ---------- 交互 ---------- */
 
+  /** 启动一轮测速；restart 为真时复用引擎重跑（"再测一次"） */
+  const startTest = (restart: boolean) => {
+    if (!testState.acquire('cf')) {
+      showError(testState.busyMessage())
+      return
+    }
+    finished = false
+    phase = 'running'
+    stageEl?.classList.remove('is-done')
+    setRing(0)
+    resetGauge()
+    clearReadouts()
+    if (phaseEl) phaseEl.textContent = t('phase.connecting')
+    mainBtn.textContent = t('btn.pause')
+    if (restart || needsRestart) engine.restart()
+    else engine.play()
+    needsRestart = false
+    spinRing()
+  }
+
+  /**
+   * 停止：SDK 只提供 pause 而没有真正的取消，这里暂停引擎、复位界面并作废结果。
+   * finished 置真以屏蔽引擎的暂停回调；下一次启动总是走 restart 开新一轮
+   */
+  const stop = () => {
+    if (phase !== 'running' && phase !== 'paused') return
+    window.cancelAnimationFrame(rafId)
+    finished = true
+    needsRestart = true
+    engine.pause()
+    phase = 'idle'
+    testState.release('cf')
+    stageEl?.classList.remove('is-done', 'is-down', 'is-up')
+    setRing(0)
+    resetGauge()
+    clearReadouts()
+    if (phaseEl) phaseEl.textContent = t('state.stopped')
+    mainBtn.textContent = t('btn.start')
+  }
+  testState.register('cf', stop)
+
   mainBtn.addEventListener('click', () => {
     clearError()
-    stageEl?.classList.remove('is-done')
-    if (phase === 'idle' || phase === 'error') {
-      finished = false
-      phase = 'running'
-      testState.running = true
-      if (phaseEl) phaseEl.textContent = t('phase.connecting')
-      mainBtn.textContent = t('btn.pause')
+    if (phase === 'idle' || phase === 'error') startTest(false)
+    else if (phase === 'running') engine.pause()
+    else if (phase === 'paused') {
+      // 暂停期间锁仍由本引擎持有，继续无需重新申请
       engine.play()
       spinRing()
-    } else if (phase === 'running') {
-      engine.pause()
-    } else if (phase === 'paused') {
-      engine.play()
-      spinRing()
-    } else if (phase === 'done') {
-      finished = false
-      phase = 'running'
-      testState.running = true
-      stageEl?.classList.remove('is-done')
-      setRing(0)
-      resetGauge()
-      aimEl && (aimEl.hidden = true)
-      if (downEl) downEl.textContent = '--'
-      if (upEl) upEl.textContent = '--'
-      if (pingEl) pingEl.textContent = '--'
-      if (jitterEl) jitterEl.textContent = '--'
-      valueEl.textContent = '--'
-      unitEl.textContent = 'Mbps'
-      if (phaseEl) phaseEl.textContent = t('phase.connecting')
-      mainBtn.textContent = t('btn.pause')
-      engine.restart()
-      spinRing()
-    }
+    } else if (phase === 'done') startTest(true)
   })
 }

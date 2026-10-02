@@ -1,14 +1,13 @@
 /**
- * 测速组件（OpenSpeedTest Widget）加载管理：
- * - iframe loading="lazy" 原生懒加载（无 JS 时也可用）
+ * 第三方测速挂件（跨域 iframe）加载管理，OST / Meter.net / SpeedMeter.dev 共用：
+ * - iframe 地址由 config/speed-targets.json 提供，首次切到对应面板才加载（懒加载）
  * - 骨架屏在 iframe load 后移除
  * - 加载超时展示兜底提示（外链域名无法控制，需给用户出路）
- * - 监听 widget postMessage，若官方组件回传结果则自动记录（尽力而为）
+ * - 监听 widget postMessage，若挂件回传结果则自动记录（尽力而为，需配置 messageOrigin）
  */
 
 import type { EngineId, TestRecord } from './history'
 
-const OST_WIDGET_SRC = 'https://openspeedtest.com/speedtest'
 const LOAD_TIMEOUT_MS = 20_000
 
 export interface SpeedtestHandle {
@@ -17,9 +16,9 @@ export interface SpeedtestHandle {
 }
 
 export interface SpeedtestOptions {
-  /** iframe 加载地址；缺省为 OpenSpeedTest 官方 widget */
-  src?: string
-  /** postMessage 结果回传的来源过滤片段；缺省不监听 */
+  /** iframe 加载地址 */
+  src: string
+  /** postMessage 结果回传的来源域名（本身或其子域）；缺省不监听 */
   messageOrigin?: string
   /** 结果写入历史时标注的引擎来源；缺省 ost */
   engineId?: EngineId
@@ -27,10 +26,10 @@ export interface SpeedtestOptions {
 
 export function initSpeedtest(
   section: HTMLElement,
+  options: SpeedtestOptions,
   onResult?: (rec: TestRecord) => void,
-  options: SpeedtestOptions = {},
 ): SpeedtestHandle | null {
-  const WIDGET_SRC = options.src ?? OST_WIDGET_SRC
+  const WIDGET_SRC = options.src
   const frame = section.querySelector<HTMLIFrameElement>('iframe')
   const skeleton = section.querySelector<HTMLElement>('.speedtest-skeleton')
   const fallback = section.querySelector<HTMLElement>('.speedtest-fallback')
@@ -86,13 +85,18 @@ export function initSpeedtest(
     frame.scrollIntoView({ behavior: 'smooth', block: 'nearest' })
   })
 
+  // 加载失败兜底里的「刷新页面」：由脚本绑定，HTML 侧不写内联 onclick（会被 CSP 拦掉）
+  fallback
+    ?.querySelectorAll<HTMLButtonElement>('[data-reload]')
+    .forEach((btn) => btn.addEventListener('click', () => location.reload()))
+
   // 尽力而为的结果回传：widget 若通过 postMessage 上报则自动记录
   // 数值可能在顶层（OST）或 results 子对象（SpeedMeter.dev）里，两处都取
   if (onResult && options.messageOrigin) {
     const origin = options.messageOrigin
     const engineId = options.engineId ?? 'ost'
     window.addEventListener('message', (ev) => {
-      if (!ev.origin.includes(origin)) return
+      if (!isTrustedOrigin(ev.origin, origin)) return
       const data: unknown = ev.data
       if (typeof data !== 'object' || data === null) return
 
@@ -112,6 +116,21 @@ export function initSpeedtest(
   }
 
   return { ensureLoaded }
+}
+
+/**
+ * postMessage 来源校验：只接受 `expect` 本身或其子域。
+ * 用 includes/indexOf 会把 `https://evil-speedmeter.dev.attacker.com` 当成合法来源。
+ */
+function isTrustedOrigin(raw: string, expect: string): boolean {
+  let host: string
+  try {
+    host = new URL(raw).hostname.toLowerCase()
+  } catch {
+    return false
+  }
+  const want = expect.toLowerCase()
+  return host === want || host.endsWith(`.${want}`)
 }
 
 function pickNumber(obj: Record<string, unknown>, keys: string[]): number | undefined {

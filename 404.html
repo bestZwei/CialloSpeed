@@ -12,18 +12,7 @@
     <link rel="icon" href="/favicon-16x16.png" sizes="16x16" type="image/png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
     <link rel="manifest" href="/site.webmanifest" />
-    <script>
-      ;(function () {
-        var t
-        try {
-          t = localStorage.getItem('ciallospeed-theme')
-        } catch (e) {}
-        if (t !== 'light' && t !== 'dark') {
-          t = 'dark'
-        }
-        document.documentElement.dataset.theme = t
-      })()
-    </script>
+    <script src="/theme-init.js"></script>
     <!-- Umami 隐私分析 -->
     <script defer src="https://umami.zwei.de.eu.org/script.js" data-website-id="bcb657dd-7461-47b6-b4c5-c4abcd66efc0"></script>
   </head>

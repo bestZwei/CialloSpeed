@@ -14,7 +14,7 @@ declare module '@m-lab/ndt7' {
     /** M-Lab 数据政策：用户接受结果进入公开研究数据集 */
     userAcceptedDataPolicy?: boolean
     mlabDataPolicyInapplicable?: boolean
-    /** Vite 下用 ?worker&url 提供的 worker 资源地址 */
+    /** worker 脚本地址：本站用 public/ndt7/ 下的静态文件（不经 Vite 打包） */
     downloadworkerfile?: string
     uploadworkerfile?: string
   }
@@ -72,10 +72,4 @@ declare module '@m-lab/ndt7' {
   }
 
   export function test(config: Ndt7Config, callbacks: Ndt7Callbacks): Promise<number>
-}
-
-/** Vite 的 worker 资源 URL 导入 */
-declare module '*?worker&url' {
-  const workerUrl: string
-  export default workerUrl
 }

@@ -18,7 +18,6 @@
   "st.tabsAria": "Choose a speed test engine",
   "st.recommended": "Recommended",
   "ip.view": "Show my IP info",
-  "ip.hide": "Hide",
   "ip.note": "Off by default — location and ISP come from the third-party ipwho.is database once you click. Display only.",
   "st.cfTab": "Cloudflare",
   "st.ostTab": "OpenSpeedTest",
@@ -62,7 +61,7 @@
 
   "hero.badge": "Free · No plugins · Supports 10Gbps+ fiber",
   "hero.h1": "Your internet speed, <span class=\"grad-text\">known in one test</span>",
-  "hero.sub": "Professional online speed testing: download, upload and latency in one click. Six test engines cross-validate each other; everything runs locally in your browser, on phones, desktops and TVs alike.",
+  "hero.sub": "Professional online speed testing: download, upload and latency in one click. Seven test engines cross-validate each other; everything runs locally in your browser, on phones, desktops and TVs alike.",
   "hero.howBtn": "How It Works",
   "hero.chip1": "Pure browser testing",
   "hero.chip2": "Records stay local",

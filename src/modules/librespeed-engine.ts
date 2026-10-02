@@ -8,6 +8,7 @@
  * - 结果仅保存在浏览器本地（onResult 回调 addRecord）
  */
 
+import speedTargets from '../../config/speed-targets.json'
 import { t } from '../i18n'
 import type { TestRecord } from './history'
 import { renderSceneVerdicts } from './quality'
@@ -18,14 +19,11 @@ interface LsNode {
   base: string
 }
 
-/** 已验证开 CORS 的公共节点（2026-09 实测；如节点失效会被探测阶段自动跳过） */
-const NODES: LsNode[] = [
-  { name: 'Amsterdam · Sharktech', base: 'https://amsspeed.sharktech.net/backend' },
-  { name: 'Chicago · Sharktech', base: 'https://chispeed.sharktech.net/backend' },
-  { name: 'Denver · Sharktech', base: 'https://denspeed.sharktech.net/backend' },
-  { name: 'Las Vegas · Sharktech', base: 'https://lasspeed.sharktech.net/backend' },
-  { name: 'Los Angeles · Sharktech', base: 'https://laxspeed.sharktech.net/backend' },
-]
+/** 已验证开 CORS 的公共节点：清单在 config/speed-targets.json，失效时探测阶段自动跳过 */
+const NODES: LsNode[] = speedTargets.librespeedNodes.map((n) => ({
+  name: n.name,
+  base: n.base,
+}))
 
 const PROBE_COUNT = 2 // 选节点时每节点试连次数
 const PING_COUNT = 8 // 精测延迟次数
@@ -109,6 +107,7 @@ export function initLibrespeedEngine(
   let running = false
   let stopCtrl: AbortController | null = null // 外部「停止」信号
   let stopped = false // 用户主动停止后，本轮结果作废
+  let usedServer = '' // 本轮实际测量的节点名（写入历史溯源）
 
   /* ---------- 节点选择：自绘下拉（与引擎选择器同风格），手动优先，默认自动 ---------- */
 
@@ -235,8 +234,8 @@ export function initLibrespeedEngine(
     errEl?.classList.remove('show')
   }
 
-  const showError = () => {
-    if (errEl) errEl.textContent = t('ls.error')
+  const showError = (msg?: string) => {
+    if (errEl) errEl.textContent = msg ?? t('ls.error')
     errEl?.classList.add('show')
     setPhase(t('ls.ready'))
     if (serverEl && !preferredNode) serverEl.textContent = t('ls.serverAuto')
@@ -363,9 +362,12 @@ export function initLibrespeedEngine(
 
   const runTest = async () => {
     if (running) return
+    if (!testState.acquire('ls')) {
+      showError(testState.busyMessage())
+      return
+    }
     running = true
     phase = 'running'
-    testState.running = true
     stopped = false
     const ctrl = new AbortController()
     stopCtrl = ctrl
@@ -387,6 +389,7 @@ export function initLibrespeedEngine(
         node = candidates[0]
         if (serverEl) serverEl.textContent = node.name
       }
+      usedServer = node.name
 
       // 2. 空载延迟
       setPhase(t('phase.latency'))
@@ -402,6 +405,7 @@ export function initLibrespeedEngine(
         if (serverEl) serverEl.textContent = `${fallback.name} (${t('ls.retry')})`
         down = await measureDownload(fallback, ctrl.signal)
         if (serverEl) serverEl.textContent = fallback.name
+        usedServer = fallback.name
       }
       if (downEl) downEl.textContent = fmtMbps(down)
 
@@ -418,7 +422,7 @@ export function initLibrespeedEngine(
         setPhase(t('ls.done'))
         phase = 'done'
         renderSceneVerdicts(aimEl, { down, up, ping, jitter })
-        onResult?.({ down, up, ping: Math.round(ping), ts: Date.now(), engine: 'ls' })
+        onResult?.({ down, up, ping: Math.round(ping), ts: Date.now(), engine: 'ls', server: usedServer })
       } else {
         showError()
       }
@@ -430,19 +434,26 @@ export function initLibrespeedEngine(
     } finally {
       running = false
       phase = phase === 'running' ? 'idle' : phase
-      testState.running = false
+      testState.release('ls')
       stopCtrl = null
       mainBtn.disabled = false
       mainBtn.textContent = t('btn.start')
     }
   }
 
+  /** 停止本轮：中断当前请求并作废结果（LibreSpeed 单轮近 30 秒，必须能随时叫停） */
+  const stop = () => {
+    if (!running) return
+    stopped = true
+    stopCtrl?.abort()
+    reset()
+    setPhase(t('state.stopped'))
+  }
+  testState.register('ls', stop)
+
   mainBtn.addEventListener('click', () => {
     if (running) {
-      stopped = true
-      stopCtrl?.abort() // 中断当前请求
-      reset()
-      setPhase(t('state.stopped'))
+      stop()
       return
     }
     void runTest()

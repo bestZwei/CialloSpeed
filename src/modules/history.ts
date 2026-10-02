@@ -30,6 +30,8 @@ export interface TestRecord {
   ts: number
   /** 测速引擎来源（旧记录可能缺失） */
   engine?: EngineId
+  /** 结果来源细节：LibreSpeed 节点名 / CDN 胜出的直链名（其余引擎无） */
+  server?: string
 }
 
 const HISTORY_KEY = 'ciallospeed-history'
@@ -47,7 +49,7 @@ export function loadHistory(): TestRecord[] {
   }
 }
 
-function isRecord(v: unknown): v is TestRecord {
+export function isRecord(v: unknown): v is TestRecord {
   if (typeof v !== 'object' || v === null) return false
   const r = v as Record<string, unknown>
   if (
@@ -59,6 +61,7 @@ function isRecord(v: unknown): v is TestRecord {
   // engine 为可选字段：缺失（旧记录）按 manual 处理，非法值一律丢弃
   const eng: unknown = r.engine
   if (eng !== undefined && (typeof eng !== 'string' || !(eng in ENGINE_LABEL))) return false
+  if (r.server !== undefined && typeof r.server !== 'string') return false
   return true
 }
 
@@ -151,7 +154,9 @@ export function initHistory(root: HTMLElement): void {
       const hasUpPing = engine !== 'cdn'
 
       metrics.innerHTML =
-        `<span class="metric-chip engine-chip">${t(ENGINE_LABEL[engine])}</span>` +
+        `<span class="metric-chip engine-chip">${t(ENGINE_LABEL[engine])}${
+          rec.server ? ` · ${esc(rec.server)}` : ''
+        }</span>` +
         `<span class="metric-chip"><span class="dot dot-${dq.tone}"></span>↓ ${fmtNum(rec.down)} <small>Mbps · ${t(dq.label)}</small></span>` +
         (hasUpPing
           ? `<span class="metric-chip">↑ ${fmtNum(rec.up)} <small>Mbps</small></span>`
@@ -190,4 +195,9 @@ export function initHistory(root: HTMLElement): void {
 
 function fmtNum(n: number): string {
   return n >= 100 ? n.toFixed(0) : n >= 10 ? n.toFixed(1) : n.toFixed(2)
+}
+
+/** 外部可控文本进 innerHTML 前的最小转义（字典文案无需，来源名/自定义链接需要） */
+function esc(s: string): string {
+  return s.replace(/[&<>"]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c] ?? c)
 }

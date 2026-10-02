@@ -27,7 +27,8 @@ export function initAccordion(root: HTMLElement | null = document.body): void {
         }
       })
 
-      isOpen ? collapse(item) : expand(item)
+      if (isOpen) collapse(item)
+      else expand(item)
     })
   })
 

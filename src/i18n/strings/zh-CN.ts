@@ -22,6 +22,10 @@ export const strings = {
   // 错误
   'engine.error': '测速出错：{message}。请检查网络后重试。',
 
+  // 测速互斥（同一时刻只允许一个引擎占用链路）
+  'st.busy': '「{engine}」正在测速，请先停止它；同时测速会互相抢带宽，两边结果都不准',
+  'st.stopping': '「{engine}」正在结束上一轮测速，请稍候几秒',
+
   // 质量评级
   'q.excellent': '极佳',
   'q.good': '良好',

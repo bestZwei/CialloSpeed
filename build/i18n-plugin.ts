@@ -76,7 +76,7 @@ const injectEn = (html: string, page: PageName) => injectLang(html, page, zhPath
 const injectZh = (html: string, page: PageName) => injectLang(html, page, rootPath(page))
 
 /** 站内链接加 /zh 前缀：仅匹配 "/"、"/xxx.html" 及同域绝对路径（不动锚点/外链/静态资源） */
-function rewriteInternalHrefZh(href: string): string {
+export function rewriteInternalHrefZh(href: string): string {
   let m = href.match(/^\/(?:([\w-]+\.html))?(#.*|\?.*)?$/)
   if (m) return '/zh' + (m[1] ? `/${m[1]}` : '/') + (m[2] ?? '')
   m = href.match(new RegExp(`^${ORIGIN}/(?:([\\w-]+\\.html))?(#.*|\\?.*)?$`))
@@ -84,7 +84,7 @@ function rewriteInternalHrefZh(href: string): string {
   return href
 }
 
-function rewriteCanonicalZh(url: string): string {
+export function rewriteCanonicalZh(url: string): string {
   if (url === ORIGIN || url === `${ORIGIN}/`) return `${ORIGIN}/zh/`
   if (url.startsWith(`${ORIGIN}/`)) return `${ORIGIN}/zh/${url.slice(ORIGIN.length + 1)}`
   return url

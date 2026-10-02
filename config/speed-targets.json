@@ -1,0 +1,66 @@
+{
+  "$comment": "第三方测速目标的唯一来源：浏览器代码（src/modules/*.ts）与失效探测（scripts/probe-targets.mjs）共用本文件。改这里即可增删目标；lastVerified 记录最近一次实测通过（开放跨域、可读流）的日期。",
+  "cdnTargets": [
+    {
+      "name": "cdn.aliElectron",
+      "url": "https://cdn.npmmirror.com/binaries/electron/33.0.0/electron-v33.0.0-win32-x64.zip",
+      "lastVerified": "2026-10-01"
+    },
+    {
+      "name": "cdn.tencentNpm",
+      "url": "https://mirrors.cloud.tencent.com/npm/onnxruntime-node/-/onnxruntime-node-1.18.0.tgz",
+      "lastVerified": "2026-10-01"
+    },
+    {
+      "name": "cdn.vultrSg",
+      "url": "https://sgp-ping.vultr.com/vultr.com.1000MB.bin",
+      "lastVerified": "2026-10-01"
+    },
+    {
+      "name": "cdn.vultrTyo",
+      "url": "https://hnd-jp-ping.vultr.com/vultr.com.1000MB.bin",
+      "lastVerified": "2026-10-01"
+    },
+    {
+      "name": "cdn.vultrLax",
+      "url": "https://lax-ca-us-ping.vultr.com/vultr.com.1000MB.bin",
+      "lastVerified": "2026-10-01"
+    }
+  ],
+  "librespeedNodes": [
+    {
+      "name": "Amsterdam · Sharktech",
+      "base": "https://amsspeed.sharktech.net/backend",
+      "lastVerified": "2026-09-30"
+    },
+    {
+      "name": "Chicago · Sharktech",
+      "base": "https://chispeed.sharktech.net/backend",
+      "lastVerified": "2026-09-30"
+    },
+    {
+      "name": "Denver · Sharktech",
+      "base": "https://denspeed.sharktech.net/backend",
+      "lastVerified": "2026-09-30"
+    },
+    {
+      "name": "Las Vegas · Sharktech",
+      "base": "https://lasspeed.sharktech.net/backend",
+      "lastVerified": "2026-09-30"
+    },
+    {
+      "name": "Los Angeles · Sharktech",
+      "base": "https://laxspeed.sharktech.net/backend",
+      "lastVerified": "2026-09-30"
+    }
+  ],
+  "widgets": [
+    { "engine": "ost", "src": "https://openspeedtest.com/speedtest", "messageOrigin": null },
+    { "engine": "mn", "src": "https://www.metercustom.net/plugin/", "messageOrigin": null },
+    {
+      "engine": "sm",
+      "src": "https://speedmeter.dev/widget.html?theme=minimal&hideMetrics=true",
+      "messageOrigin": "speedmeter.dev"
+    }
+  ]
+}

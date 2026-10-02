@@ -17,6 +17,7 @@
  *   支持粘贴任意 https 直链自定义测速（仅限带跨域头的源）；结果仅保存浏览器本地（onResult 回调 addRecord）
  */
 
+import speedTargets from '../../config/speed-targets.json'
 import { t, type StringKey } from '../i18n'
 import type { TestRecord } from './history'
 import { renderSceneVerdicts } from './quality'
@@ -25,7 +26,11 @@ import { testState } from './test-state'
 interface CdnTarget {
   name: StringKey
   url: string
+  /** 展示名覆盖：自定义直链用主机名标识，比「自定义链接」更有辨识度 */
+  label?: string
 }
+
+const labelOf = (tg: CdnTarget): string => tg.label ?? t(tg.name)
 
 const DL_DURATION_S = 10 // 单目标时间盒时长：期间持续下载（一个文件读完立刻接下一个）
 const RAMP_S = 1.5 // 速度计算跳过的 TCP 慢启动窗口（秒）
@@ -34,22 +39,13 @@ const RAMP_S = 1.5 // 速度计算跳过的 TCP 慢启动窗口（秒）
 const PICKED_STORAGE_KEY = 'ciallospeed-cdn-targets'
 
 /**
- * 预设测速目标（2026-10 实测，均返回 ACAO 且支持流式读取）。
- * 顺序即测速顺序；前两个为国内方向，后三个为国际出口方向的同一厂商多地域对比。
+ * 预设测速目标：清单维护在 config/speed-targets.json（与 scripts/probe-targets.mjs
+ * 的每日失效探测共用同一来源），数组顺序即测速顺序。
  */
-const TARGETS: CdnTarget[] = [
-  {
-    name: 'cdn.aliElectron',
-    url: 'https://cdn.npmmirror.com/binaries/electron/33.0.0/electron-v33.0.0-win32-x64.zip',
-  },
-  {
-    name: 'cdn.tencentNpm',
-    url: 'https://mirrors.cloud.tencent.com/npm/onnxruntime-node/-/onnxruntime-node-1.18.0.tgz',
-  },
-  { name: 'cdn.vultrSg', url: 'https://sgp-ping.vultr.com/vultr.com.1000MB.bin' },
-  { name: 'cdn.vultrTyo', url: 'https://hnd-jp-ping.vultr.com/vultr.com.1000MB.bin' },
-  { name: 'cdn.vultrLax', url: 'https://lax-ca-us-ping.vultr.com/vultr.com.1000MB.bin' },
-]
+const TARGETS: CdnTarget[] = speedTargets.cdnTargets.map((tg) => ({
+  name: tg.name as StringKey,
+  url: tg.url,
+}))
 
 const fmtMbps = (mbps: number): string =>
   mbps >= 100 ? mbps.toFixed(0) : mbps >= 10 ? mbps.toFixed(1) : mbps.toFixed(2)
@@ -79,9 +75,23 @@ function savePicked(picked: Set<string>): void {
 }
 
 /**
+ * 稳态速率 Mbps，返回 null 表示本轮计量不可信：
+ * - 越过慢启动窗口（RAMP_S）后取字节增量 ÷ 对应时长，避免峰值被爬坡期拉低
+ * - 有效计时窗口不足 0.2s、或整轮样本小于 8MB，读数噪声大于意义
+ * - rampGot < 0 表示至今没越过爬坡窗口：线路极快、时间盒内已跑完，回退全窗口计量
+ *   （有轻微爬坡偏差，好于直接失败）
+ */
+export function steadyStateMbps(elapsed: number, got: number, rampGot: number): number | null {
+  const effStart = rampGot >= 0 ? RAMP_S : 0
+  const effBytes = rampGot >= 0 ? got - rampGot : got
+  if (elapsed - effStart < 0.2) return null
+  if (rampGot < 0 && got < 8 * 1024 * 1024) return null
+  return (effBytes * 8) / (elapsed - effStart) / 1e6
+}
+
+/**
  * 时间盒内连续下载：一个文件读完立刻接下一个（同一个 URL 就重复请求），把时间盒喂满。
- * 速度 = 跳过慢启动窗口（RAMP_S）之后的字节增量 ÷ 对应时长，避免峰值被爬坡期拉低。
- * external 用于外部「停止」：一旦 abort，立即中断当前请求并结束。
+ * 速率口径见 steadyStateMbps。external 用于外部「停止」：一旦 abort，立即中断当前请求并结束。
  */
 async function measureTimebox(
   url: string,
@@ -147,12 +157,7 @@ async function measureTimebox(
 
   const elapsed = (performance.now() - start) / 1000
   if (!finished || got === 0) return null
-  // 线路极快时可能在慢启动窗口内就跑满时间盒：回退为全窗口计量（有轻微爬坡偏差，好于失败）
-  const effStart = rampGot >= 0 ? RAMP_S : 0
-  const effBytes = rampGot >= 0 ? got - rampGot : got
-  if (elapsed - effStart < 0.2) return null
-  if (rampGot < 0 && got < 8 * 1024 * 1024) return null // 总量太小，不足计时
-  return (effBytes * 8) / (elapsed - effStart) / 1e6
+  return steadyStateMbps(elapsed, got, rampGot)
 }
 
 export function initCdnEngine(
@@ -218,7 +223,7 @@ export function initCdnEngine(
       }
       const nameEl = document.createElement('span')
       nameEl.className = 'cdn-row-name'
-      nameEl.textContent = t(tg.name)
+      nameEl.textContent = labelOf(tg)
       wrap.appendChild(nameEl)
 
       const speedEl = document.createElement('span')
@@ -242,8 +247,11 @@ export function initCdnEngine(
    * restoreToPreset 为真时，结束后把列表恢复成预设清单（自定义测速用）。
    */
   const runBatch = async (list: CdnTarget[], execute: CdnTarget[], restoreToPreset: boolean) => {
+    if (!testState.acquire('cdn')) {
+      showError(testState.busyMessage())
+      return
+    }
     running = true
-    testState.running = true
     mainBtn.disabled = false
     mainBtn.textContent = t('btn.stop') // 测速中可随时停止
     if (customBtn) customBtn.disabled = true
@@ -267,6 +275,7 @@ export function initCdnEngine(
     batchAbort = ctrl
 
     let best = 0 // 已测得的最高速度（最终展示/记录值）
+    let bestName = '' // 胜出目标名，随结果写入历史
     let bestRow: Row | undefined
     let okCount = 0
     let done = 0
@@ -280,7 +289,7 @@ export function initCdnEngine(
         const row = rowOf.get(target)
         if (!row) continue
 
-        phaseEl.textContent = t('cdn.testing', { name: t(target.name), i: done + 1, n: execute.length })
+        phaseEl.textContent = t('cdn.testing', { name: labelOf(target), i: done + 1, n: execute.length })
         row.li.classList.add('is-active')
         const mbps = await measureTimebox(
           target.url,
@@ -304,6 +313,7 @@ export function initCdnEngine(
           row.li.classList.add('is-done')
           if (mbps > best) {
             best = mbps
+            bestName = labelOf(target)
             bestRow = row
           }
         } else {
@@ -327,7 +337,7 @@ export function initCdnEngine(
         phaseEl.textContent = t('cdn.doneBest', { v: fmtMbps(best) })
         // CDN 直链只有下载指标：仅给出「视频流媒体」一个场景评价
         renderSceneVerdicts(aimEl, { down: best })
-        onResult?.({ down: best, up: 0, ping: 0, ts: Date.now(), engine: 'cdn' })
+        onResult?.({ down: best, up: 0, ping: 0, ts: Date.now(), engine: 'cdn', server: bestName })
       } else {
         showError(t('cdn.failedAll'))
       }
@@ -336,7 +346,7 @@ export function initCdnEngine(
       showError(t('cdn.failedAll'))
     } finally {
       running = false
-      testState.running = false
+      testState.release('cdn')
       batchAbort = null
       mainBtn.disabled = false
       mainBtn.textContent = t('btn.start')
@@ -350,9 +360,15 @@ export function initCdnEngine(
     }
   }
 
+  /** 停止本轮测速：中断当前下载，结果作废（不写入历史） */
+  const stop = () => {
+    batchAbort?.abort()
+  }
+  testState.register('cdn', stop)
+
   mainBtn.addEventListener('click', () => {
     if (running) {
-      batchAbort?.abort() // 停止当前测速
+      stop()
       return
     }
     const selected = TARGETS.filter((tg) => picked.has(tg.url))
@@ -366,11 +382,17 @@ export function initCdnEngine(
   customBtn?.addEventListener('click', () => {
     if (running || !urlInput) return
     const raw = urlInput.value.trim()
-    if (!/^https:\/\/\S+$/.test(raw)) {
+    let url: URL | null = null
+    try {
+      url = new URL(raw)
+    } catch {
+      url = null // 用户输入不可信：非法 URL 直接按格式错误处理
+    }
+    if (!url || url.protocol !== 'https:') {
       showError(t('cdn.invalidUrl'))
       return
     }
-    const target: CdnTarget = { name: 'cdn.customName', url: raw }
+    const target: CdnTarget = { name: 'cdn.customName', url: raw, label: url.host }
     void runBatch([target], [target], true)
   })
 

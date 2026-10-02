@@ -1,0 +1,30 @@
+name: 测速目标失效探测
+
+# 第三方 CDN 文件、LibreSpeed 公共节点与挂件页面都不受本站控制，
+# 对方下线或关掉跨域时面板只会静默变红。每天复现一次浏览器真实请求，失效就报警。
+
+on:
+  schedule:
+    - cron: '30 3 * * *' # UTC 03:30（北京时间 11:30，网络质量与工作时段接近）
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: probe-speed-targets
+  cancel-in-progress: true
+
+jobs:
+  probe:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 探测脚本只用 Node 内置 fetch，无需 npm install
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: 探测 CDN / LibreSpeed 节点 / 测速挂件
+        run: node scripts/probe-targets.mjs

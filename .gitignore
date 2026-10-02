@@ -6,6 +6,11 @@ dist/
 .shots/
 .playwright-cli/
 
+# 本地设计草稿与助手缓存（已移出跟踪，保留在磁盘上）
+docs-tmp.html
+mc-tmp.html
+.zcode/
+
 # 临时的设计/资源预览图（非源码）
 .logo-preview.png
 *.preview.png

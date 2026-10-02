@@ -2,7 +2,7 @@
  * M-Lab NDT7 测速引擎（@m-lab/ndt7 官方客户端，Apache-2.0）封装：
  * - 浏览器经 WebSocket 直连 M-Lab 全球节点（locate 服务自动就近选择），本站零带宽成本
  * - 单 TCP 连接学术级测量：与多线程压满带宽的引擎互补，额外给出负载下延迟增量（bufferbloat）
- * - worker 通过 Vite `?worker&url` 注入，避免打包后相对路径失效
+ * - worker 用 public/ndt7/ 下的静态文件（第三方原样提供，不经 Vite 打包）
  * - 结果仅保存在浏览器本地（onResult 回调 addRecord），同时按 M-Lab 数据政策贡献匿名测量数据
  */
 
@@ -70,17 +70,20 @@ export function initNdt7Engine(
     errEl?.classList.remove('show')
   }
 
-  const showError = () => {
-    if (errEl) errEl.textContent = t('ndt.error')
+  const showError = (msg?: string) => {
+    if (errEl) errEl.textContent = msg ?? t('ndt.error')
     errEl?.classList.add('show')
     setPhase(t('ndt.ready'))
   }
 
   const runTest = async () => {
     if (running) return
+    if (!testState.acquire('ndt7')) {
+      showError(testState.busyMessage())
+      return
+    }
     running = true
     phase = 'running'
-    testState.running = true
     stopped = false
     mainBtn.disabled = false
     mainBtn.textContent = t('btn.stop') // 测速中可停止
@@ -219,20 +222,29 @@ export function initNdt7Engine(
     } finally {
       running = false
       phase = phase === 'running' ? 'idle' : phase
-      testState.running = false
+      testState.release('ndt7')
       mainBtn.disabled = false
       mainBtn.textContent = t('btn.start')
     }
   }
 
+  /**
+   * 停止：ndt7 库内部创建的 worker 无法从外部中断，底层测量会在后台自然跑完，
+   * 这里只立即复位界面并丢弃本轮结果；锁保持占用直到 Promise 落定（见 finally）
+   */
+  const stop = () => {
+    if (!running) return
+    stopped = true
+    testState.markStopping('ndt7')
+    reset()
+    setPhase(t('state.stopped'))
+    mainBtn.disabled = true
+  }
+  testState.register('ndt7', stop)
+
   mainBtn.addEventListener('click', () => {
     if (running) {
-      // 停止：ndt7 库内部创建的 worker 无法从外部中断，底层测量会在后台自然跑完，
-      // 这里只立即复位界面并丢弃本轮结果（按钮保持禁用，待后台结束后恢复）
-      stopped = true
-      reset()
-      setPhase(t('state.stopped'))
-      mainBtn.disabled = true
+      stop()
       return
     }
     void runTest()

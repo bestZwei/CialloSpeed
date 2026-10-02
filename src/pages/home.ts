@@ -1,14 +1,10 @@
 import '../styles/main.css'
 import '../styles/pages/home.css'
+import speedTargets from '../../config/speed-targets.json'
 import { initThemeToggle } from '../modules/theme'
 import { initLayout, initReveal } from '../modules/layout'
-import { initSpeedtest, type SpeedtestHandle } from '../modules/speedtest'
-import { initCloudflareEngine } from '../modules/cloudflare-engine'
-import { initNdt7Engine } from '../modules/ndt7-engine'
-import { initLibrespeedEngine } from '../modules/librespeed-engine'
-import { initCdnEngine } from '../modules/cdn-engine'
 import { initIpInfo } from '../modules/ip-info'
-import { initHistory, addRecord } from '../modules/history'
+import { initHistory, addRecord, type EngineId } from '../modules/history'
 import { testState } from '../modules/test-state'
 
 initLayout()
@@ -20,6 +16,9 @@ initReveal()
 /** 记住用户最后使用的引擎，跨页面/跨语言保持一致；失效（引擎已下架）时自动回退 */
 const ENGINE_STORAGE_KEY = 'ciallospeed-engine'
 
+/** SpeedMeter.dev 挂件样式参数（面板 id 约定为 panel-<engine>，地址清单见 config/speed-targets.json） */
+const SM_PANEL = 'panel-sm'
+
 const speedtestSection = document.getElementById('speedtest-app')
 if (speedtestSection) {
   const select = speedtestSection.querySelector<HTMLElement>('.engine-select')
@@ -29,50 +28,79 @@ if (speedtestSection) {
   const options = Array.from(speedtestSection.querySelectorAll<HTMLElement>('.engine-option'))
   const panels = Array.from(speedtestSection.querySelectorAll<HTMLElement>('.engine-panel'))
 
-  let ostHandle: SpeedtestHandle | null = null
-  const ostSection = speedtestSection.querySelector<HTMLElement>('#panel-ost')
-  if (ostSection) ostHandle = initSpeedtest(ostSection, addRecord)
+  const findPanel = (id: string): HTMLElement | null =>
+    speedtestSection.querySelector<HTMLElement>(`#${id}`)
 
-  let smHandle: SpeedtestHandle | null = null
-  const smSection = speedtestSection.querySelector<HTMLElement>('#panel-sm')
-  if (smSection) {
-    // 挂件始终用浅色 minimal 主题 + 只留表盘区；暗色站点下用 CSS 反色转成暗色
-    // iframe 取内容自然高度，在统一高度的容器内垂直居中
-    const smWidgetSrc = () => 'https://speedmeter.dev/widget.html?theme=minimal&hideMetrics=true'
-    smHandle = initSpeedtest(smSection, addRecord, {
-      src: smWidgetSrc(),
-      messageOrigin: 'speedmeter.dev',
-      engineId: 'sm',
-    })
-    // 主题切换时热更新挂件配色（测速进行中不打断）
-    new MutationObserver(() => {
-      const frame = smSection.querySelector<HTMLIFrameElement>('iframe')
-      if (!frame) return
-      const target = smWidgetSrc()
-      if (!testState.running && !frame.src.endsWith(target)) frame.src = target
-    }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+  /** iframe 类挂件共用：加载 speedtest 模块并立即进入加载流程（用户切到该面板即为意图） */
+  const mountWidget = async (widget: {
+    engine: string
+    src: string
+    messageOrigin: string | null
+  }): Promise<void> => {
+    const panelId = `panel-${widget.engine}`
+    const el = findPanel(panelId)
+    if (!el) return
+    const { initSpeedtest } = await import('../modules/speedtest')
+    initSpeedtest(
+      el,
+      {
+        src: widget.src,
+        engineId: widget.engine as EngineId,
+        ...(widget.messageOrigin ? { messageOrigin: widget.messageOrigin } : {}),
+      },
+      addRecord,
+    )?.ensureLoaded()
+    // SpeedMeter 挂件按站点配色反色显示：切主题时重载，让挂件按新的自然高度重新排版
+    if (panelId === SM_PANEL) {
+      const frame = el.querySelector<HTMLIFrameElement>('iframe')
+      if (frame) {
+        new MutationObserver(() => {
+          if (!testState.running && frame.getAttribute('src') !== widget.src) {
+            frame.src = widget.src
+          }
+        }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] })
+      }
+    }
   }
 
-  let mnHandle: SpeedtestHandle | null = null
-  const mnSection = speedtestSection.querySelector<HTMLElement>('#panel-mn')
-  if (mnSection) {
-    mnHandle = initSpeedtest(mnSection, addRecord, {
-      src: 'https://www.metercustom.net/plugin/',
-      engineId: 'mn',
-    })
+  /**
+   * 面板 → 模块加载器。全部走动态 import：各引擎的测速 SDK（Cloudflare / NDT7 /
+   * LibreSpeed / CDN）互不相关，打进同一个首屏 bundle 只会拖慢冷启动。
+   */
+  const loaders: Record<string, () => Promise<void>> = {
+    'panel-cf': async () => {
+      const el = findPanel('panel-cf')
+      if (el) (await import('../modules/cloudflare-engine')).initCloudflareEngine(el, addRecord)
+    },
+    'panel-ndt': async () => {
+      const el = findPanel('panel-ndt')
+      if (el) (await import('../modules/ndt7-engine')).initNdt7Engine(el, addRecord)
+    },
+    'panel-ls': async () => {
+      const el = findPanel('panel-ls')
+      if (el) (await import('../modules/librespeed-engine')).initLibrespeedEngine(el, addRecord)
+    },
+    'panel-cdn': async () => {
+      const el = findPanel('panel-cdn')
+      if (el) (await import('../modules/cdn-engine')).initCdnEngine(el, addRecord)
+    },
   }
 
-  const cfSection = speedtestSection.querySelector<HTMLElement>('#panel-cf')
-  if (cfSection) initCloudflareEngine(cfSection, addRecord)
+  // 挂件类引擎：地址来自统一清单（见 config/speed-targets.json）
+  for (const widget of speedTargets.widgets) {
+    loaders[`panel-${widget.engine}`] = () => mountWidget(widget)
+  }
 
-  const ndtSection = speedtestSection.querySelector<HTMLElement>('#panel-ndt')
-  if (ndtSection) initNdt7Engine(ndtSection, addRecord)
+  const loaded = new Set<string>()
 
-  const lsSection = speedtestSection.querySelector<HTMLElement>('#panel-ls')
-  if (lsSection) initLibrespeedEngine(lsSection, addRecord)
-
-  const cdnSection = speedtestSection.querySelector<HTMLElement>('#panel-cdn')
-  if (cdnSection) initCdnEngine(cdnSection, addRecord)
+  /** 首次激活才真正加载；失败不记入已加载，用户再次切回可重试 */
+  const activate = (panelId: string): void => {
+    const loader = loaders[panelId]
+    if (!loader || loaded.has(panelId)) return
+    loader()
+      .then(() => loaded.add(panelId))
+      .catch((err) => console.error('[engine] 加载失败', panelId, err))
+  }
 
   // 访客 IP 信息：默认收起，仅用户点击后才向第三方 IP 库发请求
   initIpInfo(speedtestSection)
@@ -112,16 +140,15 @@ if (speedtestSection) {
     for (const p of panels) p.toggleAttribute('hidden', p.id !== opt.dataset.panel)
     // 触发器同步显示当前引擎（名称 + 副标题）
     syncTriggerFrom(opt)
+    // 切走即作废上一轮测速：否则它会在不可见的面板里继续吃带宽并锁住其他引擎
+    testState.stopActive()
     try {
       localStorage.setItem(ENGINE_STORAGE_KEY, opt.id)
     } catch {
       /* 隐私模式下忽略 */
     }
     closeMenu()
-    // iframe 类引擎首次切换才加载，避免多引擎同时抢带宽
-    if (opt.id === 'tab-ost') ostHandle?.ensureLoaded()
-    if (opt.id === 'tab-sm') smHandle?.ensureLoaded()
-    if (opt.id === 'tab-mn') mnHandle?.ensureLoaded()
+    if (opt.dataset.panel) activate(opt.dataset.panel)
   }
 
   if (select && trigger && menu && options.length && panels.length) {
@@ -170,7 +197,12 @@ if (speedtestSection) {
     const savedOpt = saved ? options.find((o) => o.id === saved) : undefined
     if (savedOpt && savedOpt !== selectedOption()) selectOption(savedOpt)
   }
+
+  // 当前可见的面板（默认引擎或上面刚恢复出来的）在交互就绪后立即加载
+  const initial = selectedOption().dataset.panel
+  if (initial) activate(initial)
 }
 
+// 历史记录面板在测速区之后，空闲时加载即可
 const historyPanel = document.getElementById('history-app')
 if (historyPanel) initHistory(historyPanel)

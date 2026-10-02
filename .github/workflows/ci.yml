@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - run: npm ci
+
+      - name: i18n 覆盖率校验
+        run: npm run check:i18n
+
+      - name: 静态检查
+        run: npm run lint
+
+      - name: 单元测试
+        run: npm test
+
+      - name: 类型检查与构建
+        run: npm run build
+
+      # 构建产物留档，便于比对体积或在 PR 里直接下载验证
+      - uses: actions/upload-artifact@v4
+        with:
+          name: dist
+          path: dist
+          retention-days: 7

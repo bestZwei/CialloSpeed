@@ -30,7 +30,12 @@
     />
     <meta property="og:url" content="https://speed.ciallo.de/" />
     <meta property="og:locale" content="zh_CN" />
-    <meta name="twitter:card" content="summary" />
+    <meta property="og:image" content="https://speed.ciallo.de/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" data-i18n-attrs="content:ogImageAlt" content="CialloSpeed 在线网速测试：真实网速，一次测准" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:image" content="https://speed.ciallo.de/og-image.png" />
 
     <!-- 结构化数据 -->
     <script type="application/ld+json" data-i18n-jsonld="jsonld">
@@ -46,32 +51,10 @@
     </script>
 
     <!-- 首屏主题预置（防闪烁） -->
-    <script>
-      ;(function () {
-        var t
-        try {
-          t = localStorage.getItem('ciallospeed-theme')
-        } catch (e) {}
-        if (t !== 'light' && t !== 'dark') {
-          t = 'dark'
-        }
-        document.documentElement.dataset.theme = t
-      })()
-    </script>
+    <script src="/theme-init.js"></script>
 
     <!-- 语言协商：仅根路径生效；有手动偏好或浏览器为中文时不跳转 -->
-    <script>
-      ;(function () {
-        var saved
-        try {
-          saved = localStorage.getItem('ciallospeed-locale')
-        } catch (e) {}
-        if (saved || location.pathname.indexOf('/zh') === 0) return
-        var lang = (navigator.language || '').toLowerCase()
-        if (lang.indexOf('zh') !== 0) return
-        location.replace('/zh/')
-      })()
-    </script>
+    <script src="/locale-init.js"></script>
     <!-- Umami 隐私分析 -->
     <script defer src="https://umami.zwei.de.eu.org/script.js" data-website-id="bcb657dd-7461-47b6-b4c5-c4abcd66efc0"></script>
   </head>
@@ -222,7 +205,7 @@
                         <polyline class="cf-spark-line cf-spark-down" points="" />
                         <polyline class="cf-spark-line cf-spark-up" points="" />
                       </svg>
-                      <div class="cf-phase" data-i18n="st.ready">准备好了？</div>
+                      <div class="cf-phase" role="status" data-i18n="st.ready">准备好了？</div>
                     </div>
                   </div>
                   <div class="cf-side">
@@ -251,7 +234,7 @@
                     <div class="ndt-value">--</div>
                     <div class="ndt-unit">Mbps</div>
                     <div class="ndt-progress" aria-hidden="true"><div class="ndt-bar"></div></div>
-                    <div class="ndt-phase" data-i18n="st.ndtReady">准备好了？</div>
+                    <div class="ndt-phase" role="status" data-i18n="st.ndtReady">准备好了？</div>
                   </div>
                   <div class="cf-side">
                     <div class="cf-grid">
@@ -297,7 +280,7 @@
                       可能是当前网络到测速节点的连接不稳定。请刷新页面重试，或
                       <a href="https://openspeedtest.com/speedtest" target="_blank" rel="noopener">点此直接打开测速引擎</a>。
                     </p>
-                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()" data-i18n="st.reload">刷新页面</button>
+                    <button class="btn btn-ghost btn-sm" type="button" data-reload data-i18n="st.reload">刷新页面</button>
                   </div>
                 </div>
                 <div class="speedtest-toolbar">
@@ -333,7 +316,7 @@
                   <div class="speedtest-fallback">
                     <h3 data-i18n="st.slowTitle">测速组件加载较慢</h3>
                     <p data-i18n="st.smSlowBody">可能是当前网络到测速节点的连接不稳定，请刷新页面重试。</p>
-                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()" data-i18n="st.reload">刷新页面</button>
+                    <button class="btn btn-ghost btn-sm" type="button" data-reload data-i18n="st.reload">刷新页面</button>
                   </div>
                 </div>
                 <div class="speedtest-toolbar">
@@ -370,7 +353,7 @@
                   <div class="speedtest-fallback">
                     <h3 data-i18n="st.slowTitle">测速组件加载较慢</h3>
                     <p data-i18n="st.smSlowBody">可能是当前网络到测速节点的连接不稳定，请刷新页面重试。</p>
-                    <button class="btn btn-ghost btn-sm" type="button" onclick="location.reload()" data-i18n="st.reload">刷新页面</button>
+                    <button class="btn btn-ghost btn-sm" type="button" data-reload data-i18n="st.reload">刷新页面</button>
                   </div>
                 </div>
                 <div class="speedtest-toolbar">
@@ -395,7 +378,7 @@
                     <div class="ls-value">--</div>
                     <div class="ls-unit">Mbps</div>
                     <div class="ls-progress" aria-hidden="true"><div class="ls-bar"></div></div>
-                    <div class="ls-phase" data-i18n="st.lsReady">准备好了？</div>
+                    <div class="ls-phase" role="status" data-i18n="st.lsReady">准备好了？</div>
                   </div>
                   <div class="cf-side">
                     <div class="cf-grid">
@@ -438,7 +421,7 @@
                     <div class="ls-value">--</div>
                     <div class="ls-unit">Mbps</div>
                     <div class="ls-progress" aria-hidden="true"><div class="ls-bar"></div></div>
-                    <div class="ls-phase" data-i18n="st.cdnReady">准备好了？</div>
+                    <div class="ls-phase" role="status" data-i18n="st.cdnReady">准备好了？</div>
                   </div>
                   <div class="cf-side">
                     <div class="cdn-head">
@@ -487,7 +470,7 @@
           <span class="badge" data-i18n="hero.badge">免费 · 无需插件 · 支持 10Gbps+ 光纤</span>
           <h1 data-i18n-html="hero.h1">你的网速，<span class="grad-text">一测便知</span></h1>
           <p class="hero-sub" data-i18n="hero.sub">
-            专业级在线网速测试：下载、上传、延迟一键测量。六大测速引擎交叉验证，测速在浏览器本地运行，手机、电脑、电视全设备可用。
+            专业级在线网速测试：下载、上传、延迟一键测量。七大测速引擎交叉验证，测速在浏览器本地运行，手机、电脑、电视全设备可用。
           </p>
           <div class="hero-actions">
             <a class="btn btn-primary" href="#speedtest">
@@ -636,7 +619,7 @@
             <span class="brand-name"><img class="brand-logo" src="/Ciallo-mark.png" alt="Ciallo" /><span class="grad-text">Speed</span></span>
           </a>
           <p data-i18n="footer.brandDesc">
-            免费、纯净的中文网速测试。六大测速引擎交叉验证，基于 HTML5 无需插件、全设备支持；
+            免费、纯净的中文网速测试。七大测速引擎交叉验证，基于 HTML5 无需插件、全设备支持；
             你的测速记录仅保存在浏览器本地。
           </p>
         </div>

@@ -21,6 +21,10 @@ export const strings: Record<StringKey, string> = {
 
   'engine.error': 'Test failed: {message}. Check your network and try again.',
 
+  // Speed test mutex (only one engine may use the link at a time)
+  'st.busy': '{engine} is testing. Stop it first — running two engines at once splits your bandwidth and skews both results.',
+  'st.stopping': '{engine} is still winding down. Please wait a few seconds.',
+
   'q.excellent': 'Excellent',
   'q.good': 'Good',
   'q.fair': 'Fair',

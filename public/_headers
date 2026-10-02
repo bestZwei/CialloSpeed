@@ -1,0 +1,17 @@
+# Netlify 安全响应头。全站生效（含 /zh/ 变体）；改完需重新部署才生效。
+#
+# CSP 说明：
+# - script-src 不含 unsafe-inline：首屏主题/语言预置脚本已抽成 /theme-init.js、/locale-init.js
+# - connect-src 放宽到 https:/wss:：CDN 直链引擎支持用户自填任意 https 文件地址，收紧会直接砍掉该功能
+# - frame-src 列出三个第三方测速挂件域名（iframe 只用于展示，不参与结果回传的校验见 speedtest.ts）
+/*
+  Content-Security-Policy: default-src 'self'; script-src 'self' https://umami.zwei.de.eu.org; worker-src 'self'; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; font-src 'self' data:; connect-src 'self' https: wss:; frame-src 'self' https://openspeedtest.com https://www.metercustom.net https://metercustom.net https://speedmeter.dev; manifest-src 'self'; object-src 'none'; base-uri 'self'; form-action 'self'; frame-ancestors 'self'; upgrade-insecure-requests
+  Referrer-Policy: strict-origin-when-cross-origin
+  X-Content-Type-Options: nosniff
+  X-Frame-Options: SAMEORIGIN
+  Permissions-Policy: accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Vite 产物文件名带内容哈希，可永久缓存
+/assets/*
+  Cache-Control: public, max-age=31536000, immutable
