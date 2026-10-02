@@ -92,14 +92,22 @@ if (speedtestSection) {
   }
 
   const loaded = new Set<string>()
+  const activating = new Set<string>()
 
-  /** 首次激活才真正加载；失败不记入已加载，用户再次切回可重试 */
+  /**
+   * 首次激活才真正加载；失败不记入已加载，用户再次切回可重试。
+   * activating 用于挡住同一帧内的重复调用 —— 恢复上次引擎时会先 selectOption 再触发
+   * 初始激活，若只靠 loaded（异步才写入）会把同一个模块加载两遍，
+   * 于是按钮绑上两个监听、用户一次点击变成两次测速请求。
+   */
   const activate = (panelId: string): void => {
     const loader = loaders[panelId]
-    if (!loader || loaded.has(panelId)) return
+    if (!loader || loaded.has(panelId) || activating.has(panelId)) return
+    activating.add(panelId)
     loader()
       .then(() => loaded.add(panelId))
       .catch((err) => console.error('[engine] 加载失败', panelId, err))
+      .finally(() => activating.delete(panelId))
   }
 
   // 访客 IP 信息：默认收起，仅用户点击后才向第三方 IP 库发请求

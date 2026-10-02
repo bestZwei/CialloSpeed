@@ -39,6 +39,22 @@ describe('测速互斥锁', () => {
     expect(testState.busyMessage()).toContain('正在测速')
   })
 
+  it('stopping 只在收尾期间为真', () => {
+    testState.acquire('ndt7')
+    expect(testState.stopping).toBe(false)
+    testState.markStopping('ndt7')
+    expect(testState.stopping).toBe(true)
+    expect(testState.running).toBe(true)
+    testState.release('ndt7')
+    expect(testState.stopping).toBe(false)
+  })
+
+  it('非占用者无法把自己标记为收尾中', () => {
+    testState.acquire('cf')
+    testState.markStopping('ndt7')
+    expect(testState.stopping).toBe(false)
+  })
+
   it('无占用者时 busyMessage 为空串、stopActive 不触发任何回调', () => {
     const stop = vi.fn()
     testState.register('cf', stop)

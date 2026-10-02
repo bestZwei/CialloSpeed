@@ -18,8 +18,9 @@ export function initLayout(): void {
 function initLangSwitch(): void {
   document.querySelectorAll<HTMLAnchorElement>('[data-lang-switch]').forEach((a) => {
     a.addEventListener('click', (e) => {
-      // 切换语言是整页跳转，会中断进行中的测试且不写入历史 —— 先确认
-      if (testState.running && !window.confirm(t('langSwitchConfirm'))) {
+      // 切换语言是整页跳转，会中断进行中的测试且不写入历史 —— 先确认；
+      // 已作废、仅底层还在收尾的轮次没有可丢的数据，不必拦
+      if (testState.running && !testState.stopping && !window.confirm(t('langSwitchConfirm'))) {
         e.preventDefault()
         return
       }

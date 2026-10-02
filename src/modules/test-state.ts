@@ -24,6 +24,11 @@ export const testState = {
     return owner !== null
   },
 
+  /** 结果已作废但底层流量仍在收尾：此时离开页面不会再丢数据，无需拦下用户 */
+  get stopping(): boolean {
+    return stopping
+  },
+
   get owner(): EngineId | null {
     return owner
   },

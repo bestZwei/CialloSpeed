@@ -9,6 +9,7 @@
 import ndt7 from '@m-lab/ndt7'
 import type { Ndt7Measurement } from '@m-lab/ndt7'
 import { t } from '../i18n'
+import { mainBtnLabel, stoppedPhase } from './engine-state'
 import type { TestRecord } from './history'
 import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
@@ -26,8 +27,6 @@ const uploadWorkerUrl = '/ndt7/ndt7-upload-worker.js'
 /** 服务端 tcp-info 的 RTT 单位为微秒 */
 const US_TO_MS = 1 / 1000
 
-type Phase = 'idle' | 'running' | 'done'
-
 export function initNdt7Engine(
   section: HTMLElement,
   onResult?: (rec: TestRecord) => void,
@@ -44,9 +43,8 @@ export function initNdt7Engine(
   const errEl = section.querySelector<HTMLElement>('.ndt-error')
   if (!valueEl || !phaseEl || !mainBtn) return
 
-  let phase: Phase = 'idle'
   let running = false
-  let stopped = false // 用户主动停止：本轮结果作废（库内部 worker 无法中断，测量会在后台自然结束）
+  let stopped = false // 本轮已作废：库内部 worker 无法中断，测量仍在后台收尾（见 stop）
 
   const setPhase = (text: string) => {
     phaseEl.textContent = text
@@ -73,20 +71,19 @@ export function initNdt7Engine(
   const showError = (msg?: string) => {
     if (errEl) errEl.textContent = msg ?? t('ndt.error')
     errEl?.classList.add('show')
-    setPhase(t('ndt.ready'))
+    setPhase(t('phase.ready'))
+    mainBtn.textContent = mainBtnLabel('error')
   }
 
   const runTest = async () => {
-    if (running) return
+    if (running && !stopped) return
     if (!testState.acquire('ndt7')) {
       showError(testState.busyMessage())
       return
     }
     running = true
-    phase = 'running'
     stopped = false
-    mainBtn.disabled = false
-    mainBtn.textContent = t('btn.stop') // 测速中可停止
+    mainBtn.textContent = mainBtnLabel('running') // 测速中可停止
     reset()
 
     // 指标收集容器
@@ -196,14 +193,14 @@ export function initNdt7Engine(
         if (pingEl) pingEl.textContent = Math.round(pingMs).toString()
         if (bloatEl) bloatEl.textContent = Math.round(Math.max(0, bloatMs)).toString()
         setValue(downMbps)
-        setPhase(t('ndt.done'))
-        phase = 'done'
+        setPhase(t('phase.done'))
         // NDT7 无抖动指标：传 undefined，游戏评分退化为仅按延迟判定
         renderSceneVerdicts(aimEl, {
           down: downMbps,
           up: upMbps,
           ping: minRttUs !== Infinity ? pingMs : undefined,
         })
+        mainBtn.textContent = mainBtnLabel('done')
         onResult?.({
           down: downMbps,
           up: upMbps,
@@ -211,7 +208,8 @@ export function initNdt7Engine(
           ts: Date.now(),
           engine: 'ndt7',
         })
-      } else if (code !== 0) {
+      } else {
+        // 含 code === 0 但一个下载样本都没拿到：同样是本轮失败，不能停在"测速中"的文案上
         showError()
       }
     } catch (err) {
@@ -221,29 +219,34 @@ export function initNdt7Engine(
       }
     } finally {
       running = false
-      phase = phase === 'running' ? 'idle' : phase
       testState.release('ndt7')
-      mainBtn.disabled = false
-      mainBtn.textContent = t('btn.start')
+      if (stopped) {
+        // 后台收尾结束、占用已释放：撤掉「仍在结束上一轮」的提示，回到可再次测速的空闲态
+        errEl?.classList.remove('show')
+        setPhase(t('phase.ready'))
+        mainBtn.textContent = mainBtnLabel('idle')
+      }
     }
   }
 
   /**
    * 停止：ndt7 库内部创建的 worker 无法从外部中断，底层测量会在后台自然跑完，
-   * 这里只立即复位界面并丢弃本轮结果；锁保持占用直到 Promise 落定（见 finally）
+   * 锁保持占用直到 Promise 落定（见 finally），避免残留流量污染下一轮。
+   * 界面这边立即作废本轮，但按钮保持可点：再点一次会由锁给出「仍在收尾」的说明，
+   * 而不是留下一个标签仍为「停止」、点了没反应的死按钮。
    */
   const stop = () => {
-    if (!running) return
+    if (!running || stopped) return
     stopped = true
     testState.markStopping('ndt7')
     reset()
-    setPhase(t('state.stopped'))
-    mainBtn.disabled = true
+    setPhase(stoppedPhase())
+    mainBtn.textContent = mainBtnLabel('stopping')
   }
   testState.register('ndt7', stop)
 
   mainBtn.addEventListener('click', () => {
-    if (running) {
+    if (running && !stopped) {
       stop()
       return
     }

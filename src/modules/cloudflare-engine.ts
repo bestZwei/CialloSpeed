@@ -9,6 +9,7 @@
 import SpeedTest from '@cloudflare/speedtest'
 import type { Results } from '@cloudflare/speedtest'
 import { t, type StringKey } from '../i18n'
+import { mainBtnLabel, stoppedPhase } from './engine-state'
 import type { TestRecord } from './history'
 import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
@@ -24,7 +25,7 @@ const MEASUREMENTS = [
   { type: 'upload', bytes: 10_000_000, count: 6 },
 ] as const
 
-type Phase = 'idle' | 'running' | 'paused' | 'done' | 'error'
+type Phase = 'idle' | 'running' | 'done' | 'error'
 
 const PHASE_KEY: Record<string, StringKey> = {
   latency: 'phase.latency',
@@ -206,12 +207,12 @@ export function initCloudflareEngine(
 
   const showError = (msg: string) => {
     phase = 'error'
-    setPhase('idle')
+    if (phaseEl) phaseEl.textContent = t('phase.ready')
     if (errEl) {
       errEl.textContent = msg
       errEl.classList.add('show')
     }
-    mainBtn.textContent = t('btn.retry')
+    mainBtn.textContent = mainBtnLabel('error')
   }
 
   /* ---------- 相位 / 实时数值 ---------- */
@@ -260,7 +261,26 @@ export function initCloudflareEngine(
 
   /* ---------- 引擎事件 ---------- */
 
-  engine.onPhaseChange = ({ measurement }) => setPhase(measurement.type)
+  /** 作废本轮并交还测速锁：界面清空读数、下一次启动必然 restart */
+  const voidRound = (): void => {
+    finished = true
+    needsRestart = true
+    window.cancelAnimationFrame(rafId)
+    engine.pause()
+    phase = 'idle'
+    testState.release('cf')
+    stageEl?.classList.remove('is-done', 'is-down', 'is-up')
+    setRing(0)
+    resetGauge()
+    clearReadouts()
+    if (phaseEl) phaseEl.textContent = stoppedPhase()
+    mainBtn.textContent = mainBtnLabel('idle')
+  }
+
+  engine.onPhaseChange = ({ measurement }) => {
+    // 已作废或已结束的一轮，SDK 迟到的回调不得改写状态行
+    if (phase === 'running') setPhase(measurement.type)
+  }
 
   engine.onResultsChange = ({ type }) => {
     if (phase === 'running') {
@@ -276,15 +296,16 @@ export function initCloudflareEngine(
 
   engine.onRunningChange = (running) => {
     window.cancelAnimationFrame(rafId)
-    // 完成瞬间 running 会先变为 false，须避免误判为“已暂停”
+    // 完成瞬间 running 会先变为 false，须避免误判为"停跑"
     if (finished || engine.isFinished) return
-    phase = running ? 'running' : 'paused'
-    mainBtn.textContent = running ? t('btn.pause') : t('btn.resume')
     if (running) {
+      phase = 'running'
+      mainBtn.textContent = mainBtnLabel('running')
       spinRing()
-    } else {
-      if (phaseEl) phaseEl.textContent = t('phase.paused')
+      return
     }
+    // 既没完成也没被用户停止却停跑了：按作废处理，否则面板卡在「停 止」且锁再也拿不回来
+    voidRound()
   }
 
   engine.onFinish = (r) => {
@@ -311,7 +332,7 @@ export function initCloudflareEngine(
 
     renderMetrics(r)
     renderAim(r)
-    mainBtn.textContent = t('btn.again')
+    mainBtn.textContent = mainBtnLabel('done')
 
     if (onResult && downBps !== undefined && upBps !== undefined) {
       onResult({ down, up, ping, ts: Date.now(), engine: 'cf' })
@@ -319,6 +340,7 @@ export function initCloudflareEngine(
   }
 
   engine.onError = (message) => {
+    if (finished) return // 已作废/已完成的一轮：残留请求的报错不该复活界面
     testState.release('cf')
     window.cancelAnimationFrame(rafId)
     showError(t('engine.error', { message }))
@@ -339,7 +361,7 @@ export function initCloudflareEngine(
     resetGauge()
     clearReadouts()
     if (phaseEl) phaseEl.textContent = t('phase.connecting')
-    mainBtn.textContent = t('btn.pause')
+    mainBtn.textContent = mainBtnLabel('running')
     if (restart || needsRestart) engine.restart()
     else engine.play()
     needsRestart = false
@@ -348,33 +370,18 @@ export function initCloudflareEngine(
 
   /**
    * 停止：SDK 只提供 pause 而没有真正的取消，这里暂停引擎、复位界面并作废结果。
-   * finished 置真以屏蔽引擎的暂停回调；下一次启动总是走 restart 开新一轮
+   * finished 置真以屏蔽引擎的迟到回调；下一次启动总是走 restart 开新一轮
    */
   const stop = () => {
-    if (phase !== 'running' && phase !== 'paused') return
-    window.cancelAnimationFrame(rafId)
-    finished = true
-    needsRestart = true
-    engine.pause()
-    phase = 'idle'
-    testState.release('cf')
-    stageEl?.classList.remove('is-done', 'is-down', 'is-up')
-    setRing(0)
-    resetGauge()
-    clearReadouts()
-    if (phaseEl) phaseEl.textContent = t('state.stopped')
-    mainBtn.textContent = t('btn.start')
+    if (phase !== 'running') return
+    voidRound()
   }
   testState.register('cf', stop)
 
   mainBtn.addEventListener('click', () => {
     clearError()
     if (phase === 'idle' || phase === 'error') startTest(false)
-    else if (phase === 'running') engine.pause()
-    else if (phase === 'paused') {
-      // 暂停期间锁仍由本引擎持有，继续无需重新申请
-      engine.play()
-      spinRing()
-    } else if (phase === 'done') startTest(true)
+    else if (phase === 'running') stop()
+    else if (phase === 'done') startTest(true)
   })
 }

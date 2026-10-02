@@ -10,6 +10,7 @@
 
 import speedTargets from '../../config/speed-targets.json'
 import { t } from '../i18n'
+import { mainBtnLabel, stoppedPhase } from './engine-state'
 import type { TestRecord } from './history'
 import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
@@ -35,8 +36,6 @@ const UL_CHUNK_BYTES = 4 * 1024 * 1024 // 每连接单次 POST 体量，兼顾�
 
 /** 手动选择的节点偏好（存节点 base 地址），跨语言/会话保持 */
 const NODE_STORAGE_KEY = 'ciallospeed-ls-node'
-
-type Phase = 'idle' | 'running' | 'done'
 
 const fmtMbps = (mbps: number): string =>
   mbps >= 100 ? mbps.toFixed(0) : mbps >= 10 ? mbps.toFixed(1) : mbps.toFixed(2)
@@ -103,10 +102,9 @@ export function initLibrespeedEngine(
   const errEl = section.querySelector<HTMLElement>('.ls-error')
   if (!valueEl || !phaseEl || !mainBtn) return
 
-  let phase: Phase = 'idle'
   let running = false
   let stopCtrl: AbortController | null = null // 外部「停止」信号
-  let stopped = false // 用户主动停止后，本轮结果作废
+  let stopped = false // 用户主动停止：本轮结果作废
   let usedServer = '' // 本轮实际测量的节点名（写入历史溯源）
 
   /* ---------- 节点选择：自绘下拉（与引擎选择器同风格），手动优先，默认自动 ---------- */
@@ -237,7 +235,8 @@ export function initLibrespeedEngine(
   const showError = (msg?: string) => {
     if (errEl) errEl.textContent = msg ?? t('ls.error')
     errEl?.classList.add('show')
-    setPhase(t('ls.ready'))
+    setPhase(t('phase.ready'))
+    mainBtn.textContent = mainBtnLabel('error')
     if (serverEl && !preferredNode) serverEl.textContent = t('ls.serverAuto')
   }
 
@@ -361,18 +360,16 @@ export function initLibrespeedEngine(
   }
 
   const runTest = async () => {
-    if (running) return
+    if (running && !stopped) return
     if (!testState.acquire('ls')) {
       showError(testState.busyMessage())
       return
     }
     running = true
-    phase = 'running'
     stopped = false
     const ctrl = new AbortController()
     stopCtrl = ctrl
-    mainBtn.disabled = false
-    mainBtn.textContent = t('btn.stop') // 测速中可随时停止
+    mainBtn.textContent = mainBtnLabel('running') // 测速中可随时停止
     reset()
 
     try {
@@ -419,8 +416,8 @@ export function initLibrespeedEngine(
       if (barEl) barEl.style.width = '100%'
       if (down > 0) {
         setValue(down)
-        setPhase(t('ls.done'))
-        phase = 'done'
+        setPhase(t('phase.done'))
+        mainBtn.textContent = mainBtnLabel('done')
         renderSceneVerdicts(aimEl, { down, up, ping, jitter })
         onResult?.({ down, up, ping: Math.round(ping), ts: Date.now(), engine: 'ls', server: usedServer })
       } else {
@@ -433,26 +430,31 @@ export function initLibrespeedEngine(
       }
     } finally {
       running = false
-      phase = phase === 'running' ? 'idle' : phase
       testState.release('ls')
       stopCtrl = null
-      mainBtn.disabled = false
-      mainBtn.textContent = t('btn.start')
+      if (stopped) {
+        // 收尾完成、占用已释放：撤掉「仍在结束上一轮」的提示，回到可再次测速的空闲态
+        errEl?.classList.remove('show')
+        setPhase(t('phase.ready'))
+        mainBtn.textContent = mainBtnLabel('idle')
+      }
     }
   }
 
   /** 停止本轮：中断当前请求并作废结果（LibreSpeed 单轮近 30 秒，必须能随时叫停） */
   const stop = () => {
-    if (!running) return
+    if (!running || stopped) return
     stopped = true
+    testState.markStopping('ls')
     stopCtrl?.abort()
     reset()
-    setPhase(t('state.stopped'))
+    setPhase(stoppedPhase())
+    mainBtn.textContent = mainBtnLabel('stopping')
   }
   testState.register('ls', stop)
 
   mainBtn.addEventListener('click', () => {
-    if (running) {
+    if (running && !stopped) {
       stop()
       return
     }

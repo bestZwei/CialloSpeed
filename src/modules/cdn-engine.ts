@@ -19,6 +19,7 @@
 
 import speedTargets from '../../config/speed-targets.json'
 import { t, type StringKey } from '../i18n'
+import { mainBtnLabel, stoppedPhase } from './engine-state'
 import type { TestRecord } from './history'
 import { renderSceneVerdicts } from './quality'
 import { testState } from './test-state'
@@ -176,7 +177,9 @@ export function initCdnEngine(
   if (!valueEl || !phaseEl || !mainBtn) return
 
   let running = false
+  let stopped = false // 本轮已作废：读数即时清空，结果不写入历史
   let batchAbort: AbortController | null = null
+  let rows: Row[] = [] // 当前批次的行，停止时要立刻清掉它们的半成品读数
   const picked = loadPicked() // 用户勾选的测速目标（URL 集合）
 
   const setValue = (v: number) => {
@@ -238,7 +241,8 @@ export function initCdnEngine(
   const showError = (msg: string) => {
     if (errEl) errEl.textContent = msg
     errEl?.classList.add('show')
-    phaseEl.textContent = t('cdn.ready')
+    phaseEl.textContent = t('phase.ready')
+    mainBtn.textContent = mainBtnLabel('error')
   }
 
   /**
@@ -252,8 +256,8 @@ export function initCdnEngine(
       return
     }
     running = true
-    mainBtn.disabled = false
-    mainBtn.textContent = t('btn.stop') // 测速中可随时停止
+    stopped = false
+    mainBtn.textContent = mainBtnLabel('running') // 测速中可随时停止
     if (customBtn) customBtn.disabled = true
     if (urlInput) urlInput.disabled = true
     valueEl.textContent = '--'
@@ -264,7 +268,7 @@ export function initCdnEngine(
     }
     errEl?.classList.remove('show')
 
-    const rows = renderRows(list, list === TARGETS, false)
+    rows = renderRows(list, list === TARGETS, false)
     const rowOf = new Map<CdnTarget, Row>()
     list.forEach((tg, i) => {
       const r = rows[i]
@@ -279,10 +283,9 @@ export function initCdnEngine(
     let bestRow: Row | undefined
     let okCount = 0
     let done = 0
-    let stopped = false
     try {
       for (const target of execute) {
-        if (ctrl.signal.aborted) {
+        if (stopped || ctrl.signal.aborted) {
           stopped = true
           break
         }
@@ -302,7 +305,7 @@ export function initCdnEngine(
         )
         row.li.classList.remove('is-active')
 
-        if (ctrl.signal.aborted) {
+        if (stopped || ctrl.signal.aborted) {
           stopped = true
           break
         }
@@ -323,18 +326,13 @@ export function initCdnEngine(
         setBar(done / execute.length)
       }
 
-      if (stopped) {
-        // 用户主动停止：本轮结果作废，不写入历史
-        valueEl.textContent = '--'
-        setBar(0)
-        phaseEl.textContent = t('state.stopped')
-        return
-      }
+      if (stopped) return // 已由 stop() 作废并清空读数：本轮不写入历史
 
       if (okCount > 0 && best > 0) {
         bestRow?.li.classList.add('is-best')
         setValue(best)
         phaseEl.textContent = t('cdn.doneBest', { v: fmtMbps(best) })
+        mainBtn.textContent = mainBtnLabel('done')
         // CDN 直链只有下载指标：仅给出「视频流媒体」一个场景评价
         renderSceneVerdicts(aimEl, { down: best })
         onResult?.({ down: best, up: 0, ping: 0, ts: Date.now(), engine: 'cdn', server: bestName })
@@ -342,14 +340,18 @@ export function initCdnEngine(
         showError(t('cdn.failedAll'))
       }
     } catch (err) {
+      if (stopped) return // 主动停止触发的中断，不是测速失败
       console.error('[cdn-engine]', err)
       showError(t('cdn.failedAll'))
     } finally {
       running = false
       testState.release('cdn')
       batchAbort = null
-      mainBtn.disabled = false
-      mainBtn.textContent = t('btn.start')
+      if (stopped) {
+        // 收尾完成、占用已释放：撤掉「仍在结束上一轮」的提示，回到可再次测速的空闲态
+        phaseEl.textContent = t('phase.ready')
+        mainBtn.textContent = mainBtnLabel('idle')
+      }
       if (customBtn) customBtn.disabled = false
       if (urlInput) urlInput.disabled = false
       if (restoreToPreset) {
@@ -360,14 +362,29 @@ export function initCdnEngine(
     }
   }
 
-  /** 停止本轮测速：中断当前下载，结果作废（不写入历史） */
+  /**
+   * 停止本轮：界面当场作废（清空读数、结果不写入历史），底层下载靠 AbortController 中断。
+   * 复位不等待 Promise 落定，否则会留下一个标签仍为「停止」、点了没反应的死按钮。
+   */
   const stop = () => {
+    if (!running || stopped) return
+    stopped = true
+    testState.markStopping('cdn')
+    valueEl.textContent = '--'
+    setBar(0)
+    for (const r of rows) {
+      r.li.classList.remove('is-active', 'is-done', 'is-fail', 'is-best')
+      r.speedEl.textContent = '--'
+    }
+    errEl?.classList.remove('show')
+    phaseEl.textContent = stoppedPhase()
+    mainBtn.textContent = mainBtnLabel('stopping')
     batchAbort?.abort()
   }
   testState.register('cdn', stop)
 
   mainBtn.addEventListener('click', () => {
-    if (running) {
+    if (running && !stopped) {
       stop()
       return
     }
